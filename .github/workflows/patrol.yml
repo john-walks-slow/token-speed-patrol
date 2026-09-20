@@ -1,0 +1,56 @@
+name: Token Speed Patrol
+
+on:
+  schedule:
+    # 巡检周期在此配置（cron 表达式）；当前每 6 小时一次，13 分错开整点
+    - cron: '13 */6 * * *'
+  workflow_dispatch: # 手动触发，用于首次验证与按需重跑
+    inputs:
+      providers:
+        description: '仅巡检指定 provider（逗号分隔 provider_name，留空 = 全部）'
+        required: false
+        default: ''
+
+permissions:
+  contents: write # 需要提交巡检结果到仓库
+
+jobs:
+  patrol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run patrol
+        env:
+          # 按 config/patrol.json 中 api_key_env 名注入密钥
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+          # 通用注入：多行 KEY=VALUE，私有端点 URL / key 均可走这里，无需改 workflow
+          PATROL_EXTRA_ENV: ${{ secrets.PATROL_EXTRA_ENV }}
+          PATROL_PROVIDERS: ${{ inputs.providers || '' }}
+        run: python -m backend.patrol_runner
+
+      - name: Commit patrol results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/data/
+          git commit -m "patrol: $(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "nothing to commit"
+          # 巡检运行期间 master 可能有新提交（否则 push 被拒、数据丢失）：rebase 后重试
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin master && git push && exit 0
+            sleep 5
+          done
+          echo "::error::failed to push patrol results"
+          exit 1

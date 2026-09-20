@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Speed Patrol — LLM API 巡检看板</title>
+<meta name="description" content="Token Speed 巡检看板：GitHub Actions 定时测速，TTFT / TPS / 成功率趋势可视化。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23059669'/%3E%3Cpath d='M6 16h4l3-7 4 14 3-7h6' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #0a0d10;
+  --bg-soft: #0e1216;
+  --card: rgba(255, 255, 255, 0.03);
+  --card-hover: rgba(255, 255, 255, 0.055);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #e7edf2;
+  --text-dim: #9aa7b2;
+  --text-faint: #5f6b76;
+  --green: #34d399;
+  --green-soft: rgba(52, 211, 153, 0.12);
+  --amber: #fbbf24;
+  --red: #f87171;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --chart-1: #34d399;
+  --chart-2: #60a5fa;
+  --chart-3: #fbbf24;
+  --chart-4: #c084fc;
+  --chart-5: #22d3ee;
+  --chart-6: #facc15;
+  --chart-7: #94a3b8;
+  --chart-8: #fb7185;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+::selection { background: rgba(52, 211, 153, 0.25); }
+a { color: inherit; text-decoration: none; }
+
+.bg-grid {
+  position: fixed; inset: 0; z-index: -2;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 40%, transparent 100%);
+}
+.glow {
+  position: fixed; z-index: -1; border-radius: 50%; filter: blur(110px); pointer-events: none;
+}
+.glow-a { width: 560px; height: 380px; top: -140px; left: 50%; transform: translateX(-50%); background: rgba(16, 185, 129, 0.1); }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+/* nav */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(10, 13, 16, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.brand-logo {
+  width: 28px; height: 28px; border-radius: 8px; background: var(--green-soft);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.brand-logo svg { width: 16px; height: 16px; }
+.nav-links { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-dim); }
+.nav-github {
+  display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--card);
+  color: var(--text-dim); transition: all .15s;
+}
+.nav-github:hover { color: var(--text); border-color: var(--border-strong); }
+
+/* hero */
+header { padding: 48px 0 32px; }
+h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; }
+h1 .grad { background: linear-gradient(120deg, #34d399 20%, #6ee7b7 45%, #a7f3d0 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { font-size: 15.5px; color: var(--text-dim); max-width: 640px; }
+.last-run { margin-top: 10px; font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+
+/* metric cards */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 36px; }
+@media (min-width: 900px) { .metrics { grid-template-columns: repeat(6, 1fr); } }
+.metric-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 20px; transition: all .2s;
+}
+.metric-card:hover { background: var(--card-hover); border-color: var(--border-strong); }
+.metric-card .label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.metric-card .value { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.metric-card .sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; font-variant-numeric: tabular-nums; }
+
+/* section */
+section { margin-bottom: 40px; }
+.sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+
+/* filters */
+.filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.filter-group { display: flex; align-items: center; gap: 6px; }
+.filter-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.chip {
+  font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 13px;
+  border: 1px solid var(--border); background: var(--card); color: var(--text-dim);
+  cursor: pointer; transition: all .15s; font-family: var(--sans); white-space: nowrap;
+}
+.chip:hover { color: var(--text); border-color: var(--border-strong); }
+.chip.active { background: var(--green-soft); border-color: rgba(52,211,153,.4); color: var(--green); }
+.chip-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: -0.5px; }
+
+/* results table */
+.results-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; position: relative;
+}
+.results-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.results-table th {
+  text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 600;
+  color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02);
+}
+.results-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+.results-table tr:last-child td { border-bottom: none; }
+.results-table tr:hover { background: var(--card-hover); }
+.results-table .model-cell { font-weight: 600; }
+.results-table .model-cell .provider { font-weight: 400; font-size: 11px; color: var(--text-dim); display: block; margin-top: 1px; }
+.results-table .ok { color: var(--green); }
+.results-table .fail { color: var(--red); }
+.results-table .warn-text { color: var(--amber); }
+.results-table .err-msg { font-size: 11px; color: var(--text-faint); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.results-table .spark-cell { padding: 5px 10px; }
+.results-table .spark-cell canvas { display: block; }
+
+/* chart */
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; position: relative; }
+.chart-card canvas { display: block; width: 100%; }
+.chart-tooltip {
+  position: absolute; pointer-events: none; z-index: 10; display: none;
+  background: rgba(14, 18, 22, 0.95); border: 1px solid var(--border-strong);
+  border-radius: 8px; padding: 8px 11px; font-size: 12px; line-height: 1.55;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4); white-space: nowrap;
+}
+.chart-tooltip .t-time { color: var(--text-faint); font-family: var(--mono); font-size: 11px; }
+.chart-tooltip .t-row { display: flex; align-items: center; gap: 6px; }
+.chart-tooltip .t-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.chart-tooltip .t-model { color: var(--text); }
+.chart-tooltip .t-provider { color: var(--text-faint); font-size: 11px; }
+.chart-tooltip .t-val { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 10px; }
+
+/* empty / loading */
+.empty, .loading { text-align: center; padding: 60px 0; color: var(--text-faint); font-size: 14px; }
+.loading .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* footer */
+footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px; }
+.foot-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: 12.5px; color: var(--text-faint); }
+.foot-links { display: flex; gap: 18px; }
+.foot-links a:hover { color: var(--green); }
+
+@media (max-width: 640px) {
+  .results-table { font-size: 12px; }
+  .results-table th, .results-table td { padding: 8px 10px; }
+  .results-table .hide-mobile { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow glow-a"></div>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="https://github.com/john-walks-slow/token-speed-patrol">
+      <span class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </span>
+      Token Speed Patrol
+    </a>
+    <div class="nav-links">
+      <a class="nav-github" href="https://github.com/john-walks-slow/token-speed-patrol" target="_blank" rel="noopener" title="GitHub 仓库">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <h1>Token Speed <span class="grad">巡检看板</span></h1>
+    <p class="hero-sub">
+      GitHub Actions 自动测速，跟踪模型 API 的 TTFT / TPS / ITL / 成功率长期趋势。
+    </p>
+    <p class="last-run" id="lastRun">—</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Aggregate metrics -->
+  <div class="metrics" id="metrics"></div>
+
+  <!-- Results -->
+  <section>
+    <div class="sec-head">
+      <div class="filters">
+        <div class="filter-group" id="providerFilters">
+          <span class="filter-label">筛选</span>
+          <span id="providerChips" style="display:flex;flex-wrap:wrap;gap:6px"></span>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">时间</span>
+          <span id="rangeChips" style="display:flex;flex-wrap:wrap;gap:6px">
+            <button class="chip" data-range="latest">最近一次</button>
+            <button class="chip active" data-range="24h">24h</button>
+            <button class="chip" data-range="7d">7 天</button>
+            <button class="chip" data-range="all">全部</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="results-card" id="resultsCard">
+      <div class="loading"><div class="spinner"></div>加载中…</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>Token Speed Patrol · GitHub Actions 定时巡检 · 数据公开可追溯</div>
+    <div class="foot-links">
+      <a href="https://github.com/john-walks-slow/token-speed-patrol" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/john-walks-slow/token-speed-patrol/actions" target="_blank" rel="noopener">Actions</a>
+      <a href="https://github.com/john-walks-slow/token-speed">桌面版</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── 数据加载 ──────────────────────────────────────
+
+const CHART_COLORS = ['#34d399','#60a5fa','#fbbf24','#c084fc','#22d3ee','#facc15','#94a3b8','#fb7185','#4ade80','#38bdf8','#f472b6','#a3e635','#fb923c','#818cf8','#2dd4bf','#e879f9'];
+const METRIC_LABELS = {
+  tps: '有效速度 (tok/s)',
+  itl_ms: 'ITL (ms/tok)',
+  ttft_ms: 'TTFT (ms)',
+  total_latency_ms: '延迟 (ms)',
+  success_rate: '成功率 (%)',
+};
+const SPARK_WINDOW_MS = 24 * 3600 * 1000;
+const RANGE_DEFS = {
+  latest: { label: '最近一次', windowMs: 0 },
+  '24h':  { label: '最近 24 小时', windowMs: SPARK_WINDOW_MS },
+  '7d':   { label: '最近 7 天', windowMs: 7 * 24 * 3600 * 1000 },
+  all:    { label: '全部', windowMs: Infinity },
+};
+
+let allRuns = [];      // 按时间升序的 run 记录
+let activeMetric = 'tps';
+let activeRange = '24h';
+let activeProviders = new Set(); // 空 = 全选
+let providerColor = {}; // provider -> 颜色
+
+function providerOf(r) {
+  return r.provider_name || hostnameOf(r.base_url) || 'unknown';
+}
+
+function colorOf(provider) {
+  return providerColor[provider] || CHART_COLORS[Object.keys(providerColor).length % CHART_COLORS.length];
+}
+
+function assignProviderColors(runs) {
+  const providers = new Set();
+  for (const run of runs) for (const r of run.results) providers.add(providerOf(r));
+  for (const p of [...providers].sort()) {
+    if (!providerColor[p]) providerColor[p] = CHART_COLORS[Object.keys(providerColor).length % CHART_COLORS.length];
+  }
+}
+
+// 尝试加载 data/ 下所有 JSONL 文件
+async function loadAllData() {
+  // 获取文件列表：GitHub Pages 静态站无目录列举，用 git API 或固定文件名
+  // 巡检每天一个文件，取最近 90 天
+  const files = await discoverJsonlFiles();
+  const all = [];
+  for (const f of files) {
+    try {
+      const resp = await fetch(f + '?t=' + Date.now());
+      if (!resp.ok) continue;
+      const text = await resp.text();
+      for (const line of text.trim().split('\n')) {
+        if (!line) continue;
+        all.push(JSON.parse(line));
+      }
+    } catch (e) { /* 文件可能不存在，跳过 */ }
+  }
+  all.sort((a, b) => a.started_at.localeCompare(b.started_at));
+  return all;
+}
+
+// 探测可用的 JSONL 文件：尝试最近 N 天 + 今天
+async function discoverJsonlFiles() {
+  const days = 90;
+  const files = [];
+  const now = new Date();
+  for (let i = 0; i <= days; i++) {
+    const d = new Date(now.getTime() - i * 86400000);
+    const y = d.getUTCFullYear();
+    const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(d.getUTCDate()).padStart(2, '0');
+    files.push(`data/${y}-${m}-${day}.jsonl`);
+  }
+  // 探测哪些存在（HEAD 请求）；fetch 不支持 HEAD 的跨域限制少，Pages 同源没问题
+  const existing = [];
+  await Promise.all(files.map(async f => {
+    try {
+      const resp = await fetch(f, { method: 'HEAD' });
+      if (resp.ok) existing.push(f);
+    } catch {}
+  }));
+  return existing;
+}
+
+// ── 数据处理（与 StatsPanel 逻辑对齐）──────────────
+
+function pairKey(r) {
+  return `${providerOf(r)}|${r.model}`;
+}
+
+function hostnameOf(url) {
+  if (!url) return 'unknown';
+  try { return new URL(url).hostname || 'unknown'; } catch { return url; }
+}
+
+function median(nums) {
+  if (!nums.length) return 0;
+  const s = [...nums].sort((a, b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+}
+
+// 从一条 run 提取每个 (provider|model) 对的聚合值
+function runToPoints(run) {
+  const byPair = {};
+  for (const r of run.results) {
+    const k = pairKey(r);
+    if (!byPair[k]) byPair[k] = { success: [], tps: [], itl: [], ttft: [], latency: [], model: r.model, provider: r.provider_name || hostnameOf(r.base_url) };
+    byPair[k].success.push(r.success);
+    if (r.success) {
+      if (r.tps != null) byPair[k].tps.push(r.tps);
+      if (r.itl_ms != null) byPair[k].itl.push(r.itl_ms);
+      if (r.ttft_ms != null) byPair[k].ttft.push(r.ttft_ms);
+      if (r.total_latency_ms != null) byPair[k].latency.push(r.total_latency_ms);
+    }
+  }
+  const points = {};
+  for (const [k, d] of Object.entries(byPair)) {
+    points[k] = {
+      tps: d.tps.length ? median(d.tps) : null,
+      itl_ms: d.itl.length ? median(d.itl) : null,
+      ttft_ms: d.ttft.length ? median(d.ttft) : null,
+      total_latency_ms: d.latency.length ? median(d.latency) : null,
+      success_rate: d.success.length ? Math.round(d.success.filter(x=>x).length / d.success.length * 1000) / 10 : 0,
+      count: d.success.length,
+      model: d.model,
+      provider: d.provider,
+    };
+  }
+  return points;
+}
+
+// ── 渲染 ──────────────────────────────────────────
+
+// provider chip 筛选（空 activeProviders = 全选）
+function providerVisible(provider) {
+  return activeProviders.size === 0 || activeProviders.has(provider);
+}
+
+function renderProviderChips() {
+  const providers = Object.keys(providerColor);
+  const el = document.getElementById('providerChips');
+  const group = document.getElementById('providerFilters');
+  // 按当前时间范围统计模型数，范围内无数据的 provider 不显示
+  const counts = {};
+  for (const run of runsInRange()) for (const r of run.results) counts[providerOf(r)] = (counts[providerOf(r)] || 0) + 1;
+  const shown = providers.filter(p => counts[p]);
+  // 少于 2 个可选 provider 时不显示筛选组
+  if (providers.length < 2 || !shown.length) { group.style.display = 'none'; return; }
+  group.style.display = '';
+  el.innerHTML = shown.map(p => {
+    const active = activeProviders.size === 0 || activeProviders.has(p);
+    return `<button class="chip${active ? ' active' : ''}" data-provider="${escapeHtml(p)}">
+      <span class="chip-dot" style="background:${colorOf(p)}"></span>${escapeHtml(p)} <span style="opacity:.6">${counts[p]}</span>
+    </button>`;
+  }).join('');
+  el.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = btn.dataset.provider;
+      if (activeProviders.size === 0) {
+        // 从全选切到单选
+        activeProviders = new Set([p]);
+      } else if (activeProviders.has(p) && activeProviders.size === 1) {
+        activeProviders.clear(); // 唯一选中项再点 = 恢复全选
+      } else if (activeProviders.has(p)) {
+        activeProviders.delete(p);
+        if (activeProviders.size === 0) activeProviders.clear();
+      } else {
+        activeProviders.add(p);
+      }
+      renderProviderChips();
+      renderResults();
+    });
+  });
+}
+
+function renderLastRun(latestRun) {
+  const el = document.getElementById('lastRun');
+  if (!latestRun) { el.textContent = '—'; return; }
+  const d = new Date(latestRun.finished_at || latestRun.started_at);
+  el.textContent = `上次巡检：${d.toLocaleString()} · ${latestRun.success}/${latestRun.total} 成功`;
+}
+
+function renderMetrics(latestRun) {
+  const el = document.getElementById('metrics');
+  if (!latestRun) { el.innerHTML = ''; return; }
+  const points = runToPoints(latestRun);
+  const allResults = latestRun.results;
+  const successResults = allResults.filter(r => r.success);
+  const tpsVals = successResults.filter(r => r.tps != null).map(r => r.tps);
+  const itlVals = successResults.filter(r => r.itl_ms != null).map(r => r.itl_ms);
+  const latencyVals = successResults.map(r => r.total_latency_ms);
+  const ttftVals = successResults.filter(r => r.ttft_ms != null).map(r => r.ttft_ms);
+  const total = allResults.length;
+  const successRate = total ? Math.round(successResults.length / total * 100) : 0;
+
+  const cards = [
+    { label: '测试模型', value: Object.keys(points).length },
+    { label: '成功率', value: `${successRate}%`, sub: `${successResults.length}/${total}` },
+    { label: '中位 TPS', value: tpsVals.length ? median(tpsVals).toFixed(1) : 'N/A', sub: 'tok/s' },
+    { label: '中位 ITL', value: itlVals.length ? formatItl(median(itlVals)) + 'ms' : 'N/A', sub: 'ms/tok' },
+    { label: '中位延迟', value: latencyVals.length ? Math.round(median(latencyVals)) + 'ms' : 'N/A' },
+    { label: '中位 TTFT', value: ttftVals.length ? Math.round(median(ttftVals)) + 'ms' : 'N/A' },
+  ];
+  el.innerHTML = cards.map(c =>
+    `<div class="metric-card"><div class="label">${c.label}</div><div class="value">${c.value}</div>${c.sub ? `<div class="sub">${c.sub}</div>` : ''}</div>`
+  ).join('');
+}
+
+// 取某 pair 在当前时间范围内的指标序列：[{time, value}]
+function sparkSeries(pair) {
+  const tEnd = new Date(allRuns[allRuns.length - 1].started_at).getTime();
+  const windowMs = activeRange === 'latest' ? SPARK_WINDOW_MS : RANGE_DEFS[activeRange].windowMs;
+  const series = [];
+  for (const run of allRuns) {
+    const t = new Date(run.started_at).getTime();
+    if (t < tEnd - windowMs) continue;
+    const point = runToPoints(run)[pair];
+    const v = point && point[activeMetric];
+    if (v != null) series.push({ time: t, value: v });
+  }
+  return series;
+}
+
+// 平滑曲线插值点（Catmull-Rom → bezier）
+function smoothPath(ctx, pts) {
+  ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || pts[i + 1];
+    ctx.bezierCurveTo(
+      p1.x + (p2.x - p0.x) / 6, p1.y + (p2.y - p0.y) / 6,
+      p2.x - (p3.x - p1.x) / 6, p2.y - (p3.y - p1.y) / 6,
+      p2.x, p2.y
+    );
+  }
+}
+
+// 当前时间范围内的 runs（latest = 仅最近一次）
+function runsInRange() {
+  if (activeRange === 'latest') return [allRuns[allRuns.length - 1]];
+  const tEnd = new Date(allRuns[allRuns.length - 1].started_at).getTime();
+  const windowMs = RANGE_DEFS[activeRange].windowMs;
+  return allRuns.filter(run => new Date(run.started_at).getTime() >= tEnd - windowMs);
+}
+
+function renderResults() {
+  const el = document.getElementById('resultsCard');
+  const runs = runsInRange();
+  if (!runs.length || !runs[0].results.length) {
+    el.innerHTML = '<div class="empty">暂无巡检数据</div>'; return;
+  }
+
+  const aggByPair = {};
+  for (const run of runs) {
+    for (const [k, p] of Object.entries(runToPoints(run))) {
+      if (!aggByPair[k]) aggByPair[k] = { model: p.model, provider: p.provider, tps: [], itl: [], ttft: [], latency: [], ok: 0, n: 0 };
+      const a = aggByPair[k];
+      a.n += p.count;
+      a.ok += p.count * (p.success_rate / 100);
+      if (p.tps != null) a.tps.push(p.tps);
+      if (p.itl_ms != null) a.itl.push(p.itl_ms);
+      if (p.ttft_ms != null) a.ttft.push(p.ttft_ms);
+      if (p.total_latency_ms != null) a.latency.push(p.total_latency_ms);
+    }
+  }
+
+  const pairs = Object.entries(aggByPair)
+    .filter(([k]) => providerVisible(k.split('|')[0]))
+    .sort((a, b) => (b[1].tps.length ? median(b[1].tps) : 0) - (a[1].tps.length ? median(a[1].tps) : 0));
+  if (!pairs.length) { el.innerHTML = '<div class="empty">该 Provider 无数据</div>'; return; }
+
+  const rows = pairs.map(([k, a]) => {
+    const successRate = a.n ? Math.round(a.ok / a.n * 1000) / 10 : 0;
+    const rateCls = successRate >= 95 ? 'ok' : successRate >= 50 ? 'warn-text' : 'fail';
+    const tps = a.tps.length ? median(a.tps).toFixed(1) : '—';
+    const itl = a.itl.length ? formatItl(median(a.itl)) + 'ms' : '—';
+    const ttft = a.ttft.length ? Math.round(median(a.ttft)) + 'ms' : '—';
+    const latency = a.latency.length ? Math.round(median(a.latency)) + 'ms' : '—';
+    return `<tr data-pair="${escapeHtml(k)}">
+      <td class="${rateCls}">${successRate}%</td>
+      <td class="model-cell">${escapeHtml(a.model)}<span class="provider">${escapeHtml(a.provider)}</span></td>
+      <td>${tps}</td>
+      <td class="hide-mobile">${itl}</td>
+      <td class="hide-mobile">${ttft}</td>
+      <td class="hide-mobile">${latency}</td>
+      <td class="hide-mobile">${a.n} 次</td>
+      <td class="spark-cell hide-mobile"><canvas data-pair="${escapeHtml(k)}" width="120" height="30"></canvas></td>
+    </tr>`;
+  }).join('');
+  el.innerHTML = `<table class="results-table"><thead><tr>
+    <th>成功率</th><th>模型</th><th>TPS</th><th class="hide-mobile">ITL</th><th class="hide-mobile">TTFT</th><th class="hide-mobile">延迟</th><th class="hide-mobile">次数</th><th class="hide-mobile" title="${METRIC_LABELS[activeMetric]}">趋势</th>
+  </tr></thead><tbody>${rows}</tbody></table>`;
+  drawSparks();
+}
+
+// 行内 sparkline：范围内平滑曲线 + 最新值圆点，颜色跟 provider
+function drawSparks() {
+  document.querySelectorAll('.spark-cell canvas').forEach(cv => {
+    const series = sparkSeries(cv.dataset.pair);
+    if (series.length < 2) { cv.style.display = 'none'; return; }
+    const ctx = cv.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const w = 120, h = 30;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cv.dataset.w = w; cv.dataset.h = h;
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, w, h);
+
+    const pair = cv.dataset.pair;
+    const [provider] = pair.split('|');
+    const color = colorOf(provider);
+    const vals = series.map(d => d.value);
+    let vMin = Math.min(...vals), vMax = Math.max(...vals);
+    if (activeMetric === 'success_rate') { vMin = 0; vMax = 100; }
+    if (vMax === vMin) vMax = vMin + 1;
+    const tMin = series[0].time, tMax = series[series.length - 1].time;
+    const pts = series.map(d => ({
+      x: ((d.time - tMin) / (tMax - tMin || 1)) * (w - 4) + 2,
+      y: 3 + (1 - (d.value - vMin) / (vMax - vMin || 1)) * (h - 6),
+    }));
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    smoothPath(ctx, pts);
+    ctx.stroke();
+    const last = pts[pts.length - 1];
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(last.x, last.y, 2, 0, Math.PI * 2); ctx.fill();
+
+    // hover 命中点缓存 + 事件绑定
+    sparkHitsByCanvas.set(cv, series.map((d, i) => ({
+      x: pts[i].x, y: pts[i].y, time: d.time, value: d.value, color, pair,
+    })));
+    if (!cv.dataset.hoverBound) {
+      cv.dataset.hoverBound = '1';
+      bindSparkHover(cv);
+    }
+  });
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── sparkline hover（复用趋势图 tooltip 交互）──────
+
+function formatMetricValue(v) {
+  if (activeMetric === 'success_rate') return v.toFixed(1) + '%';
+  if (activeMetric === 'tps') return v.toFixed(1) + ' tok/s';
+  if (activeMetric === 'itl_ms') return formatItl(v) + ' ms';
+  return Math.round(v) + ' ms';
+}
+
+// ITL 展示：个位数保留一位小数，其余取整
+function formatItl(v) {
+  return v < 10 ? v.toFixed(1) : Math.round(v).toString();
+}
+
+function formatTime(t) {
+  const d = new Date(t);
+  const span = allRuns.length > 1
+    ? new Date(allRuns[allRuns.length-1].started_at).getTime() - new Date(allRuns[0].started_at).getTime()
+    : 0;
+  if (span > 7 * 86400000) return `${d.getMonth()+1}/${d.getDate()}`;
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+// sparkline hover：命中测试 + tooltip（每个 sparkline 自带命中点缓存）
+let sparkHitsByCanvas = new WeakMap();
+let sparkHoverState = null; // { canvas, dot }
+
+// tooltip 元素随 renderResults 的 innerHTML 重写被抹掉，需要时重建
+function ensureTooltip() {
+  let tip = document.getElementById('chartTooltip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'chartTooltip';
+    tip.className = 'chart-tooltip';
+    document.getElementById('resultsCard').appendChild(tip);
+  }
+  return tip;
+}
+
+function bindSparkHover(cv) {
+  let hovered = null;
+
+  cv.addEventListener('mousemove', e => {
+    const tooltip = ensureTooltip();
+    const hits = sparkHitsByCanvas.get(cv) || [];
+    const rect = cv.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (cv.dataset.w / rect.width || 1);
+    const my = (e.clientY - rect.top) * (cv.dataset.h / rect.height || 1);
+    let best = null, bestDist = 12 * 12;
+    for (const h of hits) {
+      const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
+      if (d < bestDist) { bestDist = d; best = h; }
+    }
+    if (best !== hovered) {
+      // 恢复上一个 sparkline
+      if (sparkHoverState) { sparkHoverState.dot.remove(); sparkHoverState = null; }
+      hovered = best;
+      if (hovered) {
+        // 高亮圆点叠加在 sparkline 上
+        const dot = document.createElement('div');
+        dot.style.cssText = `position:absolute;width:9px;height:9px;border-radius:50%;` +
+          `background:${hovered.color};border:2px solid #0a0d10;pointer-events:none;` +
+          `left:${cv.offsetLeft + hovered.x * rect.width / cv.dataset.w - 4.5}px;` +
+          `top:${cv.offsetTop + hovered.y * rect.height / cv.dataset.h - 4.5}px;`;
+        cv.parentElement.style.position = 'relative';
+        cv.parentElement.appendChild(dot);
+        sparkHoverState = { canvas: cv, dot };
+        const [provider, model] = hovered.pair.split('|');
+        tooltip.innerHTML = `<div class="t-time">${formatTime(hovered.time)}</div>
+          <div class="t-row">
+            <span class="t-dot" style="background:${hovered.color}"></span>
+            <span class="t-model">${escapeHtml(model)}</span>
+            <span class="t-provider">${escapeHtml(provider)}</span>
+            <span class="t-val">${formatMetricValue(hovered.value)}</span>
+          </div>`;
+      } else {
+        tooltip.style.display = 'none';
+        return;
+      }
+    }
+    if (hovered) {
+      tooltip.style.display = 'block';
+      const card = document.getElementById('resultsCard');
+      const cvRect = cv.getBoundingClientRect(), cardRect = card.getBoundingClientRect();
+      const maxLeft = cardRect.width - tooltip.offsetWidth - 12;
+      const maxTop = cardRect.height - tooltip.offsetHeight - 8;
+      tooltip.style.left = Math.max(12, Math.min(cvRect.left - cardRect.left + hovered.x * cvRect.width / cv.dataset.w + 10, maxLeft)) + 'px';
+      tooltip.style.top = Math.max(4, Math.min(cvRect.top - cardRect.top + hovered.y * cvRect.height / cv.dataset.h - tooltip.offsetHeight - 6, maxTop)) + 'px';
+    }
+  });
+  cv.addEventListener('mouseleave', () => {
+    hovered = null;
+    if (sparkHoverState) { sparkHoverState.dot.remove(); sparkHoverState = null; }
+    ensureTooltip().style.display = 'none';
+  });
+}
+
+// ── 交互 ──────────────────────────────────────────
+
+document.querySelectorAll('[data-range]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeRange = btn.dataset.range;
+    renderProviderChips();
+    renderResults();
+  });
+});
+
+// ── 启动 ──────────────────────────────────────────
+
+async function init() {
+  allRuns = await loadAllData();
+  if (!allRuns.length) {
+    document.getElementById('resultsCard').innerHTML = '<div class="empty">暂无巡检数据。<br> Fork 仓库并启用 Patrol workflow 后，数据会在此自动展示。</div>';
+    return;
+  }
+  assignProviderColors(allRuns);
+  renderLastRun(allRuns[allRuns.length - 1]);
+  renderMetrics(allRuns[allRuns.length - 1]);
+  renderProviderChips();
+  renderResults();
+}
+
+init();
+</script>
+</body>
+</html>

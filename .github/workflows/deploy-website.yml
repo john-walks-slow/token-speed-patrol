@@ -1,0 +1,36 @@
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths: ['website/**', '.github/workflows/deploy-website.yml']
+  # patrol 的结果 commit 由 GITHUB_TOKEN 推送，不触发 push 事件；
+  # 用 workflow_run 在巡检完成后联动重新发布，看板才能拿到新数据
+  workflow_run:
+    workflows: ['Token Speed Patrol']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website
+      - id: deployment
+        uses: actions/deploy-pages@v4
