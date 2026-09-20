@@ -10,25 +10,22 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 1. **Fork 本仓库**
 2. **启用 Actions**：你的 fork → Settings → Actions → Allow all actions（fork 默认禁用）
-3. **配置 API 密钥**：Settings → Secrets and variables → Actions，按 `config/patrol.json.example` 中 `api_key_env` 字段添加 secrets
-4. **重命名配置**：`config/patrol.json.example` → `config/patrol.json`（或直接编辑字段）
-5. **触发首次巡逻**：Actions → Token Speed Patrol → Run workflow
-6. **开启 Pages**：Settings → Pages → Source: GitHub Actions
+3. **配置 API 密钥**：Settings → Secrets and variables → Actions，按 `config/patrol.json` 中 `api_key_env` 字段添加 secrets（用不到的 target 可以直接从 `patrol.json` 删掉）
+4. **触发首次巡逻**：Actions → Token Speed Patrol → Run workflow
+5. **开启 Pages**：Settings → Pages → Source: GitHub Actions
 
 看板地址：`https://<你的用户名>.github.io/token-speed-patrol/`
 
 ## 内置免费巡逻目标
 
-「2026 年仍值得一用的免费 LLM API」：
+`config/patrol.json` 自带 4 个 target：Groq、NVIDIA NIM、Google Gemini、OpenRouter。
 
 | Secret 名 | 从哪获取密钥 |
 |---|---|
 | `GROQ_API_KEY` | [console.groq.com/keys](https://console.groq.com/keys) — 永久免费层，无需信用卡 |
 | `NVIDIA_API_KEY` | [build.nvidia.com](https://build.nvidia.com/settings) — 免费试用额度，无需信用卡 |
 | `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey) — 免费层，无需信用卡 |
-| `CLOUDFLARE_API_KEY` | [Cloudflare API Token](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/) — 10K Neurons/天免费层 |
 | `OPENROUTER_API_KEY` | [openrouter.ai/keys](https://openrouter.ai/keys) — `:free` 模型免费（50 请求/天） |
-| `MODELSCOPE_API_KEY` | [modelscope.cn](https://modelscope.cn/my/mykeys) — 2000 次/天，需实名 |
 
 密钥**绝不落盘**——`patrol.json` 只存环境变量名，runner 从 `os.environ` 解析，结果 JSON 不含 `api_key`；私有端点 URL 在结果中脱敏为 `(private)`。
 

@@ -10,8 +10,8 @@ from .patrol_config import PatrolConfig, PatrolTarget, load_patrol_config
 
 
 def test_load_patrol_config_example():
-    """example 配置能正确加载，字段一一对应。"""
-    cfg = load_patrol_config("config/patrol.json.example")
+    """仓库自带 patrol.json 能正确加载，字段一一对应。"""
+    cfg = load_patrol_config("config/patrol.json")
     assert len(cfg.targets) == 4
     assert cfg.targets[0].provider_name == "Groq"
     assert cfg.targets[0].api_key_env == "GROQ_API_KEY"

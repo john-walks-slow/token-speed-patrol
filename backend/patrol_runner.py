@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 import httpx
 
 from .patrol_config import load_patrol_config
-from .speed_test import execute_batch_tests
+from .speed_test import DEFAULT_CLIENT_KWARGS, execute_batch_tests
 
 # 巡检结果目录：放 website/data/ 下，随 Pages 一起发布
 DEFAULT_DATA_DIR = os.path.join(
@@ -37,7 +37,8 @@ async def discover_models(base_url: str, api_key: str, timeout: float, discover_
     """
     url = (discover_url or base_url.rstrip("/") + "/models").rstrip("/")
     try:
-        async with httpx.AsyncClient(timeout=timeout, headers={"Authorization": f"Bearer {api_key}"}) as client:
+        async with httpx.AsyncClient(timeout=timeout, headers={"Authorization": f"Bearer {api_key}"},
+                                     **DEFAULT_CLIENT_KWARGS) as client:
             resp = await client.get(url)
             resp.raise_for_status()
             body = resp.json()

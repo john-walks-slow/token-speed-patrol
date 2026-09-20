@@ -12,7 +12,7 @@ LLM API 定时巡检（GitHub Actions）+ 静态看板（GitHub Pages）。零�
 - `backend/speed_test.py` — 测速内核：流式/非流式、OpenAI/Anthropic 协议、usage 口径统一（`_reconcile_token_counts`）。数据落地由 sink callback 解耦
 - `backend/rate_limit.py` — 令牌桶限流
 - `website/index.html` — 看板（零构建纯 JS，原生 Canvas 图表），`data/` 存 JSONL 结果，push 即生效
-- `config/patrol.json.example` — 配置示例（fork 后改名 patrol.json + 填 Secrets）
+- `config/patrol.json` — 巡检配置（无密钥，api_key 只存环境变量名，直接提交；fork 后填 Secrets 即用）
 - `.github/workflows/patrol.yml` — 巡检 cron（每6h）+ 结果 commit
 - `.github/workflows/deploy-website.yml` — Pages 部署（workflow_run 联动 patrol 完成）
 
@@ -33,4 +33,4 @@ python -m http.server 8899 -d website   # 看板本地预览
 - 本仓库与桌面版 [token-speed](https://github.com/john-walks-slow/token-speed) 共用测速内核。
   `speed_test.py` / `rate_limit.py` / `url_utils.py` / `patrol_config.py` 为同源文件，
   **改动 core 需手动同步另一仓库**（纯拷贝策略，勿引入构建依赖）。
-- `test_load_patrol_config_example` 断言了 example 的具体内容，改 `patrol.json.example` 时须同步改测试。
+- `test_load_patrol_config_example` 断言了 patrol.json 的具体内容，改 `patrol.json` 时须同步改测试。
