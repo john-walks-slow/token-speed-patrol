@@ -1,5 +1,4 @@
 {
-  "_comment": "base_url 支持 \"$ENV_NAME\" / \"${ENV_NAME}\" 引用环境变量（配合 Secret PATROL_EXTRA_ENV 注入多行 KEY=VALUE）：私有端点不落盘，公开结果 JSONL 中以 \"(private)\" 占位。API key 永远只写环境变量名（api_key_env），明文经 Secret 注入。",
   "prompt": "Hello, tell me a short story in 3 sentences.",
   "max_tokens": 256,
   "temperature": null,
@@ -7,7 +6,7 @@
   "concurrency": 1,
   "iterations": 1,
   "max_rpm": 20,
-  "timeout": 300,
+  "timeout": 120,
   "targets": [
     {
       "provider_name": "Groq",
@@ -37,7 +36,53 @@
       "blacklist": [
         ".*(embed|retriever|clip|parse|reward|guard|safety).*",
         "nvidia/ai-synthetic-video-detector",
-        "meta/llama-3.2-11b-vision-instruct"
+        "nvidia/riva-translate-.*",
+        "nvidia/cosmos-reason2-8b",
+        "nvidia/vila",
+        "nvidia/neva-22b",
+        "nvidia/ising-calibration-1.5-31b",
+        "google/deplot",
+        "google/gemma-2b",
+        "microsoft/kosmos-2",
+        "microsoft/phi-3-vision-128k-instruct",
+        "meta/llama-3.2-11b-vision-instruct",
+        "meta/llama-3.2-90b-vision-instruct",
+        "adept/fuyu-8b",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "nvidia/nemotron-3-super-120b-a12b",
+        "meta/muse-glimmer-30b",
+        "01-ai/.*",
+        "ai21labs/.*",
+        "aisingapore/sea-lion-7b-instruct",
+        "bigcode/.*",
+        "databricks/.*",
+        "deepseek-ai/deepseek-coder-6.7b-instruct",
+        "google/codegemma-.*",
+        "google/recurrentgemma-2b",
+        "google/gemma-3-12b-it",
+        "google/gemma-3-4b-it",
+        "ibm/granite-3.0-.*",
+        "ibm/granite-34b-code-instruct",
+        "ibm/granite-8b-code-instruct",
+        "meta/codellama-70b",
+        "meta/llama2-70b",
+        "microsoft/phi-3.5-moe-instruct",
+        "mistralai/codestral-22b-instruct-v0.1",
+        "mistralai/mistral-7b-instruct-v0.3",
+        "mistralai/mistral-large$",
+        "mistralai/mistral-large-2-instruct",
+        "mistralai/mixtral-8x22b-v0.1",
+        "moonshotai/kimi-k2.6",
+        "nv-mistralai/.*",
+        "nvidia/llama-3.1-nemotron-51b-instruct",
+        "nvidia/llama-3.1-nemotron-70b-instruct",
+        "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+        "nvidia/llama3-chatqa-1.5-70b",
+        "nvidia/mistral-nemo-minitron-8b-8k-instruct",
+        "nvidia/nemotron-4-340b-instruct",
+        "nvidia/nemotron-nano-3-30b-a3b",
+        "writer/.*",
+        "zyphra/.*"
       ]
     },
     {
@@ -61,21 +106,6 @@
       ]
     },
     {
-      "provider_name": "OpenRouter",
-      "base_url": "https://openrouter.ai/api/v1",
-      "api_key_env": "OPENROUTER_API_KEY",
-      "protocol": "openai",
-      "discover": true,
-      "models": [],
-      "whitelist": [
-        ".*:free"
-      ],
-      "blacklist": [
-        ".*inkling.*",
-        "nvidia/nemotron-3.5-content-safety:free"
-      ]
-    },
-    {
       "provider_name": "Cloudflare Workers AI",
       "base_url": "https://api.cloudflare.com/client/v4/accounts/5b393025ed97484019c46b8136af3aa5/ai/v1",
       "api_key_env": "CLOUDFLARE_API_KEY",
@@ -88,6 +118,40 @@
       ],
       "blacklist": [
         ".*(vision|guard|lora).*|@cf/meta-llama/.*"
+      ]
+    },
+    {
+      "provider_name": "OpenRouter",
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "protocol": "openai",
+      "discover": true,
+      "models": [
+        "cohere/north-mini-code:free",
+        "dots-studio/dots-3-note-preview:free",
+        "google/gemma-4-26b-a4b-it:free",
+        "google/gemma-4-31b-it:free",
+        "inclusionai/ling-3.0-flash-fin:free",
+        "inclusionai/ling-3.0-flash-sante:free",
+        "inclusionai/ling-3.0-flash-vl:free",
+        "liquid/lfm-2.5-2.6b:free",
+        "nex-agi/nex-n2.5-mini:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "nvidia/nemotron-3.5-lightning:free",
+        "poolside/laguna-s-2.1:free",
+        "poolside/laguna-xs-2.1:free",
+        "qwen/qwen3.8-27b:free",
+        "z-ai/glm-5.2:free"
+      ],
+      "whitelist": [
+        ".*:free"
+      ],
+      "blacklist": [
+        ".*inkling.*",
+        "nvidia/nemotron-3.5-content-safety:free"
       ]
     },
     {
@@ -109,5 +173,6 @@
         "PaddlePaddle/ERNIE-4.5-0.3B-PT"
       ]
     }
-  ]
+  ],
+  "_comment": "base_url 支持 \"$ENV_NAME\" / \"${ENV_NAME}\" 引用环境变量（配合 Secret PATROL_EXTRA_ENV 注入多行 KEY=VALUE）：私有端点不落盘，公开结果 JSONL 中以 \"(private)\" 占位。API key 永远只写环境变量名（api_key_env），明文经 Secret 注入。"
 }
