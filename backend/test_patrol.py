@@ -24,15 +24,15 @@ def test_load_patrol_config_example():
     # Google Gemini target
     assert cfg.targets[2].provider_name == "Google Gemini"
     assert cfg.targets[2].base_url == "https://generativelanguage.googleapis.com/v1beta/openai/"
-    # OpenRouter target（discover + whitelist/blacklist）
-    assert cfg.targets[3].provider_name == "OpenRouter"
-    assert cfg.targets[3].discover is True
-    assert cfg.targets[3].whitelist == [".*:free"]
-    # Cloudflare target（$ENV 均不含——account id 直写，key 走 env；discover_url 自定义）
-    assert cfg.targets[4].provider_name == "Cloudflare Workers AI"
-    assert cfg.targets[4].api_key_env == "CLOUDFLARE_API_KEY"
-    assert "models/search" in cfg.targets[4].discover_url
-    # ModelScope target（discover + blacklist）
+    # Cloudflare target（account id 直写，key 走 env；discover_url 自定义）
+    assert cfg.targets[3].provider_name == "Cloudflare Workers AI"
+    assert cfg.targets[3].api_key_env == "CLOUDFLARE_API_KEY"
+    assert "models/search" in cfg.targets[3].discover_url
+    # OpenRouter target（discover + whitelist/blacklist + 显式 :free 兜底列表）
+    assert cfg.targets[4].provider_name == "OpenRouter"
+    assert cfg.targets[4].discover is True
+    assert cfg.targets[4].whitelist == [".*:free"]
+    assert len(cfg.targets[4].models) > 0
     assert cfg.targets[5].provider_name == "ModelScope"
     assert cfg.targets[5].api_key_env == "MODELSCOPE_API_KEY"
     assert cfg.stream is True
