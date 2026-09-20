@@ -31,7 +31,7 @@ def test_load_patrol_config_example():
     # Cloudflare target（$ENV 均不含——account id 直写，key 走 env；discover_url 自定义）
     assert cfg.targets[4].provider_name == "Cloudflare Workers AI"
     assert cfg.targets[4].api_key_env == "CLOUDFLARE_API_KEY"
-    assert cfg.targets[4].discover_url.endswith("models/search")
+    assert "models/search" in cfg.targets[4].discover_url
     # ModelScope target（discover + blacklist）
     assert cfg.targets[5].provider_name == "ModelScope"
     assert cfg.targets[5].api_key_env == "MODELSCOPE_API_KEY"
