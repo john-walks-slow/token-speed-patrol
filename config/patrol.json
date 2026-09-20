@@ -67,10 +67,46 @@
       "protocol": "openai",
       "discover": true,
       "models": [],
-      "whitelist": [".*:free"],
+      "whitelist": [
+        ".*:free"
+      ],
       "blacklist": [
         ".*inkling.*",
         "nvidia/nemotron-3.5-content-safety:free"
+      ]
+    },
+    {
+      "provider_name": "Cloudflare Workers AI",
+      "base_url": "https://api.cloudflare.com/client/v4/accounts/5b393025ed97484019c46b8136af3aa5/ai/v1",
+      "api_key_env": "CLOUDFLARE_API_KEY",
+      "protocol": "openai",
+      "discover": true,
+      "discover_url": "https://api.cloudflare.com/client/v4/accounts/5b393025ed97484019c46b8136af3aa5/ai/models/search?task=Text%20Generation&per_page=100",
+      "models": [],
+      "whitelist": [
+        "@cf/.*"
+      ],
+      "blacklist": [
+        ".*(vision|guard|lora).*|@cf/meta-llama/.*"
+      ]
+    },
+    {
+      "provider_name": "ModelScope",
+      "base_url": "https://api-inference.modelscope.cn/v1",
+      "api_key_env": "MODELSCOPE_API_KEY",
+      "protocol": "openai",
+      "discover": true,
+      "models": [],
+      "blacklist": [
+        ".*(VL|vl_|InternVL|Image|Edit|embed).*",
+        "MiniMax/MiniMax-M3",
+        "moonshotai/Kimi-K2-Instruct",
+        "meituan-longcat/LongCat-Flash-Lite",
+        "Shanghai_AI_Laboratory/Intern-S1",
+        "Shanghai_AI_Laboratory/Intern-S1-mini",
+        "early-access/EA-29B-A4B",
+        "MedAIBase/.*",
+        "PaddlePaddle/ERNIE-4.5-0.3B-PT"
       ]
     }
   ]
