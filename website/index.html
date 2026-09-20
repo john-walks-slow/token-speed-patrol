@@ -105,6 +105,8 @@ h1 .grad { background: linear-gradient(120deg, #34d399 20%, #6ee7b7 45%, #a7f3d0
 /* section */
 section { margin-bottom: 40px; }
 .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+.sec-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.sec-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--green); text-transform: uppercase; }
 
 /* filters */
 .filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
@@ -157,6 +159,13 @@ section { margin-bottom: 40px; }
 .chart-tooltip .t-model { color: var(--text); }
 .chart-tooltip .t-provider { color: var(--text-faint); font-size: 11px; }
 .chart-tooltip .t-val { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 10px; }
+
+/* trend legend */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-dim); cursor: pointer; }
+.legend-item .swatch { width: 12px; height: 3px; border-radius: 2px; }
+.legend-item.disabled { opacity: 0.4; }
+.legend-item.disabled .swatch { background: var(--text-faint) !important; }
 
 /* empty / loading */
 .empty, .loading { text-align: center; padding: 60px 0; color: var(--text-faint); font-size: 14px; }
@@ -213,6 +222,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px;
   <!-- Results -->
   <section>
     <div class="sec-head">
+      <div class="sec-title"><span class="sec-kicker">/ Results</span> 测速结果</div>
       <div class="filters">
         <div class="filter-group" id="providerFilters">
           <span class="filter-label">筛选</span>
@@ -231,6 +241,28 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px;
     </div>
     <div class="results-card" id="resultsCard">
       <div class="loading"><div class="spinner"></div>加载中…</div>
+    </div>
+  </section>
+
+  <!-- Trend chart -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-title"><span class="sec-kicker">/ Trend</span> 趋势</div>
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label">指标</span>
+          <button class="chip active" data-metric="tps">有效速度</button>
+          <button class="chip" data-metric="itl_ms">ITL</button>
+          <button class="chip" data-metric="ttft_ms">TTFT</button>
+          <button class="chip" data-metric="total_latency_ms">延迟</button>
+          <button class="chip" data-metric="success_rate">成功率</button>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <canvas id="trendChart" height="320"></canvas>
+      <div class="chart-tooltip" id="chartTooltip"></div>
+      <div class="legend" id="legend"></div>
     </div>
   </section>
 </main>
@@ -269,6 +301,7 @@ let allRuns = [];      // 按时间升序的 run 记录
 let activeMetric = 'tps';
 let activeRange = '24h';
 let activeProviders = new Set(); // 空 = 全选
+let activeKeys = new Set();      // 趋势图选中的 (provider|model) 对
 let providerColor = {}; // provider -> 颜色
 
 function providerOf(r) {
@@ -419,6 +452,7 @@ function renderProviderChips() {
       }
       renderProviderChips();
       renderResults();
+      drawChart();
     });
   });
 }
@@ -592,6 +626,207 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// ── 趋势图（原生 Canvas，直线折线）────────────────
+
+let chartCanvas, chartCtx, chartHits = [];
+
+function initChart() {
+  chartCanvas = document.getElementById('trendChart');
+  chartCtx = chartCanvas.getContext('2d');
+  resizeChart();
+  window.addEventListener('resize', resizeChart);
+  bindChartHover();
+}
+
+function resizeChart() {
+  if (!chartCanvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = chartCanvas.parentElement.clientWidth - 40;
+  chartCanvas.width = w * dpr;
+  chartCanvas.height = 320 * dpr;
+  chartCanvas.style.width = w + 'px';
+  chartCanvas.style.height = '320px';
+  chartCtx.scale(dpr, dpr);
+  drawChart();
+}
+
+function drawChart() {
+  if (!chartCtx || !allRuns.length) return;
+  const ctx = chartCtx;
+  const w = chartCanvas.width / (window.devicePixelRatio || 1);
+  const h = 320;
+  ctx.clearRect(0, 0, w, h);
+
+  // 收集所有出现过的 pair
+  const allPairs = new Set();
+  const seriesByPair = {}; // pair -> [{time, value}]
+  for (const run of allRuns) {
+    const points = runToPoints(run);
+    const t = new Date(run.started_at).getTime();
+    for (const [k, p] of Object.entries(points)) {
+      allPairs.add(k);
+      const v = p[activeMetric];
+      if (v == null) continue;
+      if (!seriesByPair[k]) seriesByPair[k] = [];
+      seriesByPair[k].push({ time: t, value: v });
+    }
+  }
+
+  const pairs = [...allPairs].filter(k => providerVisible(k.split('|')[0])).sort();
+  // 默认全选
+  if (activeKeys.size === 0) pairs.forEach(k => activeKeys.add(k));
+
+  const visibleSeries = pairs.filter(k => activeKeys.has(k) && seriesByPair[k]);
+  if (!visibleSeries.length) {
+    ctx.fillStyle = '#5f6b76'; ctx.font = '14px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('当前筛选下无数据', w / 2, h / 2);
+    renderLegend(pairs, seriesByPair);
+    return;
+  }
+
+  // 时间范围
+  const times = visibleSeries.flatMap(s => seriesByPair[s].map(d => d.time));
+  const tMin = Math.min(...times), tMax = Math.max(...times);
+  // 值范围
+  const vals = visibleSeries.flatMap(s => seriesByPair[s].map(d => d.value));
+  let vMin = Math.min(...vals), vMax = Math.max(...vals);
+  if (activeMetric === 'success_rate') { vMin = 0; vMax = 100; }
+  else { vMin = vMin > 0 ? vMin * 0.9 : 0; vMax = vMax * 1.1; }
+  if (vMax === vMin) vMax = vMin + 1;
+
+  // 绘图区域
+  const pad = { l: 50, r: 16, t: 16, b: 36 };
+  const cw = w - pad.l - pad.r, ch = h - pad.t - pad.b;
+
+  // 网格 + Y 轴
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.fillStyle = '#5f6b76'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + ch * i / 4;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
+    const val = vMax - (vMax - vMin) * i / 4;
+    ctx.fillText(formatVal(val), pad.l - 8, y);
+  }
+
+  // X 轴时间标签
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  const xTicks = Math.min(6, allRuns.length);
+  for (let i = 0; i <= xTicks; i++) {
+    const t = tMin + (tMax - tMin) * i / xTicks;
+    const x = pad.l + cw * i / xTicks;
+    ctx.fillText(formatTime(t), x, pad.t + ch + 8);
+  }
+
+  // 直线折线（缓存像素坐标供 hover 命中测试）
+  chartHits = [];
+  visibleSeries.forEach(k => {
+    const data = seriesByPair[k];
+    const color = colorOf(k.split('|')[0]);
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    const pts = data.map(d => ({
+      x: pad.l + ((d.time - tMin) / (tMax - tMin || 1)) * cw,
+      y: pad.t + (1 - (d.value - vMin) / (vMax - vMin || 1)) * ch,
+    }));
+    ctx.beginPath();
+    pts.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+    ctx.stroke();
+    ctx.fillStyle = color;
+    pts.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2); ctx.fill();
+    });
+    const [provider, model] = k.split('|');
+    data.forEach((d, i) => chartHits.push({ x: pts[i].x, y: pts[i].y, time: d.time, value: d.value, provider, model, color }));
+  });
+
+  renderLegend(pairs, seriesByPair);
+}
+
+// hover：命中点放大高亮 + 竖参考线，tooltip 展示值
+function drawChartHighlight(hit) {
+  drawChart();
+  if (!hit || !chartCtx) return;
+  const ctx = chartCtx;
+  const pad = { l: 50, r: 16, t: 16, b: 36 };
+  const ch = 320 - pad.t - pad.b;
+  // 竖参考线
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(hit.x, pad.t); ctx.lineTo(hit.x, pad.t + ch); ctx.stroke();
+  ctx.setLineDash([]);
+  // 高亮点
+  ctx.fillStyle = hit.color;
+  ctx.beginPath(); ctx.arc(hit.x, hit.y, 4.5, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#0a0d10'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(hit.x, hit.y, 4.5, 0, Math.PI * 2); ctx.stroke();
+}
+
+// 趋势图 hover 交互：最近点命中（半径 12px）
+function bindChartHover() {
+  const tooltip = document.getElementById('chartTooltip');
+  let hovered = null;
+
+  chartCanvas.addEventListener('mousemove', e => {
+    const rect = chartCanvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    let best = null, bestDist = 12 * 12;
+    for (const h of chartHits) {
+      const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
+      if (d < bestDist) { bestDist = d; best = h; }
+    }
+    if (best !== hovered) {
+      hovered = best;
+      drawChartHighlight(hovered);
+      if (!hovered) { tooltip.style.display = 'none'; return; }
+      tooltip.innerHTML = `<div class="t-time">${formatTime(hovered.time)}</div>
+        <div class="t-row">
+          <span class="t-dot" style="background:${hovered.color}"></span>
+          <span class="t-model">${escapeHtml(hovered.model)}</span>
+          <span class="t-provider">${escapeHtml(hovered.provider)}</span>
+          <span class="t-val">${formatMetricValue(hovered.value)}</span>
+        </div>`;
+    }
+    if (hovered) {
+      tooltip.style.display = 'block';
+      const card = chartCanvas.parentElement;
+      const maxLeft = card.clientWidth - tooltip.offsetWidth - 12;
+      const maxTop = card.clientHeight - tooltip.offsetHeight - 8;
+      tooltip.style.left = Math.max(12, Math.min(hovered.x + 20, maxLeft)) + 'px';
+      tooltip.style.top = Math.max(4, Math.min(hovered.y - 14, maxTop)) + 'px';
+    }
+  });
+  chartCanvas.addEventListener('mouseleave', () => {
+    hovered = null;
+    tooltip.style.display = 'none';
+    drawChart();
+  });
+}
+
+function formatVal(v) {
+  if (activeMetric === 'success_rate') return v.toFixed(0) + '%';
+  if (activeMetric === 'tps') return v.toFixed(0);
+  return Math.round(v);
+}
+
+function renderLegend(pairs, seriesByPair) {
+  const el = document.getElementById('legend');
+  el.innerHTML = pairs.map(k => {
+    const color = colorOf(k.split('|')[0]);
+    const active = activeKeys.has(k);
+    const has = !!seriesByPair[k];
+    if (!has) return '';
+    const [provider, model] = k.split('|');
+    return `<div class="legend-item${active ? '' : ' disabled'}" data-key="${escapeHtml(k)}">
+      <span class="swatch" style="background:${color}"></span>
+      <span>${escapeHtml(model)} <span style="color:var(--text-faint)">${escapeHtml(provider)}</span></span>
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.legend-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const k = item.dataset.key;
+      if (activeKeys.has(k)) activeKeys.delete(k); else activeKeys.add(k);
+      drawChart();
+    });
+  });
+}
+
 // ── sparkline hover（复用趋势图 tooltip 交互）──────
 
 function formatMetricValue(v) {
@@ -691,6 +926,17 @@ function bindSparkHover(cv) {
 
 // ── 交互 ──────────────────────────────────────────
 
+document.querySelectorAll('[data-metric]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-metric]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeMetric = btn.dataset.metric;
+    activeKeys.clear(); // 切换指标重置选中
+    renderResults(); // sparkline 跟随指标
+    drawChart();
+  });
+});
+
 document.querySelectorAll('[data-range]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
@@ -714,6 +960,8 @@ async function init() {
   renderMetrics(allRuns[allRuns.length - 1]);
   renderProviderChips();
   renderResults();
+  initChart();
+  drawChart();
 }
 
 init();
