@@ -312,7 +312,8 @@ let activeKeys = new Set();      // 趋势图选中的 (provider|model) 对
 let providerColor = {}; // provider -> 颜色
 
 // 表格排序状态：col ∈ {'provider','model','success_rate','tps','itl_ms','ttft_ms','total_latency_ms','count'}
-let sortCol = 'tps';
+// 默认按 score（TPS × 成功率，隐藏列——快且稳定可用的排前面，纯快但常挂的靠后）降序
+let sortCol = 'score';
 let sortDir = 'desc';
 
 function providerOf(r) {
@@ -567,6 +568,11 @@ function renderResults() {
       count: a.n,
     }));
   if (!rowsData.length) { el.innerHTML = '<div class="empty">该 Provider 无数据</div>'; return; }
+
+  // 隐藏排序键：TPS × 成功率（成功率 0% 的直接沉底，无 TPS 数据不参与默认排序）
+  for (const r of rowsData) {
+    r.score = r.tps != null ? r.tps * (r.success_rate / 100) : null;
+  }
 
   sortRows(rowsData);
 
