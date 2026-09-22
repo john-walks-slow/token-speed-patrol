@@ -111,7 +111,7 @@ section { margin-bottom: 40px; }
 /* filters */
 .filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .filter-group { display: flex; align-items: center; gap: 6px; }
-.filter-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.filter-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
 .chip {
   font-size: 12px; font-weight: 500; border-radius: 999px; padding: 5px 13px;
   border: 1px solid var(--border); background: var(--card); color: var(--text-dim);
@@ -143,8 +143,8 @@ section { margin-bottom: 40px; }
 .results-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .results-table tr:last-child td { border-bottom: none; }
 .results-table tr:hover { background: var(--card-hover); }
-.results-table .provider-cell { font-size: 12px; color: var(--text-dim); }
 .results-table .model-cell { font-weight: 600; }
+.results-table .model-cell .provider { font-weight: 400; font-size: 11px; color: var(--text-dim); display: block; margin-top: 1px; }
 .results-table .ok { color: var(--green); }
 .results-table .fail { color: var(--red); }
 .results-table .warn-text { color: var(--amber); }
@@ -162,11 +162,11 @@ section { margin-bottom: 40px; }
   box-shadow: 0 6px 24px rgba(0,0,0,0.4); white-space: nowrap;
 }
 .chart-tooltip .t-time { color: var(--text-faint); font-family: var(--mono); font-size: 11px; }
-.chart-tooltip .t-row { display: flex; align-items: center; gap: 6px; }
+.chart-tooltip .t-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; max-width: 240px; }
 .chart-tooltip .t-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.chart-tooltip .t-model { color: var(--text); }
+.chart-tooltip .t-model { color: var(--text); word-break: break-all; }
 .chart-tooltip .t-provider { color: var(--text-faint); font-size: 11px; }
-.chart-tooltip .t-val { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; margin-left: auto; padding-left: 10px; }
+.chart-tooltip .t-val { display: block; color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 13px; }
 
 /* trend legend */
 .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
@@ -434,33 +434,28 @@ function renderProviderChips() {
   const providers = Object.keys(providerColor);
   const el = document.getElementById('providerChips');
   const group = document.getElementById('providerFilters');
-  // 按当前时间范围统计模型数，范围内无数据的 provider 不显示
-  const counts = {};
-  for (const run of runsInRange()) for (const r of run.results) counts[providerOf(r)] = (counts[providerOf(r)] || 0) + 1;
-  const shown = providers.filter(p => counts[p]);
+  // 按当前时间范围统计模型数（按 modelid 去重），范围内无数据的 provider 不显示
+  const modelSets = {};
+  for (const run of runsInRange()) for (const r of run.results) {
+    const p = providerOf(r);
+    if (!modelSets[p]) modelSets[p] = new Set();
+    modelSets[p].add(r.model);
+  }
+  const shown = providers.filter(p => modelSets[p]);
   // 少于 2 个可选 provider 时不显示筛选组
   if (providers.length < 2 || !shown.length) { group.style.display = 'none'; return; }
   group.style.display = '';
-  el.innerHTML = shown.map(p => {
-    const active = activeProviders.size === 0 || activeProviders.has(p);
-    return `<button class="chip${active ? ' active' : ''}" data-provider="${escapeHtml(p)}">
-      <span class="chip-dot" style="background:${colorOf(p)}"></span>${escapeHtml(p)} <span style="opacity:.6">${counts[p]}</span>
-    </button>`;
-  }).join('');
+  const active = activeProviders.size === 0 ? '__all__' : [...activeProviders][0];
+  const chipFor = (key, label, extra) =>
+    `<button class="chip${active === key ? ' active' : ''}" data-provider="${key}">${extra || ''}${escapeHtml(label)}</button>`;
+  el.innerHTML =
+    chipFor('__all__', '全部') +
+    shown.map(p => chipFor(p, `${p} ${modelSets[p].size}`, `<span class="chip-dot" style="background:${colorOf(p)}"></span>`)).join('');
   el.querySelectorAll('.chip').forEach(btn => {
     btn.addEventListener('click', () => {
+      // 单选：点"全部"或重复点击当前项 = 恢复全部
       const p = btn.dataset.provider;
-      if (activeProviders.size === 0) {
-        // 从全选切到单选
-        activeProviders = new Set([p]);
-      } else if (activeProviders.has(p) && activeProviders.size === 1) {
-        activeProviders.clear(); // 唯一选中项再点 = 恢复全选
-      } else if (activeProviders.has(p)) {
-        activeProviders.delete(p);
-        if (activeProviders.size === 0) activeProviders.clear();
-      } else {
-        activeProviders.add(p);
-      }
+      activeProviders = p === '__all__' ? new Set() : new Set([p]);
       renderProviderChips();
       renderResults();
       drawChart();
@@ -580,8 +575,7 @@ function renderResults() {
     const fmt = (v, f) => v == null ? '—' : f(v);
     return `<tr data-pair="${escapeHtml(r.k)}">
       <td class="${rateCls}">${r.success_rate}%</td>
-      <td class="provider-cell"><span class="chip-dot" style="background:${colorOf(r.provider)}"></span>${escapeHtml(r.provider)}</td>
-      <td class="model-cell">${escapeHtml(r.model)}</td>
+      <td class="model-cell">${escapeHtml(r.model)}<span class="provider">${escapeHtml(r.provider)}</span></td>
       <td>${fmt(r.tps, v => v.toFixed(1))}</td>
       <td>${fmt(r.itl_ms, v => formatItl(v) + 'ms')}</td>
       <td>${fmt(r.ttft_ms, v => Math.round(v) + 'ms')}</td>
@@ -593,7 +587,6 @@ function renderResults() {
 
   const cols = [
     { key: 'success_rate', label: '成功率' },
-    { key: 'provider', label: '提供商' },
     { key: 'model', label: '模型' },
     { key: 'tps', label: 'TPS' },
     { key: 'itl_ms', label: 'ITL' },
@@ -846,8 +839,8 @@ function bindChartHover() {
           <span class="t-dot" style="background:${hovered.color}"></span>
           <span class="t-model">${escapeHtml(hovered.model)}</span>
           <span class="t-provider">${escapeHtml(hovered.provider)}</span>
-          <span class="t-val">${formatMetricValue(hovered.value)}</span>
-        </div>`;
+        </div>
+        <span class="t-val">${formatMetricValue(hovered.value)}</span>`;
     }
     if (hovered) {
       tooltip.style.display = 'block';
@@ -965,8 +958,8 @@ function bindSparkHover(cv) {
             <span class="t-dot" style="background:${hovered.color}"></span>
             <span class="t-model">${escapeHtml(model)}</span>
             <span class="t-provider">${escapeHtml(provider)}</span>
-            <span class="t-val">${formatMetricValue(hovered.value)}</span>
-          </div>`;
+          </div>
+          <span class="t-val">${formatMetricValue(hovered.value)}</span>`;
       } else {
         tooltip.style.display = 'none';
         return;
