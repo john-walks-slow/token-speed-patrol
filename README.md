@@ -10,20 +10,20 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 1. **Fork 本仓库**
 2. **启用 Actions**：你的 fork → Settings → Actions → Allow all actions（fork 默认禁用）
-3. **编辑 `config/patrol.json`**，填你要测的服务商（格式见下节；自带的默认配置是一份免费公开端点的演示，直接用也可以）
-4. **配置密钥**：Settings → Secrets and variables → Actions，添加 Secret `PATROL_EXTRA_ENV`，内容为多行 `KEY=VALUE`（每个 key 对应 `patrol.json` 里的一个 `api_key_env`）：
+3. **配置密钥**：Settings → Secrets and variables → Actions，添加 Secret `PATROL_EXTRA_ENV`，内容为多行 `KEY=VALUE`（每个 key 对应 `patrol.json` 里的一个 `api_key_env`）：
 
    ```
    MY_API_KEY=sk-xxxx
    ANOTHER_API_KEY=sk-yyyy
    ```
 
+4. **编辑 `config/patrol.json`**，填你要测的服务商（见下节）
 5. **触发首次巡逻**：Actions → Token Speed Patrol → Run workflow
 6. **开启 Pages**：Settings → Pages → Source: GitHub Actions
 
 看板地址：`https://<你的用户名>.github.io/token-speed-patrol/`
 
-## 配置说明
+## 配置格式
 
 一切巡检行为都在 `config/patrol.json` 里声明，workflow 与代码零定制——改配置即生效，无需动代码。
 
@@ -88,9 +88,9 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 - 周期在 `.github/workflows/patrol.yml` 的 `schedule.cron`（默认每 1 小时，按你的 API 限额调整）。
 - 手动触发（Run workflow）时可填 `providers` 输入（逗号分隔 provider_name），只测指定服务商，不全量重跑。
 
-## 附：内置的免费端点演示
+## 示例：免费公开端点巡检
 
-`config/patrol.json` 自带的默认配置是一份当前（2026-09）主流免费端点的巡检（Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter `:free`、ModelScope，约 95 个模型，尽量用动态发现自动维护），在本仓库持续出数，作为活示范——想直接跑免费端点照着配即可，想测自己的 API 就整个替换成自己的 targets。
+本仓库自带一份当前（2026-09）主流免费端点的巡检配置并持续出数，作为活示范：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope，覆盖约 95 个模型，模型列表尽量用上面的动态发现自动维护。
 
 免费端点的限额政策、测速频率权衡、历史错误根因等调研记录见 `docs/features/260923-provider-coverage/`。
 
