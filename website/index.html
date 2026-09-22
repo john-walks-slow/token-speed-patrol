@@ -126,22 +126,30 @@ section { margin-bottom: 40px; }
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
   overflow: hidden; position: relative;
 }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .results-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .results-table th {
   text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 600;
   color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em;
   border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02);
+  white-space: nowrap;
 }
-.results-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+.results-table th.sortable { cursor: pointer; user-select: none; }
+.results-table th.sortable:hover { color: var(--text-dim); }
+.results-table th.sorted { color: var(--text-dim); }
+.results-table th .sort-ind { display: inline-block; width: 10px; margin-left: 3px; font-size: 9px; opacity: 0; }
+.results-table th.sortable:hover .sort-ind { opacity: .45; }
+.results-table th.sorted .sort-ind { opacity: 1; color: var(--green); }
+.results-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .results-table tr:last-child td { border-bottom: none; }
 .results-table tr:hover { background: var(--card-hover); }
+.results-table .provider-cell { font-size: 12px; color: var(--text-dim); }
 .results-table .model-cell { font-weight: 600; }
-.results-table .model-cell .provider { font-weight: 400; font-size: 11px; color: var(--text-dim); display: block; margin-top: 1px; }
 .results-table .ok { color: var(--green); }
 .results-table .fail { color: var(--red); }
 .results-table .warn-text { color: var(--amber); }
 .results-table .err-msg { font-size: 11px; color: var(--text-faint); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.results-table .spark-cell { padding: 5px 10px; }
+.results-table .spark-cell { padding: 5px 10px; position: relative; }
 .results-table .spark-cell canvas { display: block; }
 
 /* chart */
@@ -181,7 +189,6 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px;
 @media (max-width: 640px) {
   .results-table { font-size: 12px; }
   .results-table th, .results-table td { padding: 8px 10px; }
-  .results-table .hide-mobile { display: none; }
 }
 </style>
 </head>
@@ -303,6 +310,10 @@ let activeRange = '24h';
 let activeProviders = new Set(); // 空 = 全选
 let activeKeys = new Set();      // 趋势图选中的 (provider|model) 对
 let providerColor = {}; // provider -> 颜色
+
+// 表格排序状态：col ∈ {'provider','model','success_rate','tps','itl_ms','ttft_ms','total_latency_ms','count'}
+let sortCol = 'tps';
+let sortDir = 'desc';
 
 function providerOf(r) {
   return r.provider_name || hostnameOf(r.base_url) || 'unknown';
@@ -547,33 +558,88 @@ function renderResults() {
     }
   }
 
-  const pairs = Object.entries(aggByPair)
+  const rowsData = Object.entries(aggByPair)
     .filter(([k]) => providerVisible(k.split('|')[0]))
-    .sort((a, b) => (b[1].tps.length ? median(b[1].tps) : 0) - (a[1].tps.length ? median(a[1].tps) : 0));
-  if (!pairs.length) { el.innerHTML = '<div class="empty">该 Provider 无数据</div>'; return; }
+    .map(([k, a]) => ({
+      k,
+      model: a.model,
+      provider: a.provider,
+      success_rate: a.n ? Math.round(a.ok / a.n * 1000) / 10 : 0,
+      tps: a.tps.length ? median(a.tps) : null,
+      itl_ms: a.itl.length ? median(a.itl) : null,
+      ttft_ms: a.ttft.length ? median(a.ttft) : null,
+      total_latency_ms: a.latency.length ? median(a.latency) : null,
+      count: a.n,
+    }));
+  if (!rowsData.length) { el.innerHTML = '<div class="empty">该 Provider 无数据</div>'; return; }
 
-  const rows = pairs.map(([k, a]) => {
-    const successRate = a.n ? Math.round(a.ok / a.n * 1000) / 10 : 0;
-    const rateCls = successRate >= 95 ? 'ok' : successRate >= 50 ? 'warn-text' : 'fail';
-    const tps = a.tps.length ? median(a.tps).toFixed(1) : '—';
-    const itl = a.itl.length ? formatItl(median(a.itl)) + 'ms' : '—';
-    const ttft = a.ttft.length ? Math.round(median(a.ttft)) + 'ms' : '—';
-    const latency = a.latency.length ? Math.round(median(a.latency)) + 'ms' : '—';
-    return `<tr data-pair="${escapeHtml(k)}">
-      <td class="${rateCls}">${successRate}%</td>
-      <td class="model-cell">${escapeHtml(a.model)}<span class="provider">${escapeHtml(a.provider)}</span></td>
-      <td>${tps}</td>
-      <td class="hide-mobile">${itl}</td>
-      <td class="hide-mobile">${ttft}</td>
-      <td class="hide-mobile">${latency}</td>
-      <td class="hide-mobile">${a.n} 次</td>
-      <td class="spark-cell hide-mobile"><canvas data-pair="${escapeHtml(k)}" width="120" height="30"></canvas></td>
+  sortRows(rowsData);
+
+  const rows = rowsData.map(r => {
+    const rateCls = r.success_rate >= 95 ? 'ok' : r.success_rate >= 50 ? 'warn-text' : 'fail';
+    const fmt = (v, f) => v == null ? '—' : f(v);
+    return `<tr data-pair="${escapeHtml(r.k)}">
+      <td class="${rateCls}">${r.success_rate}%</td>
+      <td class="provider-cell"><span class="chip-dot" style="background:${colorOf(r.provider)}"></span>${escapeHtml(r.provider)}</td>
+      <td class="model-cell">${escapeHtml(r.model)}</td>
+      <td>${fmt(r.tps, v => v.toFixed(1))}</td>
+      <td>${fmt(r.itl_ms, v => formatItl(v) + 'ms')}</td>
+      <td>${fmt(r.ttft_ms, v => Math.round(v) + 'ms')}</td>
+      <td>${fmt(r.total_latency_ms, v => Math.round(v) + 'ms')}</td>
+      <td>${r.count} 次</td>
+      <td class="spark-cell"><canvas data-pair="${escapeHtml(r.k)}" width="120" height="30"></canvas></td>
     </tr>`;
   }).join('');
-  el.innerHTML = `<table class="results-table"><thead><tr>
-    <th>成功率</th><th>模型</th><th>TPS</th><th class="hide-mobile">ITL</th><th class="hide-mobile">TTFT</th><th class="hide-mobile">延迟</th><th class="hide-mobile">次数</th><th class="hide-mobile" title="${METRIC_LABELS[activeMetric]}">趋势</th>
-  </tr></thead><tbody>${rows}</tbody></table>`;
+
+  const cols = [
+    { key: 'success_rate', label: '成功率' },
+    { key: 'provider', label: '提供商' },
+    { key: 'model', label: '模型' },
+    { key: 'tps', label: 'TPS' },
+    { key: 'itl_ms', label: 'ITL' },
+    { key: 'ttft_ms', label: 'TTFT' },
+    { key: 'total_latency_ms', label: '延迟' },
+    { key: 'count', label: '次数' },
+    { key: 'spark', label: '趋势', title: METRIC_LABELS[activeMetric] },
+  ];
+  const thead = cols.map(c => {
+    if (c.key === 'spark') return `<th title="${c.title}">${c.label}</th>`;
+    const sorted = sortCol === c.key;
+    const ind = sorted ? (sortDir === 'asc' ? '▲' : '▼') : '▲';
+    return `<th class="sortable${sorted ? ' sorted' : ''}" data-sort="${c.key}" title="点击排序">${c.label}<span class="sort-ind">${ind}</span></th>`;
+  }).join('');
+  el.innerHTML = `<div class="table-scroll"><table class="results-table"><thead><tr>${thead}</tr></thead><tbody>${rows}</tbody></table></div>`;
+
+  el.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.sort;
+      if (sortCol === col) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortCol = col;
+        sortDir = col === 'model' || col === 'provider' ? 'asc' : 'desc';
+      }
+      renderResults();
+    });
+  });
   drawSparks();
+}
+
+function sortRows(rowsData) {
+  const key = sortCol;
+  const dir = sortDir === 'asc' ? 1 : -1;
+  rowsData.sort((a, b) => {
+    let va = a[key], vb = b[key];
+    if (typeof va === 'string' || typeof vb === 'string') {
+      va = va || ''; vb = vb || '';
+      return va.localeCompare(vb) * dir;
+    }
+    // null（无数据）永远排最后，不受排序方向影响
+    if (va == null && vb == null) return 0;
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    return (va - vb) * dir;
+  });
 }
 
 // 行内 sparkline：范围内平滑曲线 + 最新值圆点，颜色跟 provider
@@ -608,7 +674,7 @@ function drawSparks() {
     ctx.stroke();
     const last = pts[pts.length - 1];
     ctx.fillStyle = color;
-    ctx.beginPath(); ctx.arc(last.x, last.y, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(last.x, last.y, 1.8, 0, Math.PI * 2); ctx.fill();
 
     // hover 命中点缓存 + 事件绑定
     sparkHitsByCanvas.set(cv, series.map((d, i) => ({
@@ -721,7 +787,7 @@ function drawChart() {
   visibleSeries.forEach(k => {
     const data = seriesByPair[k];
     const color = colorOf(k.split('|')[0]);
-    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.lineJoin = 'round';
     const pts = data.map(d => ({
       x: pad.l + ((d.time - tMin) / (tMax - tMin || 1)) * cw,
       y: pad.t + (1 - (d.value - vMin) / (vMax - vMin || 1)) * ch,
@@ -731,7 +797,7 @@ function drawChart() {
     ctx.stroke();
     ctx.fillStyle = color;
     pts.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
     });
     const [provider, model] = k.split('|');
     data.forEach((d, i) => chartHits.push({ x: pts[i].x, y: pts[i].y, time: d.time, value: d.value, provider, model, color }));
@@ -854,12 +920,13 @@ function formatTime(t) {
 let sparkHitsByCanvas = new WeakMap();
 let sparkHoverState = null; // { canvas, dot }
 
-// tooltip 元素随 renderResults 的 innerHTML 重写被抹掉，需要时重建
-function ensureTooltip() {
-  let tip = document.getElementById('chartTooltip');
+// 独立于趋势图 tooltip：挂在 resultsCard（position:relative）下的专用元素，
+// renderResults 重建表格时随 innerHTML 一起销毁，重建后由本函数补回
+function sparkTooltip() {
+  let tip = document.getElementById('sparkTooltip');
   if (!tip) {
     tip = document.createElement('div');
-    tip.id = 'chartTooltip';
+    tip.id = 'sparkTooltip';
     tip.className = 'chart-tooltip';
     document.getElementById('resultsCard').appendChild(tip);
   }
@@ -870,7 +937,7 @@ function bindSparkHover(cv) {
   let hovered = null;
 
   cv.addEventListener('mousemove', e => {
-    const tooltip = ensureTooltip();
+    const tooltip = sparkTooltip();
     const hits = sparkHitsByCanvas.get(cv) || [];
     const rect = cv.getBoundingClientRect();
     const mx = (e.clientX - rect.left) * (cv.dataset.w / rect.width || 1);
@@ -885,13 +952,11 @@ function bindSparkHover(cv) {
       if (sparkHoverState) { sparkHoverState.dot.remove(); sparkHoverState = null; }
       hovered = best;
       if (hovered) {
-        // 高亮圆点叠加在 sparkline 上
+        // 高亮圆点叠加在 sparkline 上（td 已 position:relative）
         const dot = document.createElement('div');
         dot.style.cssText = `position:absolute;width:9px;height:9px;border-radius:50%;` +
           `background:${hovered.color};border:2px solid #0a0d10;pointer-events:none;` +
-          `left:${cv.offsetLeft + hovered.x * rect.width / cv.dataset.w - 4.5}px;` +
-          `top:${cv.offsetTop + hovered.y * rect.height / cv.dataset.h - 4.5}px;`;
-        cv.parentElement.style.position = 'relative';
+          `left:${cv.offsetLeft + hovered.x - 4.5}px;top:${cv.offsetTop + hovered.y - 4.5}px;`;
         cv.parentElement.appendChild(dot);
         sparkHoverState = { canvas: cv, dot };
         const [provider, model] = hovered.pair.split('|');
@@ -920,7 +985,7 @@ function bindSparkHover(cv) {
   cv.addEventListener('mouseleave', () => {
     hovered = null;
     if (sparkHoverState) { sparkHoverState.dot.remove(); sparkHoverState = null; }
-    ensureTooltip().style.display = 'none';
+    sparkTooltip().style.display = 'none';
   });
 }
 
