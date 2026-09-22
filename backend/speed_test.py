@@ -173,15 +173,16 @@ async def list_models(
 
 
 def _compute_itl(content_tokens: int, content_ttft_ms: float | None, total_latency_ms: float) -> float | None:
-    """ITL（inter-token latency，ms/token）：(总耗时 - content_ttft) / content_tokens。
+    """ITL（inter-token latency，ms/token）：(总耗时 - content_ttft) / (content_tokens - 1)。
     扣除首字前的一切等待（排队/网络/思考），反映解码阶段的纯发射耗时；
+    首个正文 token 在 content_ttft 已到达，剩余 N-1 个 token 分摊剩余时间（vLLM/Anayscale TPOT 口径）。
     仅流式有 content_ttft，非流式为 None。"""
     if (
         content_ttft_ms is not None
-        and content_tokens > 0
+        and content_tokens > 1
         and total_latency_ms > content_ttft_ms
     ):
-        return (total_latency_ms - content_ttft_ms) / content_tokens
+        return (total_latency_ms - content_ttft_ms) / (content_tokens - 1)
     return None
 
 

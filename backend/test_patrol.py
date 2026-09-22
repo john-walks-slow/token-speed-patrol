@@ -7,6 +7,20 @@ import tempfile
 import pytest
 
 from .patrol_config import PatrolConfig, PatrolTarget, load_patrol_config
+from .speed_test import _compute_itl
+
+
+def test_compute_itl():
+    """ITL = (总耗时 - content_ttft) / (content_tokens - 1)，TPOT 标准口径。"""
+    # 首个正文 token 在 100ms 到达，之后 9 个 token 分摊 900ms -> 100ms/token
+    assert _compute_itl(10, 100.0, 1000.0) == 100.0
+    # 只有 1 个正文 token：无发射间隔，不可测
+    assert _compute_itl(1, 100.0, 1000.0) is None
+    # 非流式 / 无正文
+    assert _compute_itl(100, None, 1000.0) is None
+    assert _compute_itl(0, 100.0, 1000.0) is None
+    # 异常数据：总耗时小于 content_ttft（时钟或网关回包乱序）
+    assert _compute_itl(10, 1100.0, 1000.0) is None
 
 
 def test_load_patrol_config_example():
