@@ -12,7 +12,7 @@ from .patrol_config import PatrolConfig, PatrolTarget, load_patrol_config
 def test_load_patrol_config_example():
     """仓库自带 patrol.json 能正确加载，字段一一对应。"""
     cfg = load_patrol_config("config/patrol.json")
-    assert len(cfg.targets) == 6
+    assert len(cfg.targets) == 7
     assert cfg.targets[0].provider_name == "Groq"
     assert cfg.targets[0].api_key_env == "GROQ_API_KEY"
     assert cfg.targets[0].protocol == "openai"
@@ -35,6 +35,10 @@ def test_load_patrol_config_example():
     assert len(cfg.targets[4].models) > 0
     assert cfg.targets[5].provider_name == "ModelScope"
     assert cfg.targets[5].api_key_env == "MODELSCOPE_API_KEY"
+    # Kilo Relay target（models 为空则本轮跳过，经私有中转，README 启用）
+    assert cfg.targets[6].provider_name == "Kilo Relay"
+    assert cfg.targets[6].base_url == "$KILO_RELAY_URL"
+    assert cfg.targets[6].models == []
     assert cfg.stream is True
     assert cfg.max_tokens == 256
     assert cfg.temperature is None
@@ -236,3 +240,97 @@ def test_to_tests_with_discovered(monkeypatch):
     )
     tests = cfg.to_tests({"P1": ["m2", "m3"]})
     assert [t["model"] for t in tests] == ["m1", "m2"]
+
+
+def test_update_auto_blacklist_accumulate_and_recover(tmp_path):
+    """失败累加、成功清零；达到阈值拉黑；恢复后记录删除。"""
+    from .patrol_runner import BLACKLIST_THRESHOLD, update_auto_blacklist
+
+    def result(model, ok, err="boom"):
+        return {"provider_name": "P", "model": model, "success": ok,
+                "error_message": None if ok else err}
+
+    # 连续失败 N-1 次：未拉黑
+    for i in range(BLACKLIST_THRESHOLD - 1):
+        blacklisted = update_auto_blacklist(str(tmp_path), [result("m1", False)], "t")
+        assert blacklisted == set()
+    body = json.loads((tmp_path / "blacklist.json").read_text())
+    assert body["failures"]["P/m1"]["consecutive_failures"] == BLACKLIST_THRESHOLD - 1
+    assert "blacklisted_at" not in body["failures"]["P/m1"]
+
+    # 第 N 次失败：拉黑，blacklisted_at 只记第一次
+    blacklisted = update_auto_blacklist(str(tmp_path), [result("m1", False)], "t-final")
+    assert blacklisted == {"P/m1"}
+    body = json.loads((tmp_path / "blacklist.json").read_text())
+    assert body["failures"]["P/m1"]["blacklisted_at"] == "t-final"
+
+    # 再次失败：仍在黑名单，blacklisted_at 不变
+    blacklisted = update_auto_blacklist(str(tmp_path), [result("m1", False)], "t-more")
+    assert blacklisted == {"P/m1"}
+    body = json.loads((tmp_path / "blacklist.json").read_text())
+    assert body["failures"]["P/m1"]["blacklisted_at"] == "t-final"
+
+    # 成功一次：清零，记录删除，出黑名单
+    blacklisted = update_auto_blacklist(str(tmp_path), [result("m1", True)], "t-ok")
+    assert blacklisted == set()
+    body = json.loads((tmp_path / "blacklist.json").read_text())
+    assert "P/m1" not in body["failures"]
+
+    # last_error 截断到 200 字符
+    update_auto_blacklist(str(tmp_path), [result("m2", False, err="x" * 500)], "t")
+    body = json.loads((tmp_path / "blacklist.json").read_text())
+    assert len(body["failures"]["P/m2"]["last_error"]) == 200
+
+
+def test_run_patrol_filters_auto_blacklisted(monkeypatch, tmp_path):
+    """黑名单内的模型本轮不产生 test，也不会进结果。"""
+    import asyncio
+
+    seen_tests = []
+
+    async def fake_execute(tests, prompt, max_tokens, temperature, stream,
+                           concurrency, iterations, max_rpm=-1,
+                           on_progress=None, sink=None, timeout=None):
+        seen_tests.extend(tests)
+        results = [{
+            "id": f"r{i}", "base_url": t["base_url"], "model": t["model"],
+            "provider_name": t["provider_name"], "success": True,
+            "tps": 1.0, "created_at": "2026-09-23T10:00:00+00:00",
+        } for i, t in enumerate(tests)]
+        if sink:
+            for r in results:
+                await sink(r)
+        return results
+
+    monkeypatch.setattr("backend.patrol_runner.execute_batch_tests", fake_execute)
+
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    (data_dir / "blacklist.json").write_text(json.dumps(
+        {"failures": {"TestP/m1": {"consecutive_failures": 5,
+                                    "last_error": "HTTP 404",
+                                    "blacklisted_at": "2026-09-22T00:00:00+00:00"}}}))
+
+    cfg = {
+        "prompt": "hi", "max_tokens": 100, "temperature": None,
+        "stream": True, "concurrency": 1, "iterations": 1, "max_rpm": -1,
+        "targets": [{
+            "provider_name": "TestP", "base_url": "https://api.test.com/v1",
+            "api_key_env": "TEST_KEY", "protocol": "openai", "models": ["m1", "m2"]
+        }]
+    }
+    cfg_path = tmp_path / "patrol.json"
+    cfg_path.write_text(json.dumps(cfg))
+    monkeypatch.setenv("TEST_KEY", "sk-fake")
+
+    from .patrol_runner import run_patrol
+    out = asyncio.run(run_patrol(str(cfg_path), str(data_dir)))
+
+    assert [t["model"] for t in seen_tests] == ["m2"]
+    with open(out) as f:
+        data = json.loads(f.readline())
+    assert [r["model"] for r in data["results"]] == ["m2"]
+    # m2 成功后 blacklist.json 里无 m2 记录；m1 未参与本轮，原记录保留
+    body = json.loads((data_dir / "blacklist.json").read_text())
+    assert "TestP/m2" not in body["failures"]
+    assert "TestP/m1" in body["failures"]

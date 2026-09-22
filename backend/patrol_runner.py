@@ -28,6 +28,47 @@ DEFAULT_DATA_DIR = os.path.join(
     "website", "data",
 )
 
+# 自动黑名单文件（与结果同目录，随仓库 commit 持久化，GH Actions 无状态下的唯一存储）
+BLACKLIST_FILE = "blacklist.json"
+# 连续失败达到该次数的模型下一轮起被剔除；成功一次即清零恢复
+BLACKLIST_THRESHOLD = 5
+
+
+def load_auto_blacklist(data_dir: str) -> dict:
+    """读取自动黑名单。返回 {"provider_name/model": {...}} 结构；缺失/损坏返回空。"""
+    path = os.path.join(data_dir, BLACKLIST_FILE)
+    try:
+        with open(path, encoding="utf-8") as f:
+            body = json.load(f)
+        return body.get("failures", {})
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def update_auto_blacklist(data_dir: str, results: list[dict], run_finished: str) -> dict:
+    """按本轮结果更新连续失败计数，返回当前已拉黑集合（"provider/model"）。
+
+    失败 +1，成功清零；达到 BLACKLIST_THRESHOLD 记入黑名单。写回 blacklist.json。
+    429 等间歇性失败通常不会连续 5 次，真连续 5 次的多为下线/无权限/彻底超时的尸体模型。
+    """
+    failures = load_auto_blacklist(data_dir)
+    now_blacklisted = set()
+    for r in results:
+        key = f"{r.get('provider_name')}/{r.get('model')}"
+        if r.get("success"):
+            failures.pop(key, None)
+            continue
+        rec = failures.setdefault(key, {"consecutive_failures": 0})
+        rec["consecutive_failures"] += 1
+        rec["last_error"] = (r.get("error_message") or "")[:200]
+        if rec["consecutive_failures"] >= BLACKLIST_THRESHOLD:
+            rec.setdefault("blacklisted_at", run_finished)
+        if "blacklisted_at" in rec:
+            now_blacklisted.add(key)
+    with open(os.path.join(data_dir, BLACKLIST_FILE), "w", encoding="utf-8") as f:
+        json.dump({"failures": failures}, f, ensure_ascii=False, indent=2)
+    return now_blacklisted
+
 
 async def discover_models(base_url: str, api_key: str, timeout: float, discover_url: str = "") -> list[str]:
     """从发现端点拉上游全量模型 id；失败返回空列表（退回显式 models）。
@@ -77,6 +118,14 @@ async def run_patrol(config_path: str, data_dir: str = DEFAULT_DATA_DIR,
 
     tests = cfg.to_tests(discovered)
 
+    # 上一轮累积的自动黑名单：连续失败的模型不再纳入本轮巡检
+    auto_blacklist = load_auto_blacklist(data_dir)
+    if auto_blacklist:
+        before = len(tests)
+        tests = [t for t in tests
+                 if f"{t['provider_name']}/{t['model']}" not in auto_blacklist]
+        print(f"patrol: auto-blacklist {len(auto_blacklist)} entries, {before} -> {len(tests)} tests", file=sys.stderr)
+
     if not tests:
         print("patrol: no targets configured, skipping", file=sys.stderr)
         return ""
@@ -110,6 +159,9 @@ async def run_patrol(config_path: str, data_dir: str = DEFAULT_DATA_DIR,
     os.makedirs(data_dir, exist_ok=True)
     day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     out_path = os.path.join(data_dir, f"{day}.jsonl")
+
+    # 本轮结果更新自动黑名单（连续失败计数 + 拉黑/恢复），与结果文件同目录持久化
+    update_auto_blacklist(data_dir, results, run_finished)
 
     # 私有端点（base_url 引用环境变量）不落盘：结果中以占位符替代真实 URL。
     # error_message 里 httpx 异常可能带完整请求 URL，一并替换。

@@ -170,9 +170,18 @@
         "Shanghai_AI_Laboratory/Intern-S1-mini",
         "early-access/EA-29B-A4B",
         "MedAIBase/.*",
-        "PaddlePaddle/ERNIE-4.5-0.3B-PT"
+        "PaddlePaddle/ERNIE-4.5-0.3B-PT",
+        "PaddlePaddle/ERNIE-4.5-21B-A3B-PT",
+        "PaddlePaddle/ERNIE-4.5-300B-A47B-PT"
       ]
+    },
+    {
+      "provider_name": "Kilo Relay",
+      "base_url": "$KILO_RELAY_URL",
+      "api_key_env": "KILO_RELAY_KEY",
+      "protocol": "openai",
+      "models": []
     }
   ],
-  "_comment": "base_url 支持 \"$ENV_NAME\" / \"${ENV_NAME}\" 引用环境变量（配合 Secret PATROL_EXTRA_ENV 注入多行 KEY=VALUE）：私有端点不落盘，公开结果 JSONL 中以 \"(private)\" 占位。API key 永远只写环境变量名（api_key_env），明文经 Secret 注入。"
+  "_comment": "base_url 支持 \"$ENV_NAME\" / \"${ENV_NAME}\" 引用环境变量（配合 Secret PATROL_EXTRA_ENV 注入多行 KEY=VALUE）：私有端点不落盘，公开结果 JSONL 中以 \"(private)\" 占位。API key 永远只写环境变量名（api_key_env），明文经 Secret 注入。Kilo Relay：models 为空则本轮自动跳过；启用方法见 README（经 models.johnnren.qzz.io 中转，走家里网络，测速口径与 GH 直连不同，结果仅供参考）。"
 }
