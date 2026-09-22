@@ -27,17 +27,21 @@ def test_load_patrol_config_example():
     """仓库自带 patrol.json 能正确加载，字段一一对应。"""
     cfg = load_patrol_config("config/patrol.json")
     assert len(cfg.targets) == 7
+    # Groq target（discover + blacklist 过滤非 chat 模型）
     assert cfg.targets[0].provider_name == "Groq"
     assert cfg.targets[0].api_key_env == "GROQ_API_KEY"
     assert cfg.targets[0].protocol == "openai"
+    assert cfg.targets[0].discover is True
     assert "openai/gpt-oss-20b" in cfg.targets[0].models
     # NVIDIA NIM target（动态发现）
     assert cfg.targets[1].provider_name == "NVIDIA NIM"
     assert cfg.targets[1].base_url == "https://integrate.api.nvidia.com/v1"
     assert cfg.targets[1].discover is True
-    # Google Gemini target
+    # Google Gemini target（discover + blacklist 过滤 image/tts/embed 等非 chat 模型）
     assert cfg.targets[2].provider_name == "Google Gemini"
     assert cfg.targets[2].base_url == "https://generativelanguage.googleapis.com/v1beta/openai/"
+    assert cfg.targets[2].discover is True
+    assert cfg.targets[2].models == []
     # Cloudflare target（account id 直写，key 走 env；discover_url 自定义）
     assert cfg.targets[3].provider_name == "Cloudflare Workers AI"
     assert cfg.targets[3].api_key_env == "CLOUDFLARE_API_KEY"

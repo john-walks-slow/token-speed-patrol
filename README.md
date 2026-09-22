@@ -124,6 +124,11 @@ python -m http.server 8899 -d website   # 看板本地预览
 ## 相关项目
 
 - [token-speed](https://github.com/john-walks-slow/token-speed) — 桌面版：多服务商管理、即时测速、本地历史统计（Windows）。
+- [rabbit-skills](https://github.com/john-walks-slow/rabbit-skills) — 轻量、松弛、有效的 Coding Agent 配置套件，本项目开发流程的底层实践来源。
+
+## 社区
+
+- 感谢 [LINUX DO](https://linux.do/) 社区提供的交流环境。
 
 ## License
 
