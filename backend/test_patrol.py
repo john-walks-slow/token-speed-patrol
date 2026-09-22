@@ -320,10 +320,15 @@ def test_run_patrol_filters_auto_blacklisted(monkeypatch, tmp_path):
 
     data_dir = tmp_path / "data"
     data_dir.mkdir()
+    # m1 已拉黑（有 blacklisted_at）；m2 连续失败 2 次未达阈值，不应被过滤
     (data_dir / "blacklist.json").write_text(json.dumps(
-        {"failures": {"TestP/m1": {"consecutive_failures": 5,
-                                    "last_error": "HTTP 404",
-                                    "blacklisted_at": "2026-09-22T00:00:00+00:00"}}}))
+        {"failures": {
+            "TestP/m1": {"consecutive_failures": 5,
+                         "last_error": "HTTP 404",
+                         "blacklisted_at": "2026-09-22T00:00:00+00:00"},
+            "TestP/m2": {"consecutive_failures": 2,
+                         "last_error": "HTTP 429"},
+        }}))
 
     cfg = {
         "prompt": "hi", "max_tokens": 100, "temperature": None,
@@ -344,7 +349,7 @@ def test_run_patrol_filters_auto_blacklisted(monkeypatch, tmp_path):
     with open(out) as f:
         data = json.loads(f.readline())
     assert [r["model"] for r in data["results"]] == ["m2"]
-    # m2 成功后 blacklist.json 里无 m2 记录；m1 未参与本轮，原记录保留
+    # m2 成功后计数清零，记录删除；m1 未参与本轮，原记录保留
     body = json.loads((data_dir / "blacklist.json").read_text())
     assert "TestP/m2" not in body["failures"]
     assert "TestP/m1" in body["failures"]

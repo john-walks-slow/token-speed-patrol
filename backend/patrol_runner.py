@@ -118,8 +118,10 @@ async def run_patrol(config_path: str, data_dir: str = DEFAULT_DATA_DIR,
 
     tests = cfg.to_tests(discovered)
 
-    # 上一轮累积的自动黑名单：连续失败的模型不再纳入本轮巡检
-    auto_blacklist = load_auto_blacklist(data_dir)
+    # 上一轮累积的自动黑名单：连续失败达阈值的模型不再纳入本轮巡检
+    # （未达阈值的失败记录只是计数，不拦截——429/503 间歇失败照常测）
+    auto_blacklist = {k for k, rec in load_auto_blacklist(data_dir).items()
+                      if "blacklisted_at" in rec}
     if auto_blacklist:
         before = len(tests)
         tests = [t for t in tests
