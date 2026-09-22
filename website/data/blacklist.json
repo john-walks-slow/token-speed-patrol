@@ -1,0 +1,104 @@
+{
+  "failures": {
+    "Groq/groq/compound": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 404: The model `groq/compound` does not exist or you do not have access to it."
+    },
+    "Groq/groq/compound-mini": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 404: The model `groq/compound-mini` does not exist or you do not have access to it."
+    },
+    "NVIDIA NIM/google/gemma-4-31b-it": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/mistralai/mistral-nemotron": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Google Gemini/gemini-3.8-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/gemini-3.7-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/gemini-3.6-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/gemini-3.5-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/gemini-flash-latest": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/gemini-3.1-pro-preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Google Gemini/gemini-pro-latest": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Google Gemini/gemma-4-31b-it": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Cloudflare Workers AI/@cf/moonshotai/kimi-k2.7-code": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/zai-org/glm-5.3": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/zai-org/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/moonshotai/kimi-k2.6": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-v4-flash-0731": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/zai-org/glm-5.2": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-v4-pro-0813": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "OpenRouter/google/gemma-4-26b-a4b-it:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/poolside/laguna-s-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/qwen/qwen3.8-27b:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/z-ai/glm-5.2:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "ModelScope/deepseek-ai/DeepSeek-V4-Pro": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+    },
+    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
+    }
+  }
+}
