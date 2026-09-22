@@ -31,14 +31,7 @@ jobs:
 
       - name: Run patrol
         env:
-          # 按 config/patrol.json 中 api_key_env 名注入密钥
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
-          # 通用注入：多行 KEY=VALUE，私有端点 URL / key 均可走这里，无需改 workflow
+          # 所有密钥统一走 PATROL_EXTRA_ENV（多行 KEY=VALUE），按 patrol.json 的 api_key_env 名对应
           PATROL_EXTRA_ENV: ${{ secrets.PATROL_EXTRA_ENV }}
           PATROL_PROVIDERS: ${{ inputs.providers || '' }}
         run: python -m backend.patrol_runner

@@ -10,56 +10,37 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 1. **Fork 本仓库**
 2. **启用 Actions**：你的 fork → Settings → Actions → Allow all actions（fork 默认禁用）
-3. **配置 API 密钥**：Settings → Secrets and variables → Actions，按 `config/patrol.json` 中 `api_key_env` 字段添加 secrets（用不到的 target 可以直接从 `patrol.json` 删掉）
-4. **触发首次巡逻**：Actions → Token Speed Patrol → Run workflow
-5. **开启 Pages**：Settings → Pages → Source: GitHub Actions
+3. **配置密钥**：Settings → Secrets and variables → Actions，添加 Secret `PATROL_EXTRA_ENV`，内容为多行 `KEY=VALUE`（每个 key 对应 `patrol.json` 里的一个 `api_key_env`）：
+
+   ```
+   MY_API_KEY=sk-xxxx
+   ANOTHER_API_KEY=sk-yyyy
+   ```
+
+4. **编辑 `config/patrol.json`**，填你要测的服务商（见下节）
+5. **触发首次巡逻**：Actions → Token Speed Patrol → Run workflow
+6. **开启 Pages**：Settings → Pages → Source: GitHub Actions
 
 看板地址：`https://<你的用户名>.github.io/token-speed-patrol/`
 
-## 内置免费巡逻目标
+## 配置格式
 
-`config/patrol.json` 自带 7 个免费 target：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter、ModelScope、Kilo Relay。
-
-| Secret 名 | 从哪获取密钥 |
-|---|---|
-| `GROQ_API_KEY` | [console.groq.com/keys](https://console.groq.com/keys) — 永久免费层，无需信用卡 |
-| `NVIDIA_API_KEY` | [build.nvidia.com](https://build.nvidia.com/settings) — 免费试用额度，无需信用卡 |
-| `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey) — 免费层，无需信用卡 |
-| `CLOUDFLARE_API_KEY` | [dash.cloudflare.com](https://dash.cloudflare.com/profile/api-tokens) — Workers AI 免费额度 |
-| `OPENROUTER_API_KEY` | [openrouter.ai/keys](https://openrouter.ai/keys) — `:free` 模型免费（50 请求/天） |
-| `MODELSCOPE_API_KEY` | [modelscope.cn](https://modelscope.cn/my/myaccesstoken) — 免费额度 |
-| （Kilo Relay，可选） | 见下文「Kilo Relay（中转）」，默认跳过 |
-
-密钥**绝不落盘**——`patrol.json` 只存环境变量名，runner 从 `os.environ` 解析，结果 JSON 不含 `api_key`；私有端点 URL 在结果中脱敏为 `(private)`。
-
-### Kilo Relay（中转，可选）
-
-Kilo Gateway 匿名免费但按 IP 限流，GitHub Actions 的 Azure IP 已被封禁。`Kilo Relay` target 预设为经自建 OpenAI 兼容中转访问（走中转所在网络，测速口径与 GitHub 直连不同，结果仅供参考），`models` 为空时该 target 自动跳过。启用：
-
-1. 在你的中转服务上把 Kilo 配置为匿名上游；
-2. Secrets 加 `PATROL_EXTRA_ENV`（多行 KEY=VALUE）：
-
-   ```
-   KILO_RELAY_URL=https://your-relay.example.com/v1
-   KILO_RELAY_KEY=your-relay-key
-   ```
-
-3. 把 `patrol.json` 中 Kilo Relay 的 `models` 填上中转暴露的模型 id。
-
-## 自定义巡逻目标
-
-编辑 `config/patrol.json`：
+一切巡检行为都在 `config/patrol.json` 里声明，workflow 与代码零定制——改配置即生效，无需动代码。
 
 ```json
 {
   "prompt": "Hello, tell me a short story in 3 sentences.",
   "max_tokens": 256,
   "stream": true,
+  "concurrency": 1,
+  "iterations": 1,
+  "max_rpm": 20,
+  "timeout": 120,
   "targets": [
     {
       "provider_name": "你的服务商名",
       "base_url": "https://api.xxx.com/v1",
-      "api_key_env": "YOUR_SECRET_NAME",
+      "api_key_env": "MY_API_KEY",
       "protocol": "openai",
       "models": ["model-id-1", "model-id-2"]
     }
@@ -67,15 +48,51 @@ Kilo Gateway 匿名免费但按 IP 限流，GitHub Actions 的 Azure IP 已被�
 }
 ```
 
-- `protocol` 支持 `openai` 与 `anthropic`（Anthropic 原生端点用后者）。
-- 新增服务商时，密钥走 Secret `PATROL_EXTRA_ENV`（多行 `KEY=VALUE`，与 `api_key_env` 名对应）即可，无需改 workflow。
-- **动态模型发现**：`"discover": true` 时从上游 `{base_url}/models`（或 `discover_url`）拉全量模型列表，与手写 `models` 并集后过 `whitelist` / `blacklist`（regex，fullmatch）。上游增删模型自动跟随。
-- **私有端点**：`base_url` 填 `"$MY_BASE_URL"` 即从环境变量注入（配合 secrets / `PATROL_EXTRA_ENV`），结果自动脱敏。
-- **巡检周期**：`patrol.yml` 的 `schedule.cron`（默认每 1 小时）。手动触发时可填 `providers` 输入，只测指定服务商。
+### 字段说明
+
+- `prompt` / `max_tokens` / `temperature` / `stream` / `timeout`：测速请求参数。
+- `concurrency`：并发数；`iterations`：每模型重复次数（取均值，降噪）；`max_rpm`：全局限速（请求/分钟，`-1` 不限）。
+- `provider_name`：看板上的展示名，随意取。
+- `base_url`：OpenAI 兼容端点。支持 `"$ENV_NAME"` / `"${ENV_NAME}"` 引用环境变量（私有端点不落盘，结果中自动脱敏为 `(private)`）。
+- `api_key_env`：**只存环境变量名，绝不写密钥明文**。密钥经 Secret `PATROL_EXTRA_ENV`（多行 `KEY=VALUE`）注入，runner 启动时读入。
+- `protocol`：`openai`（绝大多数网关）或 `anthropic`（Anthropic 原生端点）。
+- `models`：显式模型 id 列表。
+
+### 动态模型发现
+
+`"discover": true` 时，每轮巡检先从上游 `{base_url}/models` 拉全量模型列表，与手写 `models` 并集，再过过滤规则——上游增删模型自动跟随，不用维护列表：
+
+```json
+{
+  "provider_name": "Example",
+  "base_url": "https://api.xxx.com/v1",
+  "api_key_env": "MY_API_KEY",
+  "protocol": "openai",
+  "models": [],
+  "discover": true,
+  "discover_url": "https://api.xxx.com/v2/models/search",
+  "whitelist": [".*-chat$"],
+  "blacklist": [".*(embed|vision).*"]
+}
+```
+
+- `discover_url`：可选，默认 `{base_url}/models`；上游发现端点路径不标准时（如 Cloudflare 的 `/models/search`）单独指定。兼容 `{"data": [{"id"}]}`（OpenAI 风格）与 `{"result": [{"name"}]}`（Cloudflare 风格）两种响应。
+- `whitelist` / `blacklist`：regex 数组（fullmatch）。并集先过 whitelist（空 = 全保留）再剔 blacklist。
 
 ### 自动黑名单
 
-连续失败 5 次的模型自动拉黑，下一轮起不再巡检；成功一次即自动恢复。状态存在 `website/data/blacklist.json`（随巡检结果一起 commit，即巡检历史的持久层），记录每个模型当前的连续失败次数、最近错误和拉黑时间。手动恢复某个模型：删掉 `blacklist.json` 中对应条目（或整个文件）并 commit 即可。
+连续失败 5 次的模型自动拉黑，下一轮起不再巡检；成功一次即自动恢复。状态存在 `website/data/blacklist.json`（随巡检结果一起 commit，即巡检历史的持久层），记录每个模型当前的连续失败次数、最近错误和拉黑时间。间歇性失败（429/503）不会误伤，真下线/无权限的模型 5 轮后被剔除。手动恢复：删掉 `blacklist.json` 中对应条目（或整个文件）并 commit。
+
+### 巡检周期与按需触发
+
+- 周期在 `.github/workflows/patrol.yml` 的 `schedule.cron`（默认每 1 小时，按你的 API 限额调整）。
+- 手动触发（Run workflow）时可填 `providers` 输入（逗号分隔 provider_name），只测指定服务商，不全量重跑。
+
+## 示例：免费公开端点巡检
+
+本仓库自带一份当前（2026-09）主流免费端点的巡检配置并持续出数，作为活示范：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope，覆盖约 95 个模型，模型列表尽量用上面的动态发现自动维护。
+
+免费端点的限额政策、测速频率权衡、历史错误根因等调研记录见 `docs/features/260923-provider-coverage/`。
 
 ## 测速口径
 
