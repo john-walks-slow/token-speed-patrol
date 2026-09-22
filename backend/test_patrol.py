@@ -40,7 +40,7 @@ def test_load_patrol_config_example():
     assert cfg.targets[6].base_url == "$KILO_RELAY_URL"
     assert cfg.targets[6].models == []
     assert cfg.stream is True
-    assert cfg.max_tokens == 256
+    assert cfg.max_tokens == 1024
     assert cfg.temperature is None
 
 
