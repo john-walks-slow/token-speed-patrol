@@ -122,9 +122,15 @@ def _extract_stream_chunk(chunk: dict, protocol: str) -> dict:
     # openai 兼容
     choices = chunk.get("choices") or []
     delta = choices[0].get("delta", {}) if choices else {}
+
+    def _as_text(val):
+        # 个别网关（如 CF Workers AI 的 qwq）在流尾发 content: true / content: 1 等非字符串哨兵，
+        # 直接 join 会崩溃（"expected str instance, bool found"），非字符串一律丢弃
+        return val if isinstance(val, str) else None
+
     return {
-        "text": delta.get("content"),
-        "reasoning": delta.get("reasoning_content") or delta.get("reasoning"),
+        "text": _as_text(delta.get("content")),
+        "reasoning": _as_text(delta.get("reasoning_content")) or _as_text(delta.get("reasoning")),
         "model": chunk.get("model"),
         "usage": chunk.get("usage"),
         "done": False,  # [DONE] 哨兵由调用方处理
@@ -394,6 +400,9 @@ async def run_speed_test(
         }
     except Exception as e:
         total_latency_ms = (time.perf_counter() - start) * 1000
+        # httpx 超时异常的 str() 为空串（历史数据里 32 个空 error_message 均为整 120s 超时），
+        # 用类名兜底，至少能从结果里分辨超时
+        message = str(e) or type(e).__name__
         return {
             "id": test_id,
             "base_url": base_url,
@@ -417,7 +426,7 @@ async def run_speed_test(
             "tps": None,
             "itl_ms": None,
             "success": False,
-            "error_message": str(e),
+            "error_message": message,
             "created_at": created_at,
         }
 
