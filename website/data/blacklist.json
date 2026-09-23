@@ -151,64 +151,54 @@
       "blacklisted_at": "2026-09-23T18:04:08.586861+00:00"
     },
     "Google Gemini/models/gemini-flash-latest": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 503"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 503",
+      "blacklisted_at": "2026-09-23T19:57:02.901777+00:00"
     },
     "Google Gemini/models/gemini-3.7-flash": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3.8-flash": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 503"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 503",
+      "blacklisted_at": "2026-09-23T19:57:02.901777+00:00"
     },
     "OpenRouter/poolside/laguna-s-2.1:free": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429: Provider returned error"
     },
     "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
     },
     "Google Gemini/models/gemini-3.1-flash-lite-preview": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3.1-flash-lite": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3.6-flash": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 503"
-    },
-    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     },
     "NVIDIA NIM/openai/gpt-oss-20b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/z-ai/glm-5.3": {
-      "consecutive_failures": 1,
-      "last_error": "ConnectError"
-    },
-    "Google Gemini/models/gemma-4-26b-a4b-it": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 500"
     },
     "Google Gemini/models/gemini-3.5-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "OpenRouter/inclusionai/ling-3.0-flash-vl:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-vl"
+    },
+    "NVIDIA NIM/mistralai/mistral-nemotron": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/poolside/laguna-xs-2.1": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Google Gemini/models/gemini-3-flash-preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
     }
   }
 }
