@@ -184,6 +184,9 @@ def test_private_url_placeholder(monkeypatch, tmp_path):
         "targets": [
             {"provider_name": "Priv", "base_url": "$MY_URL",
              "api_key_env": "TEST_KEY", "protocol": "openai", "models": ["m1"]},
+            # 尾斜杠形态：请求实际发的 URL 是 normalize 后的（去尾斜杠），同样要被脱敏命中
+            {"provider_name": "PrivSlash", "base_url": "$MY_SLASH_URL",
+             "api_key_env": "TEST_KEY", "protocol": "openai", "models": ["m3"]},
             {"provider_name": "Pub", "base_url": "https://api.pub.com/v1",
              "api_key_env": "TEST_KEY", "protocol": "openai", "models": ["m2"]},
         ]
@@ -192,6 +195,7 @@ def test_private_url_placeholder(monkeypatch, tmp_path):
     cfg_path.write_text(json.dumps(cfg))
     monkeypatch.setenv("TEST_KEY", "sk-fake")
     monkeypatch.setenv("MY_URL", "https://private.example.com/v1")
+    monkeypatch.setenv("MY_SLASH_URL", "https://slash.example.com/v1/")
 
     from .patrol_runner import run_patrol
     out = asyncio.run(run_patrol(str(cfg_path), str(tmp_path / "data")))
@@ -199,10 +203,12 @@ def test_private_url_placeholder(monkeypatch, tmp_path):
         data = json.loads(f.readline())
     urls = {r["provider_name"]: r["base_url"] for r in data["results"]}
     assert urls["Priv"] == "(private)"
+    assert urls["PrivSlash"] == "(private)"
     assert urls["Pub"] == "https://api.pub.com/v1"
-    # error_message 中私有 URL 一并脱敏，公有不受影响
+    # error_message 中私有 URL 一并脱敏（含 normalize 后形态），公有不受影响
     errs = {r["provider_name"]: r["error_message"] for r in data["results"]}
-    assert "https://private.example.com" not in errs["Priv"]
+    assert "private.example.com" not in errs["Priv"]
+    assert "slash.example.com" not in errs["PrivSlash"]
     assert errs["Priv"] == "ConnectError: request to (private) failed"
     assert errs["Pub"] == "ConnectError: request to https://api.pub.com/v1 failed"
 

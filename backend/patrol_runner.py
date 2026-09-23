@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 import httpx
 
 from .patrol_config import load_patrol_config
+from .url_utils import normalize_base_url
 from .speed_test import DEFAULT_CLIENT_KWARGS, execute_batch_tests
 
 # 巡检结果目录：放 website/data/ 下，随 Pages 一起发布
@@ -177,14 +178,23 @@ async def run_patrol(config_path: str, data_dir: str = DEFAULT_DATA_DIR,
 
     # 私有端点（base_url 引用环境变量）不落盘：结果中以占位符替代真实 URL。
     # error_message 里 httpx 异常可能带完整请求 URL，一并替换。
-    private_map = {t.resolve_base_url(): "(private)" for t in cfg.targets if t.is_private}
+    # 请求实际发的 URL 是 normalize_base_url() 处理过的（补协议头、去尾斜杠），
+    # 原始值与规范化值都收进 map，避免 env 值带尾斜杠/省略协议头时替换不命中。
+    private_map = {}
+    for t in cfg.targets:
+        if t.is_private:
+            resolved = t.resolve_base_url()
+            private_map[resolved] = "(private)"
+            private_map[normalize_base_url(resolved)] = "(private)"
+    private_urls = sorted(private_map, key=len, reverse=True)
 
     def scrub(r: dict) -> None:
         url = r.get("base_url")
         if url in private_map:
             r["base_url"] = private_map[url]
-            if r.get("error_message"):
-                r["error_message"] = r["error_message"].replace(url, private_map[url])
+        if r.get("error_message"):
+            for u in private_urls:
+                r["error_message"] = r["error_message"].replace(u, private_map[u])
 
     for r in collected:
         scrub(r)
