@@ -6,7 +6,12 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 > **[👉 示例看板：95+ 免费模型实时测速数据](https://john-walks-slow.github.io/token-speed-patrol/)**
 
-![看板](docs/patrol-dashboard.png)
+<table>
+  <tr>
+    <td width="50%"><img src="docs/patrol-dashboard-table.png" alt="测速结果表格"/></td>
+    <td width="50%"><img src="docs/patrol-dashboard-trend.png" alt="趋势图"/></td>
+  </tr>
+</table>
 
 ## 快速开始
 
