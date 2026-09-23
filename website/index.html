@@ -241,6 +241,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px;
             <button class="chip" data-range="latest">最近一次</button>
             <button class="chip active" data-range="24h">24h</button>
             <button class="chip" data-range="7d">7 天</button>
+            <button class="chip" data-range="14d">14 天</button>
           </span>
         </div>
       </div>
@@ -296,13 +297,18 @@ const METRIC_LABELS = {
   success_rate: '成功率 (%)',
 };
 const SPARK_WINDOW_MS = 24 * 3600 * 1000;
+// 初始加载 7 天；14 天档按需懒加载更多历史
+const PRELOAD_DAYS = 7;
+const MAX_DAYS = 14;
 const RANGE_DEFS = {
   latest: { label: '最近一次', windowMs: 0 },
   '24h':  { label: '最近 24 小时', windowMs: SPARK_WINDOW_MS },
   '7d':   { label: '最近 7 天', windowMs: 7 * 24 * 3600 * 1000 },
+  '14d':  { label: '最近 14 天', windowMs: MAX_DAYS * 24 * 3600 * 1000, lazy: true },
 };
 
 let allRuns = [];      // 按时间升序的 run 记录
+let loadedDays = 0;    // 已加载的天数（懒加载进度）
 let activeMetric = 'tps';
 let activeRange = '24h';
 let activeProviders = new Set(); // 空 = 全选
@@ -330,11 +336,9 @@ function assignProviderColors(runs) {
   }
 }
 
-// 尝试加载 data/ 下所有 JSONL 文件
-async function loadAllData() {
-  // 获取文件列表：GitHub Pages 静态站无目录列举，用固定文件名
-  // 巡检每天一个文件，只取最近 7 天（历史数据在 git log 里永远可追溯）
-  const files = await discoverJsonlFiles();
+// 加载 data/ 下最近 N 天的 JSONL 文件（GitHub Pages 静态站无目录列举，用固定文件名）
+async function loadAllData(days) {
+  const files = await discoverJsonlFiles(days);
   const all = [];
   for (const f of files) {
     try {
@@ -351,9 +355,19 @@ async function loadAllData() {
   return all;
 }
 
+// 懒加载：初始只取 7 天，切到 14 天档时补拉更早的历史（更旧的在 git log 里永远可追溯）
+async function extendLoadedDays(targetDays) {
+  if (loadedDays >= targetDays) return;
+  const newRuns = await loadAllData(targetDays);
+  if (newRuns.length > allRuns.length) {
+    allRuns = newRuns;
+    assignProviderColors(allRuns);
+  }
+  loadedDays = Math.max(loadedDays, targetDays);
+}
+
 // 探测可用的 JSONL 文件：尝试最近 N 天 + 今天
-async function discoverJsonlFiles() {
-  const days = 7;
+async function discoverJsonlFiles(days) {
   const files = [];
   const now = new Date();
   for (let i = 0; i <= days; i++) {
@@ -1000,19 +1014,24 @@ document.querySelectorAll('[data-metric]').forEach(btn => {
 });
 
 document.querySelectorAll('[data-range]').forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', async () => {
     document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeRange = btn.dataset.range;
+    // 14 天档按需补拉历史（首屏只加载 7 天，控制初始流量）
+    const def = RANGE_DEFS[activeRange];
+    if (def.lazy) await extendLoadedDays(MAX_DAYS);
     renderProviderChips();
     renderResults();
+    drawChart();
   });
 });
 
 // ── 启动 ──────────────────────────────────────────
 
 async function init() {
-  allRuns = await loadAllData();
+  allRuns = await loadAllData(PRELOAD_DAYS);
+  loadedDays = PRELOAD_DAYS;
   if (!allRuns.length) {
     document.getElementById('resultsCard').innerHTML = '<div class="empty">暂无巡检数据。<br> Fork 仓库并启用 Patrol workflow 后，数据会在此自动展示。</div>';
     return;

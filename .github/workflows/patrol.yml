@@ -37,8 +37,8 @@ jobs:
 
       - name: Prune old data files
         run: |
-          # 看板只展示最近 7 天，超期 JSONL 清掉，仓库不无限膨胀（历史仍可从 git log 追溯）
-          find website/data -name '*.jsonl' -mtime +7 -delete
+          # 看板展示最多 14 天，超期 JSONL 清掉，仓库 data 目录不再无限膨胀（历史仍可从 git log 追溯）
+          find website/data -name '*.jsonl' -mtime +14 -delete
           if [ -n "$(git status --porcelain website/data)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
