@@ -49,7 +49,7 @@ def test_load_patrol_config_example():
     # OpenRouter target（discover + whitelist/blacklist + 显式 :free 兜底列表）
     assert cfg.targets[4].provider_name == "OpenRouter"
     assert cfg.targets[4].discover is True
-    assert cfg.targets[4].whitelist == [".*:free"]
+    assert cfg.targets[4].whitelist == [".*:free", "stealth/.*"]
     assert len(cfg.targets[4].models) > 0
     assert cfg.targets[5].provider_name == "ModelScope"
     assert cfg.targets[5].api_key_env == "MODELSCOPE_API_KEY"

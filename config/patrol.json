@@ -138,7 +138,8 @@
         "z-ai/glm-5.2:free"
       ],
       "whitelist": [
-        ".*:free"
+        ".*:free",
+        "stealth/.*"
       ],
       "blacklist": [
         ".*inkling.*",
