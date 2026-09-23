@@ -41,40 +41,49 @@
       "last_error": "HTTP 503"
     },
     "Cloudflare Workers AI/@cf/moonshotai/kimi-k2.7-code": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Cloudflare Workers AI/@cf/zai-org/glm-5.3": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Cloudflare Workers AI/@cf/zai-org/glm-5.3-flash": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Cloudflare Workers AI/@cf/moonshotai/kimi-k2.6": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-v4-flash-0731": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Cloudflare Workers AI/@cf/zai-org/glm-5.2": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-v4-pro-0813": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "OpenRouter/google/gemma-4-26b-a4b-it:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "OpenRouter/z-ai/glm-5.2:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-09-23T07:55:08.597373+00:00"
     },
     "Groq/Prompt Guard 2 86M": {
       "consecutive_failures": 2,
@@ -113,19 +122,19 @@
       "last_error": "HTTP 404: The model `llama prompt guard 2 22m` does not exist or you do not have access to it."
     },
     "Google Gemini/models/gemini-pro-latest": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Google Gemini/models/gemini-3.1-pro-preview": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Google Gemini/models/gemini-3.1-pro-preview-customtools": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "OpenRouter/google/gemma-4-31b-it:free": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429: Provider returned error"
     },
     "Groq/Qwen/Qwen3.8-27B": {
@@ -133,72 +142,40 @@
       "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
     },
     "OpenRouter/qwen/qwen3.8-27b:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "ModelScope/nex-agi/Nex-N2.5-mini": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
-    },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
     },
     "Google Gemini/models/gemma-4-31b-it": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "Google Gemini/models/gemini-flash-latest": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3.6-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "Google Gemini/models/gemini-3.7-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "Google Gemini/models/gemini-3.8-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "ModelScope/deepseek-ai/DeepSeek-V4-Flash-0731": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
-    },
-    "ModelScope/deepseek-ai/DeepSeek-V4-Pro": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
-    },
-    "ModelScope/stepfun-ai/Step-3.7-Flash": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: request limited RPM reached, current: 11, limit: 10. Please top up at https://platform.stepfun.com/top-up. Rate limit rules: https://platform.stepfun.com/docs/zh/pricing/details#%E9%98%B6%E6"
-    },
-    "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2504": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
     "ModelScope/ZhipuAI/GLM-5.2": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: Request rate increased too quickly. To ensure system stability, please adjust your client logic to scale requests more smoothly over time."
+    },
+    "OpenRouter/poolside/laguna-s-2.1:free": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
