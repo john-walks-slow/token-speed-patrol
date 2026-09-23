@@ -87,7 +87,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 ### 巡检周期与按需触发
 
-- 周期在 `.github/workflows/patrol.yml` 的 `schedule.cron`（默认每 1 小时，按你的 API 限额调整）。
+- 周期在 `.github/workflows/patrol.yml` 的 `schedule.cron`（默认每 2 小时，按你的 API 限额调整）。
 - 手动触发（Run workflow）时可填 `providers` 输入（逗号分隔 provider_name），只测指定服务商，不全量重跑。
 
 ## 免费公开端点巡检

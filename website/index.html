@@ -241,7 +241,6 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px;
             <button class="chip" data-range="latest">最近一次</button>
             <button class="chip active" data-range="24h">24h</button>
             <button class="chip" data-range="7d">7 天</button>
-            <button class="chip" data-range="all">全部</button>
           </span>
         </div>
       </div>
@@ -301,7 +300,6 @@ const RANGE_DEFS = {
   latest: { label: '最近一次', windowMs: 0 },
   '24h':  { label: '最近 24 小时', windowMs: SPARK_WINDOW_MS },
   '7d':   { label: '最近 7 天', windowMs: 7 * 24 * 3600 * 1000 },
-  all:    { label: '全部', windowMs: Infinity },
 };
 
 let allRuns = [];      // 按时间升序的 run 记录
@@ -334,8 +332,8 @@ function assignProviderColors(runs) {
 
 // 尝试加载 data/ 下所有 JSONL 文件
 async function loadAllData() {
-  // 获取文件列表：GitHub Pages 静态站无目录列举，用 git API 或固定文件名
-  // 巡检每天一个文件，取最近 90 天
+  // 获取文件列表：GitHub Pages 静态站无目录列举，用固定文件名
+  // 巡检每天一个文件，只取最近 7 天（历史数据在 git log 里永远可追溯）
   const files = await discoverJsonlFiles();
   const all = [];
   for (const f of files) {
@@ -355,7 +353,7 @@ async function loadAllData() {
 
 // 探测可用的 JSONL 文件：尝试最近 N 天 + 今天
 async function discoverJsonlFiles() {
-  const days = 90;
+  const days = 7;
   const files = [];
   const now = new Date();
   for (let i = 0; i <= days; i++) {

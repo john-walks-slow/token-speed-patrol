@@ -2,10 +2,9 @@ name: Token Speed Patrol
 
 on:
   schedule:
-    # 巡检周期在此配置（cron 表达式）；当前每 1 小时一次，13 分错开整点。
+    # 巡检周期在此配置（cron 表达式）；当前每 2 小时一次，13 分错开整点。
     # 频率依据：docs/features/260923-provider-coverage/260923-rate-limit-policy.research.md
-    # （Gemini pro-latest 1h/次 = 48 RPD 贴 50 上限，其余提供商全部有余量）
-    - cron: '13 * * * *'
+    - cron: '13 */2 * * *'
   workflow_dispatch: # 手动触发，用于首次验证与按需重跑
     inputs:
       providers:
@@ -35,6 +34,17 @@ jobs:
           PATROL_EXTRA_ENV: ${{ secrets.PATROL_EXTRA_ENV }}
           PATROL_PROVIDERS: ${{ inputs.providers || '' }}
         run: python -m backend.patrol_runner
+
+      - name: Prune old data files
+        run: |
+          # 看板只展示最近 7 天，超期 JSONL 清掉，仓库不无限膨胀（历史仍可从 git log 追溯）
+          find website/data -name '*.jsonl' -mtime +7 -delete
+          if [ -n "$(git status --porcelain website/data)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A website/data
+            git commit -m "patrol: prune data older than 7 days"
+          fi
 
       - name: Commit patrol results
         run: |
