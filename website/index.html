@@ -867,7 +867,7 @@ function bindChartHover() {
       const maxTop = card.clientHeight - tooltip.offsetHeight - 8;
       tooltip.style.left = Math.max(12, Math.min(hovered.x + 20, maxLeft)) + 'px';
       // 悬停在命中点上方，少遮曲线本体
-      tooltip.style.top = Math.max(4, Math.min(hovered.y - tooltip.offsetHeight - 18, maxTop)) + 'px';
+      tooltip.style.top = Math.max(4, Math.min(hovered.y - tooltip.offsetHeight - 12, maxTop)) + 'px';
     }
   });
   chartCanvas.addEventListener('mouseleave', () => {
@@ -992,7 +992,7 @@ function bindSparkHover(cv) {
       const maxTop = cardRect.height - tooltip.offsetHeight - 8;
       tooltip.style.left = Math.max(12, Math.min(cvRect.left - cardRect.left + hovered.x * cvRect.width / cv.dataset.w + 10, maxLeft)) + 'px';
       // 悬停在命中点上方，少遮曲线本体（与趋势图 tooltip 同间距）
-      tooltip.style.top = Math.max(4, Math.min(cvRect.top - cardRect.top + hovered.y * cvRect.height / cv.dataset.h - tooltip.offsetHeight - 18, maxTop)) + 'px';
+      tooltip.style.top = Math.max(4, Math.min(cvRect.top - cardRect.top + hovered.y * cvRect.height / cv.dataset.h - tooltip.offsetHeight - 12, maxTop)) + 'px';
     }
   });
   cv.addEventListener('mouseleave', () => {
