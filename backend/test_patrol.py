@@ -62,6 +62,58 @@ def test_load_patrol_config_example():
     assert cfg.temperature is None
 
 
+def test_discover_models_prefers_id_over_display_name():
+    """discover 优先取 id：OpenAI 风格端点（如 Groq）的 name 是展示名，取了会 404；
+    仅 Cloudflare 风格（id 为内部 UUID）回退 name。"""
+    import asyncio
+
+    from .patrol_runner import discover_models
+
+    class FakeResponse:
+        def raise_for_status(self): pass
+        def json(self):
+            return {"data": [
+                {"id": "openai/gpt-oss-20b", "name": "GPT OSS 20B"},   # Groq：取 id
+                {"id": "qwen/qwen3.8-27b"},                              # 无 name
+            ]}
+
+    class FakeClient:
+        def __init__(self, **kwargs): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): return False
+        async def get(self, url): return FakeResponse()
+
+    import backend.patrol_runner as pr
+    orig = httpx.AsyncClient if (httpx := __import__("httpx")) else None
+    pr_httpx_client = pr.httpx.AsyncClient
+    pr.httpx.AsyncClient = FakeClient
+    try:
+        models = asyncio.run(discover_models("https://api.test.com/v1", "k", 5))
+    finally:
+        pr.httpx.AsyncClient = pr_httpx_client
+    assert models == ["openai/gpt-oss-20b", "qwen/qwen3.8-27b"]
+
+    class FakeCFResponse:
+        def raise_for_status(self): pass
+        def json(self):
+            return {"result": [
+                {"id": "f9f2250b-1048-4a52-9910-d0bf976616a1", "name": "@cf/openai/gpt-oss-120b"},
+            ]}
+
+    class FakeCFClient:
+        def __init__(self, **kwargs): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): return False
+        async def get(self, url): return FakeCFResponse()
+
+    pr.httpx.AsyncClient = FakeCFClient
+    try:
+        models = asyncio.run(discover_models("https://api.cf.com/v1", "k", 5))
+    finally:
+        pr.httpx.AsyncClient = pr_httpx_client
+    assert models == ["@cf/openai/gpt-oss-120b"]
+
+
 def test_to_tests_expands_models(monkeypatch):
     """每个 model 展开为一条 test，api_key 从 env 解析。"""
     monkeypatch.setenv("FAKE_KEY", "sk-123")

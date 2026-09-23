@@ -13,6 +13,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import re
 import sys
 import uuid
 from datetime import datetime, timezone
@@ -74,7 +75,8 @@ async def discover_models(base_url: str, api_key: str, timeout: float, discover_
     """从发现端点拉上游全量模型 id；失败返回空列表（退回显式 models）。
 
     兼容两种响应形状：OpenAI `{data: [{id}]}` 与 Cloudflare `{result: [{id: uuid, name}]}`。
-    CF 的 id 是内部 UUID，模型名在 name 字段，故 name 优先。
+    CF 的 id 是内部 UUID（模型名在 name 字段），其余端点（如 Groq）的 name 是展示名，
+    直接取会 404——故优先 id，仅当 id 缺失或形如 UUID 时回退 name。
     """
     url = (discover_url or base_url.rstrip("/") + "/models").rstrip("/")
     try:
@@ -84,7 +86,15 @@ async def discover_models(base_url: str, api_key: str, timeout: float, discover_
             resp.raise_for_status()
             body = resp.json()
         items = body.get("data") or body.get("result") or []
-        return [m.get("name") or m.get("id") for m in items if m.get("name") or m.get("id")]
+        uuid_re = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", re.IGNORECASE)
+        names = []
+        for m in items:
+            mid, mname = m.get("id"), m.get("name")
+            if mid and not uuid_re.fullmatch(mid):
+                names.append(mid)
+            elif mname:
+                names.append(mname)
+        return names
     except Exception as e:
         print(f"patrol: discover {base_url} failed: {e}", file=sys.stderr)
         return []

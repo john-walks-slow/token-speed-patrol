@@ -13,7 +13,7 @@ LLM API 定时巡检（GitHub Actions）+ 静态看板（GitHub Pages）。零�
 - `backend/rate_limit.py` — 令牌桶限流
 - `website/index.html` — 看板（零构建纯 JS，原生 Canvas 图表），`data/` 存 JSONL 结果，push 即生效
 - `config/patrol.json` — 巡检配置（无密钥，api_key 只存环境变量名，直接提交；fork 后填 Secrets 即用）
-- `.github/workflows/patrol.yml` — 巡检 cron（每6h）+ 结果 commit
+- `.github/workflows/patrol.yml` — 巡检 cron（每 2h）+ 结果 commit
 - `.github/workflows/deploy-website.yml` — Pages 部署（workflow_run 联动 patrol 完成）
 
 ## 开发与调试
