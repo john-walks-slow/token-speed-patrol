@@ -32,7 +32,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 ## 配置格式
 
-一切巡检行为都在 `config/patrol.json` 里声明，workflow 与代码零定制——改配置即生效，无需动代码。
+巡检行为在 `config/patrol.json` 里声明。**重要：敏感信息必须引用 PATROL_EXTRA_ENV 中的环境变量**。
 
 ```json
 {
@@ -137,7 +137,7 @@ python -m http.server 8899 -d website   # 看板本地预览
 
 ## 贡献
 
-有推荐的免费模型 API？开 issue 告诉我。
+有其他希望加入的免费模型 API？欢迎提 issue 推荐。
 
 ## License
 
