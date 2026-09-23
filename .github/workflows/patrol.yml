@@ -2,9 +2,10 @@ name: Token Speed Patrol
 
 on:
   schedule:
-    # 巡检周期在此配置（cron 表达式）；当前每 2 小时一次，13 分错开整点。
+    # 巡检周期在此配置（cron 表达式）；当前每 1 小时一次，37 分错开整点。
     # 频率依据：docs/features/260923-provider-coverage/260923-rate-limit-policy.research.md
-    - cron: '13 */2 * * *'
+    # GitHub Actions 高峰期会丢 scheduled run，实际频率低于名义值，属预期。
+    - cron: '37 * * * *'
   workflow_dispatch: # 手动触发，用于首次验证与按需重跑
     inputs:
       providers:
