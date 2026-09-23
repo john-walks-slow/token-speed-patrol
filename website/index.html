@@ -85,10 +85,24 @@ nav {
 
 /* hero */
 header { padding: 48px 0 32px; }
+header .wrap { position: relative; }
 h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; }
 h1 .grad { background: linear-gradient(120deg, #34d399 20%, #6ee7b7 45%, #a7f3d0 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero-sub { font-size: 15.5px; color: var(--text-dim); max-width: 640px; }
-.last-run { margin-top: 10px; font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+.last-run { margin-top: 10px; font-size: 12px; color: var(--text-faint); font-family: var(--mono); position: relative; width: fit-content; }
+.last-run .params { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+.last-run .params::after {
+  content: attr(data-tip);
+  position: absolute; left: 0; top: 100%; margin-top: 6px;
+  white-space: pre-line; text-align: left; z-index: 20;
+  max-width: 420px; word-break: break-all;
+  background: rgba(14, 18, 22, 0.97); border: 1px solid var(--border-strong);
+  border-radius: 8px; padding: 10px 13px; font-size: 12px; line-height: 1.6;
+  color: var(--text-dim); font-family: var(--mono);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4); pointer-events: none;
+  opacity: 0; transition: opacity .15s;
+}
+.last-run .params:hover::after { opacity: 1; }
 
 /* metric cards */
 .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 36px; }
@@ -221,7 +235,6 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 20px;
     <p class="last-run" id="lastRun">—</p>
   </div>
 </header>
-
 <main class="wrap">
   <!-- Aggregate metrics -->
   <div class="metrics" id="metrics"></div>
@@ -480,7 +493,15 @@ function renderLastRun(latestRun) {
   const el = document.getElementById('lastRun');
   if (!latestRun) { el.textContent = '—'; return; }
   const d = new Date(latestRun.finished_at || latestRun.started_at);
-  el.textContent = `上次巡检：${d.toLocaleString()} · ${latestRun.success}/${latestRun.total} 成功`;
+  // 生成参数在 result 级（同轮巡检统一），从首条 result 取；「生成参数」单独可 hover
+  const r = latestRun.results.find(x => x.prompt != null);
+  if (r) {
+    const temp = r.temperature == null ? '默认' : r.temperature;
+    el.innerHTML = `上次巡检：${d.toLocaleString()} · ${latestRun.success}/${latestRun.total} 成功 · ` +
+      `<span class="params" data-tip="提示词：${escapeHtml(r.prompt)}&#10;max_tokens：${r.max_tokens} · temperature：${temp}">生成参数</span>`;
+  } else {
+    el.textContent = `上次巡检：${d.toLocaleString()} · ${latestRun.success}/${latestRun.total} 成功`;
+  }
 }
 
 function renderMetrics(latestRun) {
