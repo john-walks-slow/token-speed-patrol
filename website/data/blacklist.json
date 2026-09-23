@@ -122,60 +122,96 @@
       "last_error": "HTTP 404: The model `llama prompt guard 2 22m` does not exist or you do not have access to it."
     },
     "Google Gemini/models/gemini-pro-latest": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429",
+      "blacklisted_at": "2026-09-23T13:48:39.697491+00:00"
     },
     "Google Gemini/models/gemini-3.1-pro-preview": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429",
+      "blacklisted_at": "2026-09-23T13:48:39.697491+00:00"
     },
     "Google Gemini/models/gemini-3.1-pro-preview-customtools": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429",
+      "blacklisted_at": "2026-09-23T13:48:39.697491+00:00"
     },
     "OpenRouter/google/gemma-4-31b-it:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-09-23T13:48:39.697491+00:00"
     },
     "Groq/Qwen/Qwen3.8-27B": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
     },
     "OpenRouter/qwen/qwen3.8-27b:free": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429: Provider returned error"
     },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
     },
-    "Google Gemini/models/gemma-4-31b-it": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 503"
-    },
     "Google Gemini/models/gemini-flash-latest": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 503"
     },
     "Google Gemini/models/gemini-3.7-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 503"
     },
     "Google Gemini/models/gemini-3.8-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 503"
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
-    },
-    "ModelScope/ZhipuAI/GLM-5.2": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: Request rate increased too quickly. To ensure system stability, please adjust your client logic to scale requests more smoothly over time."
     },
     "OpenRouter/poolside/laguna-s-2.1:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
+    },
+    "Groq/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+    },
+    "NVIDIA NIM/google/gemma-4-31b-it": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/mistralai/mistral-nemotron": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Google Gemini/models/gemini-3.1-flash-lite-preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/models/gemini-3.1-flash-lite": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/models/gemini-3.6-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "ModelScope/deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+    },
+    "ModelScope/stepfun-ai/Step-3.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: request limited RPM reached, current: 11, limit: 10. Please top up at https://platform.stepfun.com/top-up. Rate limit rules: https://platform.stepfun.com/docs/zh/pricing/details#%E9%98%B6%E6"
+    },
+    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
     }
   }
 }
