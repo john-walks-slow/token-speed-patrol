@@ -97,16 +97,16 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 ## 免费公开端点巡检
 
-本仓库自带一份当前（2026-09）主流免费端点的巡检配置并持续出数，作为活示范：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope，覆盖约 95 个模型，模型列表尽量用上面的动态发现自动维护。
+仓库里的 `patrol.json` 默认配置了 6 个免费端点：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope，共约 95 个模型，模型列表靠动态发现自动维护，不用手动跟。
 
-| Secret（走 `PATROL_EXTRA_ENV`） | 从哪获取密钥 | 免费限额（2026-09 实测口径） |
+| 提供方 | 从哪获取密钥 | 免费限额（2026-09 实测口径） |
 |---|---|---|
-| `GROQ_API_KEY` | [console.groq.com/keys](https://console.groq.com/keys) — 永久免费层，无需信用卡 | 每模型 30 RPM / 1K~14.4K RPD |
-| `NVIDIA_API_KEY` | [build.nvidia.com](https://build.nvidia.com/settings) — 免费试用额度，无需信用卡 | 账号级 ~40 RPM（NIM 模型共享池） |
-| `GEMINI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey) — 免费层，无需信用卡 | flash 系 ~1500 RPD；**pro 系仅 ~50-100 RPD**（免费层最低的一档，RPD 太平洋时间午夜重置） |
-| `CLOUDFLARE_API_KEY` | [dash.cloudflare.com](https://dash.cloudflare.com/profile/api-tokens) — Workers AI 免费额度 | **10K Neurons/天**（按 token 折算的硬顶）；文本 300 RPM；frontier 系大模型不在免费计划（403） |
-| `OPENROUTER_API_KEY` | [openrouter.ai/keys](https://openrouter.ai/keys) | `:free` 模型 50 请求/天、20 RPM（账号级，UTC 午夜重置；充值 $10 后 1000 请求/天） |
-| `MODELSCOPE_API_KEY` | [modelscope.cn](https://modelscope.cn/my/myaccesstoken) — 免费额度 | 2000 请求/天（全模型共享，0 点重置）+ 单模型动态 QPS |
+| Groq | [console.groq.com/keys](https://console.groq.com/keys) — 永久免费层，无需信用卡 | 每模型 30 RPM / 1K~14.4K RPD |
+| NVIDIA NIM | [build.nvidia.com](https://build.nvidia.com/settings) — 免费试用额度，无需信用卡 | 账号级 ~40 RPM（NIM 模型共享池） |
+| Google Gemini | [aistudio.google.com](https://aistudio.google.com/apikey) — 免费层，无需信用卡 | flash 系 ~1500 RPD；**pro 系仅 ~50-100 RPD**（免费层最低的一档，RPD 太平洋时间午夜重置） |
+| Cloudflare Workers AI | [dash.cloudflare.com](https://dash.cloudflare.com/profile/api-tokens) — Workers AI 免费额度 | **10K Neurons/天**（按 token 折算的硬顶）；文本 300 RPM；frontier 系大模型不在免费计划（403） |
+| OpenRouter | [openrouter.ai/keys](https://openrouter.ai/keys) | `:free` 模型 50 请求/天、20 RPM（账号级，UTC 午夜重置；充值 $10 后 1000 请求/天） |
+| ModelScope | [modelscope.cn](https://modelscope.cn/my/myaccesstoken) — 免费额度 | 2000 请求/天（全模型共享，0 点重置）+ 单模型动态 QPS |
 
 限额政策、测速频率权衡、历史错误根因等调研记录见 `docs/features/260923-provider-coverage/`。
 
