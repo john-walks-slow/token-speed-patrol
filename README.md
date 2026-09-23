@@ -135,6 +135,10 @@ python -m http.server 8899 -d website   # 看板本地预览
 
 - 感谢 [LINUX DO](https://linux.do/) 社区提供的交流环境。
 
+## 贡献
+
+有推荐的免费模型 API？开 issue 告诉我。
+
 ## License
 
 MIT
