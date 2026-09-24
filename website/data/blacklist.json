@@ -175,29 +175,13 @@
       "last_error": "HTTP 503",
       "blacklisted_at": "2026-09-24T15:30:56.282889+00:00"
     },
-    "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 4,
-      "last_error": "ReadTimeout"
+    "Groq/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
     },
-    "NVIDIA NIM/google/diffusiongemma-26b-a4b-it": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "Google Gemini/models/gemini-3.1-flash-lite-preview": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3.1-flash-lite": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3-flash-preview": {
+    "ModelScope/nex-agi/Nex-N2.5-Pro": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
-    },
-    "Google Gemini/models/gemini-3.5-flash": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503"
     }
   }
 }
