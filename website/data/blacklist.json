@@ -166,32 +166,50 @@
       "blacklisted_at": "2026-09-24T06:51:05.266428+00:00"
     },
     "Google Gemini/models/gemma-4-31b-it": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 500"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 500",
+      "blacklisted_at": "2026-09-24T15:30:56.282889+00:00"
     },
     "Google Gemini/models/gemini-3.8-flash": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 503"
-    },
-    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 3,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 503",
+      "blacklisted_at": "2026-09-24T15:30:56.282889+00:00"
     },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
     },
     "OpenRouter/poolside/laguna-s-2.1:free": {
+      "consecutive_failures": 3,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/poolside/laguna-xs-2.1:free": {
       "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "NVIDIA NIM/mistralai/mistral-nemotron": {
+    "NVIDIA NIM/google/diffusiongemma-26b-a4b-it": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
+    "NVIDIA NIM/moonshotai/kimi-k3": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "ReadTimeout"
+    },
+    "Google Gemini/models/gemini-flash-lite-latest": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/models/gemini-3.1-flash-lite-preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/models/gemini-3.1-flash-lite": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "Google Gemini/models/gemini-3.6-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
     }
   }
 }
