@@ -161,56 +161,37 @@
       "blacklisted_at": "2026-09-23T19:57:02.901777+00:00"
     },
     "OpenRouter/inclusionai/ling-3.0-flash-vl:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-vl"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-vl",
+      "blacklisted_at": "2026-09-24T06:51:05.266428+00:00"
     },
     "Google Gemini/models/gemma-4-31b-it": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 500"
     },
     "Google Gemini/models/gemini-3.8-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 503"
-    },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: Provider returned error"
-    },
-    "Groq/qwen/qwen3.8-27b": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
-    },
-    "NVIDIA NIM/openai/gpt-oss-20b": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "Google Gemini/models/gemini-3.1-flash-lite-preview": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503"
-    },
-    "ModelScope/deepseek-ai/DeepSeek-V4-Flash-0731": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
-    },
-    "ModelScope/deepseek-ai/DeepSeek-V4-Pro": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
-    },
-    "ModelScope/Qwen/Qwen3.5-35B-A3B": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "ModelScope/Qwen/Qwen3.5-397B-A17B": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request rate increased too quickly. To ensure system stability, please adjust your client logic to scale requests more smoothly over time."
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     },
-    "ModelScope/ZhipuAI/GLM-5.2": {
+    "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Google Gemini/models/gemini-3.6-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "OpenRouter/poolside/laguna-s-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
