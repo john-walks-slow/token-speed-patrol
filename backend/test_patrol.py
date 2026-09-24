@@ -26,7 +26,7 @@ def test_compute_itl():
 def test_load_patrol_config_example():
     """仓库自带 patrol.json 能正确加载，字段一一对应。"""
     cfg = load_patrol_config("config/patrol.json")
-    assert len(cfg.targets) == 7
+    assert len(cfg.targets) == 8
     # Groq target（discover + blacklist 过滤非 chat 模型）
     assert cfg.targets[0].provider_name == "Groq"
     assert cfg.targets[0].api_key_env == "GROQ_API_KEY"
@@ -53,10 +53,15 @@ def test_load_patrol_config_example():
     assert len(cfg.targets[4].models) > 0
     assert cfg.targets[5].provider_name == "ModelScope"
     assert cfg.targets[5].api_key_env == "MODELSCOPE_API_KEY"
+    # Cerebras target（discover 动态发现，key 走 CEREBRAS_API_KEY）
+    assert cfg.targets[6].provider_name == "Cerebras"
+    assert cfg.targets[6].base_url == "https://api.cerebras.ai/v1"
+    assert cfg.targets[6].api_key_env == "CEREBRAS_API_KEY"
+    assert cfg.targets[6].discover is True
     # Kilo Relay target（models 为空则本轮跳过，经私有中转，README 启用）
-    assert cfg.targets[6].provider_name == "Kilo Relay"
-    assert cfg.targets[6].base_url == "$KILO_RELAY_URL"
-    assert cfg.targets[6].models == []
+    assert cfg.targets[7].provider_name == "Kilo Relay"
+    assert cfg.targets[7].base_url == "$KILO_RELAY_URL"
+    assert cfg.targets[7].models == []
     assert cfg.stream is True
     assert cfg.max_tokens == 1024
     assert cfg.temperature is None

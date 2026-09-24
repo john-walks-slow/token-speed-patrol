@@ -168,6 +168,15 @@
       ]
     },
     {
+      "provider_name": "Cerebras",
+      "base_url": "https://api.cerebras.ai/v1",
+      "api_key_env": "CEREBRAS_API_KEY",
+      "protocol": "openai",
+      "discover": true,
+      "models": [],
+      "blacklist": []
+    },
+    {
       "provider_name": "Kilo Relay",
       "base_url": "$KILO_RELAY_URL",
       "api_key_env": "KILO_RELAY_KEY",
