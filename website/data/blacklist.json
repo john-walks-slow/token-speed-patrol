@@ -166,30 +166,30 @@
       "blacklisted_at": "2026-09-24T06:51:05.266428+00:00"
     },
     "Google Gemini/models/gemma-4-31b-it": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 500"
     },
     "Google Gemini/models/gemini-3.8-flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 503"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
+      "consecutive_failures": 3,
+      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
     },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "Google Gemini/models/gemini-3.6-flash": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503"
     },
     "OpenRouter/poolside/laguna-s-2.1:free": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "NVIDIA NIM/mistralai/mistral-nemotron": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "OpenRouter/poolside/laguna-xs-2.1:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     }
