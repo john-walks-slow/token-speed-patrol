@@ -7,7 +7,7 @@ on:
   # patrol 的结果 commit 由 GITHUB_TOKEN 推送，不触发 push 事件；
   # 用 workflow_run 在巡检完成后联动重新发布，看板才能拿到新数据
   workflow_run:
-    workflows: ['Token Speed Patrol']
+    workflows: ['Free Token Speed']
     types: [completed]
   workflow_dispatch:
 

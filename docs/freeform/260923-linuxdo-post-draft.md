@@ -28,7 +28,7 @@
 
 监控 Groq、Gemini、NVIDIA、OpenRouter、ModelScope、Cloudflare，95 + 免费模型，每两小时更新
 
-Token Speed Patrol 是一个基于 Github Actions 的模型测速和可用性巡检面板。
+Free Token Speed 是一个基于 Github Actions 的模型测速和可用性巡检面板。
 
 特性
 - 监控 TPS、TTFT、ITL、成功率

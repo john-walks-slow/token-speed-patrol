@@ -1,4 +1,4 @@
-# Token Speed Patrol
+# Free Token Speed
 
 LLM API 定时巡检 + 静态看板，跑在 GitHub Actions 上，零服务器、零成本。
 
@@ -26,7 +26,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 4. **编辑 `config/patrol.json`**，填你要测的服务商（见下节）。默认配置针对 6 个免费端点（见[免费公开端点巡检](#免费公开端点巡检)）。
 5. **开启 Pages**：Settings → Pages → Source: GitHub Actions
-6. **触发首次巡逻**：Actions → Token Speed Patrol → Run workflow
+6. **触发首次巡逻**：Actions → Free Token Speed → Run workflow
 
 看板地址：`https://<你的用户名>.github.io/token-speed-patrol/`
 

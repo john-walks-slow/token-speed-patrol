@@ -1,4 +1,4 @@
-name: Token Speed Patrol
+name: Free Token Speed
 
 on:
   schedule:
