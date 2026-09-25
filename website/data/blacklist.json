@@ -176,36 +176,24 @@
       "blacklisted_at": "2026-09-24T15:30:56.282889+00:00"
     },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/mistralai/mistral-nemotron": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
     },
     "OpenRouter/poolside/laguna-s-2.1:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: Provider returned error"
-    },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
     },
-    "NVIDIA NIM/poolside/laguna-xs-2.1": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "Google Gemini/models/gemini-3.5-flash": {
+    "Google Gemini/models/gemini-3.6-flash": {
       "consecutive_failures": 1,
       "last_error": "HTTP 503"
     },
-    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
+    "ModelScope/ZhipuAI/GLM-5.2": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
     }
   }
 }
