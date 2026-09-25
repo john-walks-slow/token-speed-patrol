@@ -175,13 +175,33 @@
       "last_error": "HTTP 503",
       "blacklisted_at": "2026-09-24T15:30:56.282889+00:00"
     },
-    "Groq/qwen/qwen3.8-27b": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
-    },
     "ModelScope/nex-agi/Nex-N2.5-Pro": {
+      "consecutive_failures": 2,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/openai/gpt-oss-20b": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/mistralai/mistral-nemotron": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 500"
+    },
+    "OpenRouter/poolside/laguna-s-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/poolside/laguna-xs-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     }
   }
 }
