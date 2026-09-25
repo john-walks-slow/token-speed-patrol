@@ -176,36 +176,37 @@
       "blacklisted_at": "2026-09-24T15:30:56.282889+00:00"
     },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 4,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/mistralai/mistral-nemotron": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 500"
+      "consecutive_failures": 5,
+      "last_error": "ReadTimeout",
+      "blacklisted_at": "2026-09-25T20:48:08.002158+00:00"
     },
     "Google Gemini/models/gemini-3.1-flash-lite": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "Google Gemini/models/gemini-3.5-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 503"
     },
     "OpenRouter/nex-agi/nex-n2.5-mini:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-mini:free."
     },
     "OpenRouter/nex-agi/nex-n2.5-pro:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-pro:free."
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/poolside/laguna-s-2.1:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "ModelScope/deepseek-ai/DeepSeek-V4-Flash-0731": {
+    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     }
   }
 }
