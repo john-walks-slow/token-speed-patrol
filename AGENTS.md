@@ -1,4 +1,4 @@
-# AGENTS.md — Token Speed Patrol
+# AGENTS.md — Free Token Speed
 
 ## 目标
 
