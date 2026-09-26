@@ -181,32 +181,36 @@
       "blacklisted_at": "2026-09-25T20:48:08.002158+00:00"
     },
     "Google Gemini/models/gemini-3.1-flash-lite": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 503"
-    },
-    "Google Gemini/models/gemini-3.5-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 503"
     },
     "OpenRouter/nex-agi/nex-n2.5-mini:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-mini:free."
     },
     "OpenRouter/nex-agi/nex-n2.5-pro:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-pro:free."
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: Provider returned error"
-    },
-    "OpenRouter/poolside/laguna-s-2.1:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+    },
+    "Google Gemini/models/gemini-3.1-flash-lite-preview": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
+      "last_error": "HTTP 503"
+    },
+    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "ModelScope/Qwen/Qwen3.5-27B": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
     }
   }
 }
