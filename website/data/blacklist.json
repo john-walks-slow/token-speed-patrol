@@ -190,21 +190,17 @@
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-pro:free.",
       "blacklisted_at": "2026-09-26T10:13:46.727867+00:00"
     },
-    "Google Gemini/models/gemini-3.5-flash": {
+    "NVIDIA NIM/openai/gpt-oss-20b": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 503"
+      "last_error": "ReadTimeout"
     },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
+    "OpenRouter/poolside/laguna-s-2.1:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "ModelScope/deepseek-ai/DeepSeek-V4-Pro": {
+    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
-    },
-    "ModelScope/ZhipuAI/GLM-5.2": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request rate increased too quickly. To ensure system stability, please adjust your client logic to scale requests more smoothly over time."
+      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
     }
   }
 }
