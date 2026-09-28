@@ -190,13 +190,33 @@
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-pro:free.",
       "blacklisted_at": "2026-09-26T10:13:46.727867+00:00"
     },
-    "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
+    "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     },
-    "ModelScope/stepfun-ai/Step-3.7-Flash": {
+    "NVIDIA NIM/mistralai/mistral-nemotron": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: request limited TPM reached, current: 783355, limit: 500000. Please top up at https://platform.stepfun.com/top-up. Rate limit rules: https://platform.stepfun.com/docs/zh/pricing/details#%E9%"
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/moonshotai/kimi-k3": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Google Gemini/models/gemini-3-flash-preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503"
+    },
+    "OpenRouter/poolside/laguna-xs-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "ModelScope/ZhipuAI/GLM-4.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
+    },
+    "ModelScope/ZhipuAI/GLM-5.2": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
     }
   }
 }
