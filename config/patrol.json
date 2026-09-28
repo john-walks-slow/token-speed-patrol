@@ -83,19 +83,7 @@
         "zyphra/.*"
       ]
     },
-    {
-      "provider_name": "Google Gemini",
-      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
-      "api_key_env": "GEMINI_API_KEY",
-      "protocol": "openai",
-      "discover": true,
-      "models": [],
-      "blacklist": [
-        ".*(image|tts|transcribe|embed|aqa|live|veo|lyria|robotics|computer-use|antigravity|deep-research|nano-banana|native-audio).*",
-        "models/gemini-2\\.5-.*",
-        "models/gemini-omni-.*"
-      ]
-    },
+    
     {
       "provider_name": "Cloudflare Workers AI",
       "base_url": "https://api.cloudflare.com/client/v4/accounts/5b393025ed97484019c46b8136af3aa5/ai/v1",
