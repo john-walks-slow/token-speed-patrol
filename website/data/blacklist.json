@@ -190,41 +190,191 @@
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-pro:free.",
       "blacklisted_at": "2026-09-26T10:13:46.727867+00:00"
     },
-    "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 4,
-      "last_error": "ReadTimeout"
-    },
     "NVIDIA NIM/mistralai/mistral-nemotron": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/moonshotai/kimi-k3": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404"
     },
     "Google Gemini/models/gemini-3-flash-preview": {
       "consecutive_failures": 1,
       "last_error": "HTTP 503"
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-09-29T09:05:24.773484+00:00"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: insufficient balance",
+      "blacklisted_at": "2026-09-29T09:05:24.773484+00:00"
     },
     "ModelScope/deepseek-ai/DeepSeek-V4-Pro": {
-      "consecutive_failures": 3,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+      "consecutive_failures": 4,
+      "last_error": "HTTP 429: insufficient balance"
     },
     "OpenRouter/inclusionai/ling-3.0-flash-fin:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-fin"
     },
-    "NVIDIA NIM/openai/gpt-oss-20b": {
+    "NVIDIA NIM/poolside/laguna-xs-2.1": {
       "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
+      "last_error": "HTTP 503: ResourceExhausted: All workers are busy, please retry later"
+    },
+    "Cloudflare Workers AI/@cf/openai/gpt-oss-120b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-3.2-3b-instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-3.1-8b-instruct-fp8": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-3.2-1b-instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/zai-org/glm-4.7-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-3.3-70b-instruct-fp8-fast": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/ibm-granite/granite-4.0-h-micro": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwen2.5-coder-32b-instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/nvidia/nemotron-3-120b-a12b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/aisingapore/gemma-sea-lion-v4-27b-it": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwen3-30b-a3b-fp8": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/google/gemma-4-26b-a4b-it": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/mistralai/mistral-small-3.1-24b-instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/openai/gpt-oss-20b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-4-scout-17b-16e-instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwq-32b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429"
+    },
+    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "ModelScope/deepseek-ai/DeepSeek-V4-Flash-0731": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/deepseek-ai/DeepSeek-V4-Pro-0813": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/deepseek-ai/DeepSeek-V4.1-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/MiniMax/MiniMax-M1-80k": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/mistralai/Mistral-Large-Instruct-2407": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/nex-agi/Nex-N2.5-mini": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/nex-agi/Nex-N2.5-Pro": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/opencompass/CompassJudger-1-32B-Instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Qwen/Qwen3.5-122B-A10B": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Qwen/Qwen3.5-27B": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Qwen/Qwen3.5-35B-A3B": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Qwen/Qwen3.5-397B-A17B": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Qwen/Qwen3.8-27B": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Qwen/Qwen3.8-Flash-Next": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/Shanghai_AI_Laboratory/Intern-S2-Preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/stepfun-ai/Step-3.5-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/stepfun-ai/Step-3.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2412": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2504": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/ZhipuAI/GLM-5.2": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
     }
   }
 }
