@@ -224,103 +224,99 @@
       "blacklisted_at": "2026-09-30T09:02:22.818265+00:00"
     },
     "Cloudflare Workers AI/@cf/utter-project/eurollm-9b-it": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403"
     },
     "Cloudflare Workers AI/@cf/swiss-ai/apertus-v1.5-8b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403"
     },
     "ModelScope/ZhipuAI/GLM-5.2": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: insufficient balance"
     },
     "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clef": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 400"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clef-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 400"
     },
-    "OpenRouter/poolside/laguna-s-2.1:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
-    },
     "ModelScope/deepseek-ai/DeepSeek-V4-Pro-0813": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/deepseek-ai/DeepSeek-V4.1-Flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/MiniMax/MiniMax-M1-80k": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/mistralai/Mistral-Large-Instruct-2407": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/nex-agi/Nex-N2.5-mini": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/nex-agi/Nex-N2.5-Pro": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/opencompass/CompassJudger-1-32B-Instruct": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Qwen/Qwen3.5-122B-A10B": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Qwen/Qwen3.5-27B": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Qwen/Qwen3.5-35B-A3B": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Qwen/Qwen3.5-397B-A17B": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Qwen/Qwen3.8-27B": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Qwen/Qwen3.8-Flash-Next": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/Shanghai_AI_Laboratory/Intern-S2-Preview": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/stepfun-ai/Step-3.5-Flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/stepfun-ai/Step-3.7-Flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2412": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     },
     "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2504": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: insufficient balance"
     }
   }
