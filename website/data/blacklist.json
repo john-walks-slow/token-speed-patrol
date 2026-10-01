@@ -222,6 +222,22 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 429: insufficient balance",
       "blacklisted_at": "2026-09-30T09:02:22.818265+00:00"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Cloudflare Workers AI/@cf/utter-project/eurollm-9b-it": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "Cloudflare Workers AI/@cf/swiss-ai/apertus-v1.5-8b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
+    },
+    "ModelScope/ZhipuAI/GLM-5.2": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
     }
   }
 }
