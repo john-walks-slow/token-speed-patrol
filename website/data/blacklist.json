@@ -224,28 +224,50 @@
       "blacklisted_at": "2026-09-30T09:02:22.818265+00:00"
     },
     "Cloudflare Workers AI/@cf/utter-project/eurollm-9b-it": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-10-02T13:14:58.599940+00:00"
     },
     "Cloudflare Workers AI/@cf/swiss-ai/apertus-v1.5-8b": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-10-02T13:14:58.599940+00:00"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clef": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 400"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clef-flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 400"
     },
-    "ModelScope/Qwen/Qwen3.5-122B-A10B": {
-      "consecutive_failures": 3,
+    "NVIDIA NIM/z-ai/glm-5.3": {
+      "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     },
-    "OpenRouter/poolside/laguna-s-2.1:free": {
+    "ModelScope/nex-agi/Nex-N2.5-mini": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "HTTP 503: The service is temporarily unavailable. Please retry later."
+    },
+    "ModelScope/stepfun-ai/Step-3.5-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/stepfun-ai/Step-3.7-Flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2412": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2504": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
+    },
+    "ModelScope/ZhipuAI/GLM-5.2": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: insufficient balance"
     }
   }
 }
