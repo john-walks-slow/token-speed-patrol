@@ -244,7 +244,15 @@
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
     },
     "ModelScope/nex-agi/Nex-N2.5-mini": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "ModelScope/mistralai/Mistral-Large-Instruct-2407": {
+      "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
   }
