@@ -243,13 +243,9 @@
       "last_error": "HTTP 400",
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
     },
-    "OpenRouter/poolside/laguna-s-2.1:free": {
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
-    },
-    "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2412": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 502"
+      "last_error": "ReadTimeout"
     }
   }
 }
