@@ -244,75 +244,75 @@
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
     },
     "Cloudflare Workers AI/@cf/openai/gpt-oss-120b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.2-3b-instruct": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.1-8b-instruct-fp8": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.2-1b-instruct": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/zai-org/glm-4.7-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.3-70b-instruct-fp8-fast": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/ibm-granite/granite-4.0-h-micro": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen2.5-coder-32b-instruct": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/nvidia/nemotron-3-120b-a12b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/aisingapore/gemma-sea-lion-v4-27b-it": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen3-30b-a3b-fp8": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/google/gemma-4-26b-a4b-it": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/mistralai/mistral-small-3.1-24b-instruct": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen3.8-27b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/openai/gpt-oss-20b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-4-scout-17b-16e-instruct": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwq-32b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429"
     }
   }
