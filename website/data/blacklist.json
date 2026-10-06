@@ -174,47 +174,43 @@
       "last_error": "HTTP 503"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 3,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+      "consecutive_failures": 4,
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     },
     "NVIDIA NIM/deepseek-ai/deepseek-v4.1-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
     },
     "OpenRouter/poolside/laguna-s-2.1:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
     },
     "NVIDIA NIM/mistralai/mistral-nemotron": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
-    },
     "OpenCode Zen/jev-1.13-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 500: Internal server error"
     },
     "OpenCode Zen/deepseek-v4-flash-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 400: Error from provider (Console): Upstream request failed: Model is unavailable."
     },
     "OpenCode Zen/muse-spark-1.3-contributor-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 500: Internal server error"
     },
     "OpenCode Zen/muse-spark-1.2-contributor-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 500: Internal server error"
     },
     "OpenCode Zen/mimo-v2.5-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 410: Error from provider (Console): Model mimo-v2.5-free has been deprecated. Use mimo-v2.6-flash-free instead."
     },
     "OpenCode Zen/ling-3.0-flash-fin-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 400: Error from provider (Console): Upstream request failed: Endpoint is unavailable."
     },
     "OpenRouter/nex-agi/nex-n2.5-mini:free": {
@@ -267,24 +263,12 @@
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
     },
     "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "ReadTimeout"
     },
-    "Groq/qwen/qwen3.8-27b": {
+    "OpenCode Zen/ling-3.1-flash-free": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
-    },
-    "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/moonshotai/kimi-k3": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "ModelScope/ZhipuAI/GLM-5.2": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+      "last_error": "HTTP 429: Error from provider (Console): Upstream request failed: Endpoint is unavailable."
     }
   }
 }
