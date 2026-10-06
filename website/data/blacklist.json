@@ -244,8 +244,28 @@
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
     },
     "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
+    },
+    "Groq/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+    },
+    "NVIDIA NIM/google/gemma-4-31b-it": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/moonshotai/kimi-k3": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "OpenRouter/poolside/laguna-s-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "ModelScope/ZhipuAI/GLM-5.2": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
     }
   }
 }
