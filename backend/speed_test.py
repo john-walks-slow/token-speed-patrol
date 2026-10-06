@@ -1,5 +1,6 @@
 import asyncio
 import json
+import secrets
 import time
 import uuid
 from collections.abc import Awaitable, Callable
@@ -186,6 +187,68 @@ def _compute_itl(content_tokens: int, content_ttft_ms: float | None, total_laten
     return None
 
 
+# ---- OpenCode Zen 免费层伪装 ----
+# 上游按「请求是否来自 OpenCode CLI」校验免费模型，缺任一要素即 403 FreeTierError：
+#   - x-opencode-session / x-opencode-request 必须形如 ses_/msg_ + 12 位 hex + 14 位 base62；
+#   - UA 声明 opencode 客户端且版本 >= 1.18.0；
+#   - body 必须带 bash/glob/grep/read 四件占位工具，且 stream 强制为 true。
+# 与 opencode2api 反代同款握手，直连 opencode.ai/zen 即可（无需本地反代）。
+_OPENCODE_UA_VERSION = "1.18.0"
+_OPENCODE_ID_HEX = "0123456789abcdef"
+_OPENCODE_ID_ALNUM = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+
+def _opencode_shape_id(prefix: str) -> str:
+    """生成免费层门禁要求的 ID：prefix + 12 位 hex + 14 位 base62（共 26 字符主体）。"""
+    body = secrets.token_bytes(26)
+    return (
+        prefix
+        + "".join(_OPENCODE_ID_HEX[b % 16] for b in body[:12])
+        + "".join(_OPENCODE_ID_ALNUM[b % 62] for b in body[12:])
+    )
+
+
+def _opencode_free_tier_headers(api_key: str) -> dict[str, str]:
+    """OpenCode Zen 免费层伪装头；未提供 key 时用匿名 public。"""
+    session = _opencode_shape_id("ses_")
+    return {
+        "Authorization": f"Bearer {api_key or 'public'}",
+        "Accept": "application/json",
+        "User-Agent": f"opencode/{_OPENCODE_UA_VERSION} ai-sdk/provider-utils/4.0.23 runtime/bun/1.3.14",
+        "x-opencode-client": "cli",
+        "x-opencode-project": secrets.token_hex(20),
+        "x-opencode-session": session,
+        "x-session-id": session,
+        "x-session-affinity": session,
+        "x-opencode-request": _opencode_shape_id("msg_"),
+    }
+
+
+def _opencode_free_tier_tools() -> list[dict]:
+    """免费层必需的占位工具：形状与描述任意，仅需名字命中 bash/glob/grep/read。"""
+
+    def tool(name: str, prop: str, desc: str) -> dict:
+        return {
+            "type": "function",
+            "function": {
+                "name": name,
+                "description": desc,
+                "parameters": {
+                    "type": "object",
+                    "properties": {prop: {"type": "string", "description": desc}},
+                    "required": [prop],
+                },
+            },
+        }
+
+    return [
+        tool("bash", "command", "Run a shell command and return its output"),
+        tool("glob", "pattern", "Find files matching a glob pattern"),
+        tool("grep", "pattern", "Search file contents with a regular expression"),
+        tool("read", "file_path", "Read the contents of a file"),
+    ]
+
+
 async def run_speed_test(
     base_url: str,
     api_key: str = "",
@@ -205,6 +268,8 @@ async def run_speed_test(
     base_url 需自带路径（含 /v1 等），不再自动拼接。
     protocol=anthropic 时请求 {base}/messages，用 x-api-key + anthropic-version，
     且不发送 temperature（Anthropic 4.7+ 模型已移除该参数，省略最稳妥）。
+    protocol=opencode 时请求 {base}/chat/completions，走 OpenCode Zen 免费层伪装
+    （见 _opencode_free_tier_headers），忽略 stream 参数强制流式。
     max_tokens 为 None 时不发送该字段，由上游用自身默认上限。
     temperature 为 None 时不发送该字段（部分模型仅允许默认值 1）。
     timeout 为 None 时用默认 120s；巡检慢模型（冷启动推理）可调大。
@@ -223,6 +288,25 @@ async def run_speed_test(
             "messages": [{"role": "user", "content": prompt}],
             "stream": stream,
         }
+        if max_tokens is not None:
+            payload["max_tokens"] = max_tokens
+    elif protocol == "opencode":
+        # OpenCode Zen 免费层：强制流式并补齐门禁头与占位工具（见上方说明）。
+        url = f"{base}/chat/completions"
+        stream = True
+        headers = {
+            "Content-Type": "application/json",
+            **_opencode_free_tier_headers(api_key),
+        }
+        payload = {
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "stream": True,
+            "stream_options": {"include_usage": True},
+            "tools": _opencode_free_tier_tools(),
+        }
+        if temperature is not None:
+            payload["temperature"] = temperature
         if max_tokens is not None:
             payload["max_tokens"] = max_tokens
     else:
@@ -277,7 +361,7 @@ async def run_speed_test(
                             continue
                         if line.startswith("data: "):
                             data_str = line[6:]
-                            if protocol == "openai" and data_str.strip() == "[DONE]":
+                            if protocol in ("openai", "opencode") and data_str.strip() == "[DONE]":
                                 break
                             try:
                                 chunk = json.loads(data_str)

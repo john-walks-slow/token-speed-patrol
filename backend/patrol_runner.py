@@ -80,8 +80,10 @@ async def discover_models(base_url: str, api_key: str, timeout: float, discover_
     直接取会 404——故优先 id，仅当 id 缺失或形如 UUID 时回退 name。
     """
     url = (discover_url or base_url.rstrip("/") + "/models").rstrip("/")
+    # 匿名端点（如 OpenCode Zen 免费层）无 key 时不发 Authorization，空 "Bearer " 会被 httpx 拒绝
+    headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
     try:
-        async with httpx.AsyncClient(timeout=timeout, headers={"Authorization": f"Bearer {api_key}"},
+        async with httpx.AsyncClient(timeout=timeout, headers=headers,
                                      **DEFAULT_CLIENT_KWARGS) as client:
             resp = await client.get(url)
             resp.raise_for_status()

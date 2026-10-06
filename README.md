@@ -62,7 +62,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 - `provider_name`：看板上的展示名，随意取。
 - `base_url`：OpenAI 兼容端点。支持 `"$ENV_NAME"` / `"${ENV_NAME}"` 引用环境变量（私有端点不落盘，结果中自动脱敏为 `(private)`）。
 - `api_key_env`：**只存环境变量名，绝不写密钥明文**。密钥经 Secret `PATROL_EXTRA_ENV`（多行 `KEY=VALUE`）注入，runner 启动时读入。
-- `protocol`：`openai`（绝大多数网关）或 `anthropic`（Anthropic 原生端点）。
+- `protocol`：`openai`（绝大多数网关）、`anthropic`（Anthropic 原生端点）或 `opencode`（OpenCode Zen 免费层，代码内自动完成握手，见[下节](#opencode-zen-免费模型直连)）。
 - `models`：显式模型 id 列表。
 
 ### 动态模型发现
@@ -86,6 +86,28 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 - `discover_url`：可选，默认 `{base_url}/models`；上游发现端点路径不标准时（如 Cloudflare 的 `/models/search`）单独指定。兼容 `{"data": [{"id"}]}`（OpenAI 风格）与 `{"result": [{"name"}]}`（Cloudflare 风格）两种响应。
 - `whitelist` / `blacklist`：regex 数组（fullmatch）。并集先过 whitelist（空 = 全保留）再剔 blacklist。
 
+### OpenCode Zen 免费模型（直连）
+
+OpenCode Zen 的免费模型（`*-free`、`big-pickle`）对任意客户端开放，但上游按"请求是否来自 OpenCode CLI"做门禁：需带特定 `x-opencode-*` 伪装头、ULID 格式的 session/request id、body 里补齐 `bash/glob/grep/read` 占位工具，并强制流式。本仓库在 `speed_test.py` 内以 `protocol: "opencode"` 复刻这套握手，因此 **GH runner 直连 `https://opencode.ai/zen/v1` 即可测，无需本地反代或密钥**（缺省 `Authorization: Bearer public`）：
+
+```json
+{
+  "provider_name": "OpenCode Zen",
+  "base_url": "https://opencode.ai/zen/v1",
+  "api_key_env": "OPENCODE_ZEN_KEY",
+  "protocol": "opencode",
+  "discover": true,
+  "models": [],
+  "whitelist": [".*-free", "big-pickle"]
+}
+```
+
+- `discover` 拉全量模型（含付费）后由 `whitelist` 只保留免费项；新上线的免费模型自动跟随。
+- `OPENCODE_ZEN_KEY` 可不配置；若在 `PATROL_EXTRA_ENV` 中提供，则用你的 key 发 `Bearer`（测的是同款免费模型，额度和匿名池一致）。
+- 免费池按 IP 共享限额，偶发 `429 FreeUsageLimitError` 属正常；GH runner 的 IP 每轮不同，通常比固定家宽 IP 更宽松。
+
+> `protocol=opencode` 的握手逻辑属于与[桌面版](https://github.com/john-walks-slow/token-speed)共用的 core（`speed_test.py`），上游若调整门禁需同步修改两个仓库。
+
 ### 自动黑名单
 
 连续失败 5 次的模型自动拉黑，下一轮起不再巡检；成功一次即自动恢复。状态存在 `website/data/blacklist.json`（随巡检结果一起 commit，即巡检历史的持久层），记录每个模型当前的连续失败次数、最近错误和拉黑时间。间歇性失败（429/503）不会误伤，真下线/无权限的模型 5 轮后被剔除。手动恢复：删掉 `blacklist.json` 中对应条目（或整个文件）并 commit。
@@ -97,7 +119,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 
 ## 免费公开端点巡检
 
-仓库里的 `patrol.json` 默认配置了 6 个免费端点：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope，共约 95 个模型，模型列表靠动态发现自动维护，不用手动跟。
+仓库里的 `patrol.json` 默认配置了 7 个免费端点：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope、Cerebras，另含一个免密钥直连的 OpenCode Zen；共约 95 个模型，模型列表靠动态发现自动维护，不用手动跟。
 
 | 提供方 | 从哪获取密钥 | 免费限额（2026-09 实测口径） |
 |---|---|---|
@@ -107,6 +129,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 | Cloudflare Workers AI | [dash.cloudflare.com](https://dash.cloudflare.com/profile/api-tokens) — Workers AI 免费额度 | **10K Neurons/天**（按 token 折算的硬顶）；文本 300 RPM；frontier 系大模型不在免费计划（403） |
 | OpenRouter | [openrouter.ai/keys](https://openrouter.ai/keys) | `:free` 模型 50 请求/天、20 RPM（账号级，UTC 午夜重置；充值 $10 后 1000 请求/天） |
 | ModelScope | [modelscope.cn](https://modelscope.cn/my/myaccesstoken) — 免费额度 | 2000 请求/天（全模型共享，0 点重置）+ 单模型动态 QPS |
+| OpenCode Zen | 免密钥（直连 `opencode.ai/zen`，`protocol: "opencode"` 自动握手） | 免费池按 IP 共享限额，偶发 429；GH runner 每轮新 IP |
 
 限额政策、测速频率权衡、历史错误根因等调研记录见 `docs/features/260923-provider-coverage/`。
 
