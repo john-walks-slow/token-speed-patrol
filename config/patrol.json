@@ -83,7 +83,6 @@
         "zyphra/.*"
       ]
     },
-    
     {
       "provider_name": "Cloudflare Workers AI",
       "base_url": "https://api.cloudflare.com/client/v4/accounts/5b393025ed97484019c46b8136af3aa5/ai/v1",

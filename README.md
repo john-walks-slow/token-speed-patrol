@@ -24,7 +24,7 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
    ANOTHER_API_KEY=sk-yyyy
    ```
 
-4. **编辑 `config/patrol.json`**，填你要测的服务商（见下节）。默认配置针对 6 个免费端点（见[免费公开端点巡检](#免费公开端点巡检)）。
+4. **编辑 `config/patrol.json`**，填你要测的服务商（见下节）。默认配置针对 7 个免费端点（见[免费公开端点巡检](#免费公开端点巡检)）。
 5. **开启 Pages**：Settings → Pages → Source: GitHub Actions
 6. **触发首次巡逻**：Actions → Free Token Speed → Run workflow
 
@@ -119,13 +119,12 @@ OpenCode Zen 的免费模型（`*-free`、`big-pickle`）对任意客户端开�
 
 ## 免费公开端点巡检
 
-仓库里的 `patrol.json` 默认配置了 7 个免费端点：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope、Cerebras，另含一个免密钥直连的 OpenCode Zen；共约 95 个模型，模型列表靠动态发现自动维护，不用手动跟。
+仓库里的 `patrol.json` 默认配置了 7 个免费端点：Groq、NVIDIA NIM、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope、Cerebras，以及免密钥直连的 OpenCode Zen；模型列表靠动态发现自动维护，不用手动跟。
 
 | 提供方 | 从哪获取密钥 | 免费限额（2026-09 实测口径） |
 |---|---|---|
 | Groq | [console.groq.com/keys](https://console.groq.com/keys) — 永久免费层，无需信用卡 | 每模型 30 RPM / 1K~14.4K RPD |
 | NVIDIA NIM | [build.nvidia.com](https://build.nvidia.com/settings) — 免费试用额度，无需信用卡 | 账号级 ~40 RPM（NIM 模型共享池） |
-| Google Gemini | [aistudio.google.com](https://aistudio.google.com/apikey) — 免费层，无需信用卡 | flash 系 ~1500 RPD；**pro 系仅 ~50-100 RPD**（免费层最低的一档，RPD 太平洋时间午夜重置） |
 | Cloudflare Workers AI | [dash.cloudflare.com](https://dash.cloudflare.com/profile/api-tokens) — Workers AI 免费额度 | **10K Neurons/天**（按 token 折算的硬顶）；文本 300 RPM；frontier 系大模型不在免费计划（403） |
 | OpenRouter | [openrouter.ai/keys](https://openrouter.ai/keys) | `:free` 模型 50 请求/天、20 RPM（账号级，UTC 午夜重置；充值 $10 后 1000 请求/天） |
 | ModelScope | [modelscope.cn](https://modelscope.cn/my/myaccesstoken) — 免费额度 | 2000 请求/天（全模型共享，0 点重置）+ 单模型动态 QPS |
