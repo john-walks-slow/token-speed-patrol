@@ -271,13 +271,21 @@
       "last_error": "ReadTimeout",
       "blacklisted_at": "2026-10-06T15:33:48.253283+00:00"
     },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: Provider returned error"
-    },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+    },
+    "NVIDIA NIM/moonshotai/kimi-k3": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "OpenCode Zen/ling-3.1-flash-free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Error from provider (Console): Upstream request failed: Endpoint is unavailable."
     }
   }
 }
