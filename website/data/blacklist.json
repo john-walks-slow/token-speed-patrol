@@ -272,20 +272,12 @@
       "blacklisted_at": "2026-10-06T15:33:48.253283+00:00"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+      "consecutive_failures": 3,
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     },
-    "NVIDIA NIM/moonshotai/kimi-k3": {
+    "OpenCode Zen/exo-free": {
       "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/z-ai/glm-5.3": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "OpenCode Zen/ling-3.1-flash-free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Error from provider (Console): Upstream request failed: Endpoint is unavailable."
+      "last_error": "HTTP 503: Error from provider (Console): Upstream request failed: Endpoint is unavailable."
     }
   }
 }
