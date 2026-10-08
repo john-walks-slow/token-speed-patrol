@@ -1,10 +1,10 @@
-# Free Token Speed
+# Token Speed Patrol
 
 LLM API 定时巡检 + 静态看板，跑在 GitHub Actions 上，零服务器、零成本。
 
 GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时长 / 成功率），结果以 JSONL 提交回仓库，GitHub Pages 发布看板展示趋势。所有数据公开可追溯——每一行历史都能在 git 里找到。
 
-> **[👉 示例看板：95+ 免费模型实时测速数据](https://john-walks-slow.github.io/token-speed-patrol/)**
+> **[示例看板：OpenRouter, Nvidia NIM, OpenCode 等免费模型实时测速数据](https://john-walks-slow.github.io/token-speed-patrol/)**
 
 <table>
   <tr>
