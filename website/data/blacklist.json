@@ -277,12 +277,20 @@
       "blacklisted_at": "2026-10-08T15:55:46.391792+00:00"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+      "consecutive_failures": 3,
+      "last_error": "ReadTimeout"
     },
-    "OpenCode Zen/ling-3.1-flash-free": {
+    "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Upstream request failed: Endpoint is unavailable."
+      "last_error": "ReadTimeout"
+    },
+    "OpenRouter/inclusionai/ling-3.0-flash-sante:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-sante"
+    },
+    "OpenRouter/poolside/laguna-xs-2.1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
