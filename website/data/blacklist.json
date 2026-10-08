@@ -272,20 +272,17 @@
       "blacklisted_at": "2026-10-06T15:33:48.253283+00:00"
     },
     "OpenCode Zen/exo-free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 503: Error from provider (Console): Upstream request failed: Endpoint is unavailable."
-    },
-    "ModelScope/Qwen/Qwen3.5-27B": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request rate increased too quickly. To ensure system stability, please adjust your client logic to scale requests more smoothly over time."
+      "consecutive_failures": 5,
+      "last_error": "HTTP 503: Upstream request failed: Endpoint is unavailable.",
+      "blacklisted_at": "2026-10-08T15:55:46.391792+00:00"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
     },
-    "ModelScope/ZhipuAI/GLM-5.2": {
+    "OpenCode Zen/ling-3.1-flash-free": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: You exceeded your current quota, please check your plan and billing details. For details, see: https://help.aliyun.com/zh/model-studio/error-code#token-limit"
+      "last_error": "HTTP 429: Upstream request failed: Endpoint is unavailable."
     }
   }
 }
