@@ -276,21 +276,22 @@
       "last_error": "HTTP 503: Upstream request failed: Endpoint is unavailable.",
       "blacklisted_at": "2026-10-08T15:55:46.391792+00:00"
     },
-    "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 4,
-      "last_error": "ReadTimeout"
-    },
     "OpenRouter/inclusionai/ling-3.0-flash-sante:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-sante"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 404: This model is unavailable for free. The paid version is available now - use this slug instead: inclusionai/ling-3.0-flash-sante",
+      "blacklisted_at": "2026-10-09T22:55:09.732164+00:00"
     },
     "ModelScope/ZhipuAI/GLM-4.7-Flash": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: 该模型当前访问量过大，请您稍后再试"
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: 您的账户已达到速率限制，请您控制请求频率"
     },
     "OpenCode Zen/ling-3.1-flash-free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Upstream request failed: Endpoint is unavailable."
+    },
+    "Cloudflare Workers AI/@cf/cloudflare/clef-omni": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 400"
     }
   }
 }
