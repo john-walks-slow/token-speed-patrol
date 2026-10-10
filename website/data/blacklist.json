@@ -287,162 +287,167 @@
       "blacklisted_at": "2026-10-10T18:53:32.127662+00:00"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clef-omni": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 400"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 400",
+      "blacklisted_at": "2026-10-10T23:54:14.403586+00:00"
     },
     "Cloudflare Workers AI/@cf/openai/gpt-oss-120b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.2-3b-instruct": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.1-8b-instruct-fp8": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.2-1b-instruct": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/zai-org/glm-4.7-flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.3-70b-instruct-fp8-fast": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/ibm-granite/granite-4.0-h-micro": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen2.5-coder-32b-instruct": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/nvidia/nemotron-3-120b-a12b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/aisingapore/gemma-sea-lion-v4-27b-it": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen3-30b-a3b-fp8": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/google/gemma-4-26b-a4b-it": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/mistralai/mistral-small-3.1-24b-instruct": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen3.8-27b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/openai/gpt-oss-20b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/meta/llama-4-scout-17b-16e-instruct": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "Cloudflare Workers AI/@cf/qwen/qwq-32b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429"
     },
     "ModelScope/deepseek-ai/DeepSeek-V4-Pro-0813": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/deepseek-ai/DeepSeek-V4.1-Flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/MiniMax/MiniMax-M1-80k": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/mistralai/Mistral-Large-Instruct-2407": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/nex-agi/Nex-N2.5-mini": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/nex-agi/Nex-N2.5-Pro": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/opencompass/CompassJudger-1-32B-Instruct": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Qwen/Qwen3.5-122B-A10B": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Qwen/Qwen3.5-27B": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Qwen/Qwen3.5-35B-A3B": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Qwen/Qwen3.5-397B-A17B": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Qwen/Qwen3.8-27B": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Qwen/Qwen3.8-Flash-Next": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/Shanghai_AI_Laboratory/Intern-S2-Preview": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/stepfun-ai/Step-3.5-Flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/stepfun-ai/Step-3.7-Flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2412": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/XGenerationLab/XiYanSQL-QwenCoder-32B-2504": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/ZhipuAI/GLM-5.2": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "Groq/qwen/qwen3.8-27b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
     },
     "NVIDIA NIM/moonshotai/kimi-k3": {
+      "consecutive_failures": 2,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/nvidia/nemotron-3.5-lightning-30b-a3b": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
