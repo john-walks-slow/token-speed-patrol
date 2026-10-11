@@ -387,15 +387,15 @@
       "blacklisted_at": "2026-10-11T06:31:44.055208+00:00"
     },
     "NVIDIA NIM/moonshotai/kimi-k3": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "ReadTimeout"
     },
     "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
     },
     "OpenCode Zen/ling-3.1-flash-free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Upstream request failed: Endpoint is unavailable."
     }
   }
