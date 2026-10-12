@@ -386,9 +386,9 @@
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco",
       "blacklisted_at": "2026-10-11T06:31:44.055208+00:00"
     },
-    "OpenCode Zen/step-5-preview-free": {
+    "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Upstream request failed: Endpoint is unavailable."
+      "last_error": "ReadTimeout"
     }
   }
 }
