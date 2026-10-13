@@ -95,6 +95,12 @@ GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时�
 - 周期在 `.github/workflows/patrol.yml` 的 `schedule.cron`（默认每 2 小时，按你的 API 限额调整）。
 - 手动触发（Run workflow）时可填 `providers` 输入（逗号分隔 provider_name），只测指定服务商，不全量重跑。
 
+### 隐私与安全
+
+- **密钥**：`patrol.json` 只存环境变量名，明文经 GitHub Secrets 注入，运行时读入内存——仓库代码、提交记录、巡检结果里都不会出现。
+- **私有端点**：`base_url` 可引用环境变量，结果中脱敏为 `(private)`。
+- **执行历史**：`website/data/` 下保存巡检结果，包含模型名、端点地址、延迟/速度指标、成功与否，以及所用的提示词和生成参数。fork 前先看一眼这些文件，确认要公开的范围符合预期。
+
 ## 免费公开端点巡检
 
 仓库里的 `patrol.json` 默认配置了 6 个免费端点：Groq、NVIDIA NIM、Google Gemini、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope，共约 95 个模型，模型列表靠动态发现自动维护，不用手动跟。
