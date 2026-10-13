@@ -266,11 +266,6 @@
       "last_error": "HTTP 400",
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
     },
-    "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 5,
-      "last_error": "ReadTimeout",
-      "blacklisted_at": "2026-10-06T15:33:48.253283+00:00"
-    },
     "OpenCode Zen/exo-free": {
       "consecutive_failures": 5,
       "last_error": "HTTP 503: Upstream request failed: Endpoint is unavailable.",

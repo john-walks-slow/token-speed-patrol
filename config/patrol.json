@@ -33,7 +33,9 @@
       "discover": true,
       "models": [
         "openai/gpt-oss-20b",
-        "nvidia/nemotron-3.5-lightning-30b-a3b"
+        "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "z-ai/glm-5.3",
+        "z-ai/glm-5.3-flash"
       ],
       "blacklist": [
         ".*(embed|retriever|clip|parse|reward|guard|safety).*",
