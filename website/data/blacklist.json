@@ -382,40 +382,48 @@
       "blacklisted_at": "2026-10-11T06:31:44.055208+00:00"
     },
     "ModelScope/ACE-Step/acestep-v15-xl-sft": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 400: Model id : ACE-Step/acestep-v15-xl-sft , has no provider supported"
     },
     "OpenCode Zen/big-pickle": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/ling-3.1-flash-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/cat-jam-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/mimo-v2.6-flash-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/nemotron-3.5-lightning-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/step-5-preview-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/longcat-2.5-preview-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "OpenCode Zen/space-bunny-free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
+    },
+    "NVIDIA NIM/openai/gpt-oss-20b": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/google/gemma-4-31b-it": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
     }
   }
 }
