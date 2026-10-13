@@ -2,10 +2,10 @@ name: Free Token Speed
 
 on:
   schedule:
-    # 巡检周期在此配置（cron 表达式）；当前每 1 小时一次，37 分错开整点。
+    # 巡检周期在此配置（cron 表达式）；当前每 2 小时一次，37 分错开整点。
     # 频率依据：docs/features/260923-provider-coverage/260923-rate-limit-policy.research.md
     # GitHub Actions 高峰期会丢 scheduled run，实际频率低于名义值，属预期。
-    - cron: '37 * * * *'
+    - cron: '37 */2 * * *'
   workflow_dispatch: # 手动触发，用于首次验证与按需重跑
     inputs:
       providers:
@@ -55,7 +55,8 @@ jobs:
           git commit -m "patrol: $(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "nothing to commit"
           # 巡检运行期间 master 可能有新提交（否则 push 被拒、数据丢失）：rebase 后重试
           for i in 1 2 3 4 5; do
-            git pull --rebase origin master && git push && exit 0
+            # 不写死 master：巡检在哪个分支触发就把结果提交回哪个分支（PR/分支手动验证也能落数据）
+            git pull --rebase && git push && exit 0
             sleep 5
           done
           echo "::error::failed to push patrol results"

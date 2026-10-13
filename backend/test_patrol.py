@@ -37,31 +37,34 @@ def test_load_patrol_config_example():
     assert cfg.targets[1].provider_name == "NVIDIA NIM"
     assert cfg.targets[1].base_url == "https://integrate.api.nvidia.com/v1"
     assert cfg.targets[1].discover is True
-    # Google Gemini target（discover + blacklist 过滤 image/tts/embed 等非 chat 模型）
-    assert cfg.targets[2].provider_name == "Google Gemini"
-    assert cfg.targets[2].base_url == "https://generativelanguage.googleapis.com/v1beta/openai/"
-    assert cfg.targets[2].discover is True
-    assert cfg.targets[2].models == []
     # Cloudflare target（account id 直写，key 走 env；discover_url 自定义）
-    assert cfg.targets[3].provider_name == "Cloudflare Workers AI"
-    assert cfg.targets[3].api_key_env == "CLOUDFLARE_API_KEY"
-    assert "models/search" in cfg.targets[3].discover_url
+    assert cfg.targets[2].provider_name == "Cloudflare Workers AI"
+    assert cfg.targets[2].api_key_env == "CLOUDFLARE_API_KEY"
+    assert "models/search" in cfg.targets[2].discover_url
     # OpenRouter target（discover + whitelist/blacklist + 显式 :free 兜底列表）
-    assert cfg.targets[4].provider_name == "OpenRouter"
-    assert cfg.targets[4].discover is True
-    assert cfg.targets[4].whitelist == [".*:free", "stealth/.*"]
-    assert len(cfg.targets[4].models) > 0
-    assert cfg.targets[5].provider_name == "ModelScope"
-    assert cfg.targets[5].api_key_env == "MODELSCOPE_API_KEY"
+    assert cfg.targets[3].provider_name == "OpenRouter"
+    assert cfg.targets[3].discover is True
+    assert cfg.targets[3].whitelist == [".*:free", "stealth/.*"]
+    assert len(cfg.targets[3].models) > 0
+    assert cfg.targets[4].provider_name == "ModelScope"
+    assert cfg.targets[4].api_key_env == "MODELSCOPE_API_KEY"
     # Cerebras target（discover 动态发现，key 走 CEREBRAS_API_KEY）
-    assert cfg.targets[6].provider_name == "Cerebras"
-    assert cfg.targets[6].base_url == "https://api.cerebras.ai/v1"
-    assert cfg.targets[6].api_key_env == "CEREBRAS_API_KEY"
-    assert cfg.targets[6].discover is True
+    assert cfg.targets[5].provider_name == "Cerebras"
+    assert cfg.targets[5].base_url == "https://api.cerebras.ai/v1"
+    assert cfg.targets[5].api_key_env == "CEREBRAS_API_KEY"
+    assert cfg.targets[5].discover is True
     # Kilo Relay target（models 为空则本轮跳过，经私有中转，README 启用）
-    assert cfg.targets[7].provider_name == "Kilo Relay"
-    assert cfg.targets[7].base_url == "$KILO_RELAY_URL"
+    assert cfg.targets[6].provider_name == "Kilo Relay"
+    assert cfg.targets[6].base_url == "$KILO_RELAY_URL"
+    assert cfg.targets[6].models == []
+    # OpenCode Zen target（直连 zen，protocol=opencode 走免费层握手；discover + whitelist 只留免费模型）
+    assert cfg.targets[7].provider_name == "OpenCode Zen"
+    assert cfg.targets[7].base_url == "https://opencode.ai/zen/v1"
+    assert cfg.targets[7].protocol == "opencode"
+    assert cfg.targets[7].api_key_env == "OPENCODE_ZEN_KEY"
+    assert cfg.targets[7].discover is True
     assert cfg.targets[7].models == []
+    assert cfg.targets[7].whitelist == [".*-free", "big-pickle"]
     assert cfg.stream is True
     assert cfg.max_tokens == 1024
     assert cfg.temperature is None
@@ -420,3 +423,30 @@ def test_run_patrol_filters_auto_blacklisted(monkeypatch, tmp_path):
     body = json.loads((data_dir / "blacklist.json").read_text())
     assert "TestP/m2" not in body["failures"]
     assert "TestP/m1" in body["failures"]
+
+
+def test_opencode_free_tier_handshake():
+    """OpenCode Zen 免费层伪装：ID 格式、必需头与占位工具符合上游门禁。"""
+    import re
+
+    from .speed_test import (
+        _opencode_free_tier_headers,
+        _opencode_free_tier_tools,
+        _opencode_shape_id,
+    )
+
+    sid = _opencode_shape_id("ses_")
+    assert re.fullmatch(r"ses_[0-9a-f]{12}[0-9A-Za-z]{14}", sid)
+    assert _opencode_shape_id("msg_") != _opencode_shape_id("msg_")
+
+    headers = _opencode_free_tier_headers("")
+    assert headers["Authorization"] == "Bearer public"
+    assert headers["x-opencode-client"] == "cli"
+    assert headers["User-Agent"].startswith("opencode/1.18.0 ")
+    assert re.fullmatch(r"ses_[0-9a-f]{12}[0-9A-Za-z]{14}", headers["x-opencode-session"])
+    assert headers["x-session-id"] == headers["x-opencode-session"]
+    assert re.fullmatch(r"msg_[0-9a-f]{12}[0-9A-Za-z]{14}", headers["x-opencode-request"])
+    assert _opencode_free_tier_headers("sk-zen")["Authorization"] == "Bearer sk-zen"
+
+    names = [t["function"]["name"] for t in _opencode_free_tier_tools()]
+    assert names == ["bash", "glob", "grep", "read"]
