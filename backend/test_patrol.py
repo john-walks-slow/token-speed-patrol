@@ -442,10 +442,14 @@ def test_opencode_free_tier_handshake():
     headers = _opencode_free_tier_headers("")
     assert headers["Authorization"] == "Bearer public"
     assert headers["x-opencode-client"] == "cli"
-    assert headers["User-Agent"].startswith("opencode/1.18.0 ")
-    assert re.fullmatch(r"ses_[0-9a-f]{12}[0-9A-Za-z]{14}", headers["x-opencode-session"])
-    assert headers["x-session-id"] == headers["x-opencode-session"]
-    assert re.fullmatch(r"msg_[0-9a-f]{12}[0-9A-Za-z]{14}", headers["x-opencode-request"])
+    # UA 必须含 `opencode/<version>` 且 version >= 1.18.0（上游 grep 校验）
+    assert "opencode/1.18.0" in headers["User-Agent"]
+    sid_re = re.fullmatch(r"ses_[0-9a-f]{12}[0-9A-Za-z]{14}", headers["x-opencode-session"])
+    assert sid_re
+    # 必检头：x-opencode-session-id 与 affinity/x-opencode-session 三者同值
+    assert headers["x-opencode-session-id"] == headers["x-opencode-session"]
+    assert headers["X-Session-Id"] == headers["x-opencode-session"]
+    assert headers["x-session-affinity"] == headers["x-opencode-session"]
     assert _opencode_free_tier_headers("sk-zen")["Authorization"] == "Bearer sk-zen"
 
     names = [t["function"]["name"] for t in _opencode_free_tier_tools()]

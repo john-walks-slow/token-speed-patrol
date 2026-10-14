@@ -188,11 +188,19 @@ def _compute_itl(content_tokens: int, content_ttft_ms: float | None, total_laten
 
 
 # ---- OpenCode Zen 免费层伪装 ----
-# 上游按「请求是否来自 OpenCode CLI」校验免费模型，缺任一要素即 403 FreeTierError：
-#   - x-opencode-session / x-opencode-request 必须形如 ses_/msg_ + 12 位 hex + 14 位 base62；
-#   - UA 声明 opencode 客户端且版本 >= 1.18.0；
+# 上游按「请求是否来自 OpenCode CLI」校验免费模型，缺任一要素即 403/426：
+#   - 必带头：`x-opencode-session-id`（真正 session id）、`x-opencode-session`、
+#     `x-session-affinity`、`X-Session-Id`、`x-opencode-project`、`x-opencode-client`；
+#   - `x-opencode-session-id` / `x-opencode-session` / `x-session-affinity` /
+#     `X-Session-Id` 形如 `ses_` + 12 hex + 14 base62（共 26 字符主体）；前 12 hex 实际由
+#     时间戳 + counter 派生（见 opencode schema/identifier.ts 的 descending()），随机
+#     hex 也能过门禁；
+#   - User-Agent 含 `opencode/<version>` 且 version >= 1.18.0（`opencode/1.18.0/cli`
+#     即可，真实 CLI 格式为 `opencode/<channel>/<version>/<name>`，如
+#     `opencode/latest/1.2.3/cli`）；
 #   - body 必须带 bash/glob/grep/read 四件占位工具，且 stream 强制为 true。
-# 与 opencode2api 反代同款握手，直连 opencode.ai/zen 即可（无需本地反代）。
+# 关键差异：2026-10 后上游加入 `x-opencode-session-id` 必检 + UA 版本号门禁，原伪装缺这
+# 两项直接 403/426。
 _OPENCODE_UA_VERSION = "1.18.0"
 _OPENCODE_ID_HEX = "0123456789abcdef"
 _OPENCODE_ID_ALNUM = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -209,18 +217,27 @@ def _opencode_shape_id(prefix: str) -> str:
 
 
 def _opencode_free_tier_headers(api_key: str) -> dict[str, str]:
-    """OpenCode Zen 免费层伪装头；未提供 key 时用匿名 public。"""
+    """OpenCode Zen 免费层伪装头；未提供 key 时用匿名 public。
+
+    affinity 实际为 session.id（或父/源 fork session id），用于缓存命中；
+    单次请求无父/无 fork 时直接用同一 ID。真实 CLI 用基于时间戳的 descending()
+    生成（见 opencode schema/identifier.ts），但服务器只校验格式与版本号，随机
+    ses_<12hex><14base62> 也能通过。
+    """
     session = _opencode_shape_id("ses_")
     return {
         "Authorization": f"Bearer {api_key or 'public'}",
         "Accept": "application/json",
-        "User-Agent": f"opencode/{_OPENCODE_UA_VERSION} ai-sdk/provider-utils/4.0.23 runtime/bun/1.3.14",
+        # 真实 OpenCode CLI 格式：opencode/<channel>/<version>/<name>。
+        # 服务端 grep `opencode/<version>` 校验版本 >= 1.18.0，所以必须含
+        # `opencode/1.18.0`，且 `<version>` 段不能是诸如 ai-sdk/... 这种乱写。
+        "User-Agent": f"opencode/{_OPENCODE_UA_VERSION}/cli",
         "x-opencode-client": "cli",
         "x-opencode-project": secrets.token_hex(20),
+        "x-opencode-session-id": session,
         "x-opencode-session": session,
-        "x-session-id": session,
+        "X-Session-Id": session,
         "x-session-affinity": session,
-        "x-opencode-request": _opencode_shape_id("msg_"),
     }
 
 
