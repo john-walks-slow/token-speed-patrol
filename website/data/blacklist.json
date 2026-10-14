@@ -427,8 +427,12 @@
       "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
     }
   }
 }
