@@ -426,15 +426,15 @@
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
       "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
     },
-    "NVIDIA NIM/poolside/laguna-xs-2.1": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503: ResourceExhausted: All workers are busy, please retry later"
-    },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
     },
     "OpenCode Zen/deepseek-v4.1-flash-free": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
+    },
+    "OpenCode Zen/nemotron-3.5-super-vl-free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     }
