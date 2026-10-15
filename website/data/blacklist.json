@@ -425,14 +425,6 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
       "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
