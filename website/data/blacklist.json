@@ -352,20 +352,16 @@
       "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
     },
     "OpenRouter/poolside/laguna-xs-2.1:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 429: Provider returned error"
     },
     "NVIDIA NIM/nvidia/nemotron-3-ultra-550b-a55b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
     },
-    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
+    "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
-    },
-    "OpenRouter/nvidia/nemotron-3-super-120b-a12b:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 502: Provider returned error"
+      "last_error": "ReadTimeout"
     }
   }
 }
