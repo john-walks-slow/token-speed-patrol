@@ -187,36 +187,6 @@
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     },
-    "OpenCode Zen/jev-1.13-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 500: Internal server error",
-      "blacklisted_at": "2026-10-06T21:20:30.008303+00:00"
-    },
-    "OpenCode Zen/deepseek-v4-flash-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 400: Error from provider (Console): Upstream request failed: Model is unavailable.",
-      "blacklisted_at": "2026-10-06T21:20:30.008303+00:00"
-    },
-    "OpenCode Zen/muse-spark-1.3-contributor-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 500: Internal server error",
-      "blacklisted_at": "2026-10-06T21:20:30.008303+00:00"
-    },
-    "OpenCode Zen/muse-spark-1.2-contributor-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 500: Internal server error",
-      "blacklisted_at": "2026-10-06T21:20:30.008303+00:00"
-    },
-    "OpenCode Zen/mimo-v2.5-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 410: Error from provider (Console): Model mimo-v2.5-free has been deprecated. Use mimo-v2.6-flash-free instead.",
-      "blacklisted_at": "2026-10-06T21:20:30.008303+00:00"
-    },
-    "OpenCode Zen/ling-3.0-flash-fin-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 400: Error from provider (Console): Upstream request failed: Endpoint is unavailable.",
-      "blacklisted_at": "2026-10-06T21:20:30.008303+00:00"
-    },
     "OpenRouter/nex-agi/nex-n2.5-mini:free": {
       "consecutive_failures": 5,
       "last_error": "HTTP 404: No endpoints found for nex-agi/nex-n2.5-mini:free.",
@@ -265,11 +235,6 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 400",
       "blacklisted_at": "2026-10-02T19:33:28.892820+00:00"
-    },
-    "OpenCode Zen/exo-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 503: Upstream request failed: Endpoint is unavailable.",
-      "blacklisted_at": "2026-10-08T15:55:46.391792+00:00"
     },
     "OpenRouter/inclusionai/ling-3.0-flash-sante:free": {
       "consecutive_failures": 5,
@@ -385,54 +350,6 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 400: Model id : ACE-Step/acestep-v15-xl-sft , has no provider supported",
       "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/big-pickle": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/ling-3.1-flash-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/cat-jam-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/mimo-v2.6-flash-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/nemotron-3.5-lightning-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/step-5-preview-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/longcat-2.5-preview-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/space-bunny-free": {
-      "consecutive_failures": 5,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building.",
-      "blacklisted_at": "2026-10-14T08:01:43.826368+00:00"
-    },
-    "OpenCode Zen/deepseek-v4.1-flash-free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
-    },
-    "OpenCode Zen/nemotron-3.5-super-vl-free": {
-      "consecutive_failures": 3,
-      "last_error": "HTTP 403: OpenCode's free tier can only be used from within OpenCode. Download it at https://opencode.ai and keep building."
     },
     "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,

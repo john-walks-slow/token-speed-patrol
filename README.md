@@ -4,7 +4,7 @@ LLM API 定时巡检 + 静态看板，跑在 GitHub Actions 上，零服务器�
 
 GitHub Actions 定时对你的 LLM API 服务商测速（TTFT / TPS / 思考时长 / 成功率），结果以 JSONL 提交回仓库，GitHub Pages 发布看板展示趋势。所有数据公开可追溯——每一行历史都能在 git 里找到。
 
-> **[示例看板：OpenRouter, Nvidia NIM, OpenCode 等免费模型实时测速数据](https://john-walks-slow.github.io/token-speed-patrol/)**
+> **[示例看板：OpenRouter, Nvidia NIM, Groq 等免费模型实时测速数据](https://john-walks-slow.github.io/token-speed-patrol/)**
 
 <table>
   <tr>
@@ -125,7 +125,7 @@ OpenCode Zen 的免费模型（`*-free`、`big-pickle`）对任意客户端开�
 
 ## 免费公开端点巡检
 
-仓库里的 `patrol.json` 默认配置了 7 个免费端点：Groq、NVIDIA NIM、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope、Cerebras，以及免密钥直连的 OpenCode Zen；模型列表靠动态发现自动维护，不用手动跟。
+仓库里的 `patrol.json` 默认配置了 6 个免费端点：Groq、NVIDIA NIM、Cloudflare Workers AI、OpenRouter（`:free`）、ModelScope、Cerebras；模型列表靠动态发现自动维护，不用手动跟。
 
 | 提供方 | 从哪获取密钥 | 免费限额（2026-09 实测口径） |
 |---|---|---|
@@ -134,7 +134,6 @@ OpenCode Zen 的免费模型（`*-free`、`big-pickle`）对任意客户端开�
 | Cloudflare Workers AI | [dash.cloudflare.com](https://dash.cloudflare.com/profile/api-tokens) — Workers AI 免费额度 | **10K Neurons/天**（按 token 折算的硬顶）；文本 300 RPM；frontier 系大模型不在免费计划（403） |
 | OpenRouter | [openrouter.ai/keys](https://openrouter.ai/keys) | `:free` 模型 50 请求/天、20 RPM（账号级，UTC 午夜重置；充值 $10 后 1000 请求/天） |
 | ModelScope | [modelscope.cn](https://modelscope.cn/my/myaccesstoken) — 免费额度 | 2000 请求/天（全模型共享，0 点重置）+ 单模型动态 QPS |
-| OpenCode Zen | 免密钥（直连 `opencode.ai/zen`，`protocol: "opencode"` 自动握手） | 免费池按 IP 共享限额，偶发 429；GH runner 每轮新 IP |
 
 限额政策、测速频率权衡、历史错误根因等调研记录见 `docs/features/260923-provider-coverage/`。
 

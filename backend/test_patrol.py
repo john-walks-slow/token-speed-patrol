@@ -26,7 +26,7 @@ def test_compute_itl():
 def test_load_patrol_config_example():
     """仓库自带 patrol.json 能正确加载，字段一一对应。"""
     cfg = load_patrol_config("config/patrol.json")
-    assert len(cfg.targets) == 8
+    assert len(cfg.targets) == 7
     # Groq target（discover + blacklist 过滤非 chat 模型）
     assert cfg.targets[0].provider_name == "Groq"
     assert cfg.targets[0].api_key_env == "GROQ_API_KEY"
@@ -57,14 +57,6 @@ def test_load_patrol_config_example():
     assert cfg.targets[6].provider_name == "Kilo Relay"
     assert cfg.targets[6].base_url == "$KILO_RELAY_URL"
     assert cfg.targets[6].models == []
-    # OpenCode Zen target（直连 zen，protocol=opencode 走免费层握手；discover + whitelist 只留免费模型）
-    assert cfg.targets[7].provider_name == "OpenCode Zen"
-    assert cfg.targets[7].base_url == "https://opencode.ai/zen/v1"
-    assert cfg.targets[7].protocol == "opencode"
-    assert cfg.targets[7].api_key_env == "OPENCODE_ZEN_KEY"
-    assert cfg.targets[7].discover is True
-    assert cfg.targets[7].models == []
-    assert cfg.targets[7].whitelist == [".*-free", "big-pickle"]
     assert cfg.stream is True
     assert cfg.max_tokens == 1024
     assert cfg.temperature is None
