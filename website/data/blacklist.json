@@ -356,9 +356,9 @@
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
-    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
+    "NVIDIA NIM/nvidia/nemotron-3.5-lightning-30b-a3b": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "ReadTimeout"
     }
   }
 }
