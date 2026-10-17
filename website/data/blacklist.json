@@ -356,9 +356,9 @@
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
-    "Cloudflare Workers AI/@cf/qwen/qwen3.8-27b": {
+    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429"
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
