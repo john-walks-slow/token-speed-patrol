@@ -356,7 +356,11 @@
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
-    "NVIDIA NIM/nvidia/nemotron-3.5-lightning-30b-a3b": {
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
