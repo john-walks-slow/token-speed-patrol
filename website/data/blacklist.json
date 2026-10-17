@@ -356,17 +356,9 @@
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
-    "NVIDIA NIM/nvidia/nemotron-3-ultra-550b-a55b": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404"
-    },
-    "OpenRouter/nvidia/nemotron-3-ultra-550b-a55b:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 404: Provider returned error"
-    },
-    "OpenRouter/xingchen-agi/xing4.0-29b-a4b:free": {
+    "Cloudflare Workers AI/@cf/qwen/qwen3.8-27b": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "HTTP 429"
     }
   }
 }
