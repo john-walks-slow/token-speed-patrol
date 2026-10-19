@@ -355,6 +355,10 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
+    },
+    "OpenRouter/xingchen-agi/xing4.0-29b-a4b:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
