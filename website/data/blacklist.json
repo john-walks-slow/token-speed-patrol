@@ -356,9 +356,13 @@
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
-    "OpenRouter/xingchen-agi/xing4.0-29b-a4b:free": {
+    "ModelScope/deepseek-ai/DeepSeek-V4.1-Flash-1017": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
+    },
+    "ModelScope/stepfun-ai/Step-5-Preview": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     }
   }
 }
