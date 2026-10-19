@@ -357,12 +357,16 @@
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
     "ModelScope/deepseek-ai/DeepSeek-V4.1-Flash-1017": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
     },
     "ModelScope/stepfun-ai/Step-5-Preview": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 400: Model id : stepfun-ai/Step-5-Preview , has no provider supported"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
+      "last_error": "ReadTimeout"
     }
   }
 }
