@@ -357,20 +357,30 @@
       "blacklisted_at": "2026-10-16T21:49:07.339936+00:00"
     },
     "ModelScope/deepseek-ai/DeepSeek-V4.1-Flash-1017": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403: For account security, please complete your profile via email verification. ModelScope Magicubes is only available to verified accounts. Please refer to https://modelscope.cn/my/settings/acco",
+      "blacklisted_at": "2026-10-20T05:20:07.354795+00:00"
     },
     "ModelScope/stepfun-ai/Step-5-Preview": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 400: Model id : stepfun-ai/Step-5-Preview , has no provider supported"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 400: Model id : stepfun-ai/Step-5-Preview , has no provider supported",
+      "blacklisted_at": "2026-10-20T05:20:07.354795+00:00"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clairic": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 400"
     },
     "OpenRouter/xingchen-agi/xing4.0-29b-a4b:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
     }
   }
 }
