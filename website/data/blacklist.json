@@ -372,24 +372,25 @@
       "blacklisted_at": "2026-10-20T17:34:51.285988+00:00"
     },
     "OpenRouter/xingchen-agi/xing4.0-29b-a4b:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-10-20T21:56:12.485886+00:00"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-v4.1-flash-1017": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 403"
     },
     "NVIDIA NIM/nvidia/nemotron-3-super-120b-a12b": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 404"
+      "consecutive_failures": 3,
+      "last_error": "HTTP 502"
     },
     "OpenRouter/nvidia/nemotron-3-super-120b-a12b:free": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 404: Provider returned error"
     },
-    "NVIDIA NIM/nvidia/nemotron-3.5-super-vl-120b-a12b": {
+    "NVIDIA NIM/google/gemma-4-31b-it": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 500"
+      "last_error": "ReadTimeout"
     }
   }
 }
