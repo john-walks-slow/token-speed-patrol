@@ -392,10 +392,14 @@
       "blacklisted_at": "2026-10-21T08:06:34.044372+00:00"
     },
     "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "ReadTimeout"
     },
-    "NVIDIA NIM/openai/gpt-oss-20b": {
+    "NVIDIA NIM/z-ai/glm-5.3": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/google/diffusiongemma-26b-a4b-it": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
