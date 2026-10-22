@@ -391,17 +391,17 @@
       "last_error": "HTTP 404: Provider returned error",
       "blacklisted_at": "2026-10-21T08:06:34.044372+00:00"
     },
-    "Groq/qwen/qwen3.8-27b": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
-    },
     "NVIDIA NIM/google/gemma-4-31b-it": {
+      "consecutive_failures": 2,
+      "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     },
-    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
+    "NVIDIA NIM/poolside/laguna-xs-2.1": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "ReadTimeout"
     }
   }
 }
