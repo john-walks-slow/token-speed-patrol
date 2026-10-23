@@ -392,7 +392,16 @@
       "blacklisted_at": "2026-10-21T08:06:34.044372+00:00"
     },
     "NVIDIA NIM/google/gemma-4-31b-it": {
-      "consecutive_failures": 4,
+      "consecutive_failures": 5,
+      "last_error": "ReadTimeout",
+      "blacklisted_at": "2026-10-23T01:06:38.907845+00:00"
+    },
+    "Groq/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+    },
+    "NVIDIA NIM/stepfun-ai/step-5-preview": {
+      "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
   }
