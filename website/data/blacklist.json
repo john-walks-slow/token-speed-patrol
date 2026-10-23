@@ -395,14 +395,6 @@
       "consecutive_failures": 5,
       "last_error": "ReadTimeout",
       "blacklisted_at": "2026-10-23T01:06:38.907845+00:00"
-    },
-    "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/poolside/laguna-xs-2.1": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503: ResourceExhausted: All workers are busy, please retry later"
     }
   }
 }
