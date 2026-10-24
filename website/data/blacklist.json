@@ -396,7 +396,7 @@
       "last_error": "ReadTimeout",
       "blacklisted_at": "2026-10-23T01:06:38.907845+00:00"
     },
-    "NVIDIA NIM/meta/llama-3.2-11b-vision-instruct": {
+    "NVIDIA NIM/google/diffusiongemma-26b-a4b-it": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
