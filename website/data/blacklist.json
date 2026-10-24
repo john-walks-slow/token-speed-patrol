@@ -395,14 +395,6 @@
       "consecutive_failures": 5,
       "last_error": "ReadTimeout",
       "blacklisted_at": "2026-10-23T01:06:38.907845+00:00"
-    },
-    "NVIDIA NIM/meta/llama-3.2-11b-vision-instruct": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
-    },
-    "OpenRouter/liquid/lfm-2.5-2.6b:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
