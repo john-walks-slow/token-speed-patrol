@@ -397,16 +397,8 @@
       "blacklisted_at": "2026-10-23T01:06:38.907845+00:00"
     },
     "OpenRouter/liquid/lfm-2.5-2.6b:free": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 429: Provider returned error"
-    },
-    "NVIDIA NIM/google/diffusiongemma-26b-a4b-it": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "NVIDIA NIM/stepfun-ai/step-5-preview": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
     }
   }
 }
