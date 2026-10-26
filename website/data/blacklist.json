@@ -402,15 +402,7 @@
       "blacklisted_at": "2026-10-26T00:48:08.776365+00:00"
     },
     "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
-    },
-    "OpenRouter/nvidia/nemotron-3.5-super-vl:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 502: Provider returned error"
-    },
-    "NVIDIA NIM/stepfun-ai/step-5-preview": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
     }
   }
