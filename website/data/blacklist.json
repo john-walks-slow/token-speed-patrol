@@ -401,9 +401,13 @@
       "last_error": "HTTP 429: Provider returned error",
       "blacklisted_at": "2026-10-26T00:48:08.776365+00:00"
     },
-    "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
+    "NVIDIA NIM/z-ai/glm-5.3-flash": {
       "consecutive_failures": 1,
       "last_error": "ReadTimeout"
+    },
+    "OpenRouter/nvidia/nemotron-3.5-super-vl:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 502: Provider returned error"
     }
   }
 }
