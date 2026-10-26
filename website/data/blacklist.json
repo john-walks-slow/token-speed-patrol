@@ -397,8 +397,13 @@
       "blacklisted_at": "2026-10-23T01:06:38.907845+00:00"
     },
     "OpenRouter/liquid/lfm-2.5-2.6b:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-10-26T00:48:08.776365+00:00"
+    },
+    "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
     }
   }
 }
