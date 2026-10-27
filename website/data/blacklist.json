@@ -402,7 +402,7 @@
       "blacklisted_at": "2026-10-26T00:48:08.776365+00:00"
     },
     "NVIDIA NIM/z-ai/glm-5.3-flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "ReadTimeout"
     }
   }
