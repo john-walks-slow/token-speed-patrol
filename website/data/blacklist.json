@@ -412,8 +412,12 @@
       "blacklisted_at": "2026-10-28T09:00:38.736412+00:00"
     },
     "NVIDIA NIM/z-ai/glm-5.3": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 410"
+    },
+    "NVIDIA NIM/stepfun-ai/step-5-preview": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
     }
   }
 }
