@@ -407,12 +407,13 @@
       "blacklisted_at": "2026-10-27T08:29:18.634745+00:00"
     },
     "OpenRouter/recursive/flint-v1.0:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 429: Provider returned error"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 429: Provider returned error",
+      "blacklisted_at": "2026-10-28T09:00:38.736412+00:00"
     },
     "NVIDIA NIM/z-ai/glm-5.3": {
-      "consecutive_failures": 2,
-      "last_error": "ReadTimeout"
+      "consecutive_failures": 3,
+      "last_error": "HTTP 410"
     }
   }
 }
