@@ -417,12 +417,9 @@
       "blacklisted_at": "2026-10-28T22:56:05.038340+00:00"
     },
     "NVIDIA NIM/stepfun-ai/step-5-preview": {
-      "consecutive_failures": 4,
-      "last_error": "ReadTimeout"
-    },
-    "Cloudflare Workers AI/@cf/google/gemma-4-26b-a4b-it": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429"
+      "consecutive_failures": 5,
+      "last_error": "ReadTimeout",
+      "blacklisted_at": "2026-10-29T19:53:31.383423+00:00"
     }
   }
 }
