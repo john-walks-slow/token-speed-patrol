@@ -420,6 +420,14 @@
       "consecutive_failures": 5,
       "last_error": "ReadTimeout",
       "blacklisted_at": "2026-10-29T19:53:31.383423+00:00"
+    },
+    "NVIDIA NIM/nvidia/nemotron-3-ultra-550b-a55b": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "Cloudflare Workers AI/@cf/google/gemma-4-26b-a4b-it": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 500"
     }
   }
 }
