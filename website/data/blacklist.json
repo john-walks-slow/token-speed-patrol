@@ -422,8 +422,9 @@
       "blacklisted_at": "2026-10-29T19:53:31.383423+00:00"
     },
     "NVIDIA NIM/meta/llama-3.2-11b-vision-instruct": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 404",
+      "blacklisted_at": "2026-10-31T13:04:46.539253+00:00"
     }
   }
 }
