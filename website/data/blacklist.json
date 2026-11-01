@@ -427,8 +427,12 @@
       "blacklisted_at": "2026-10-31T13:04:46.539253+00:00"
     },
     "NVIDIA NIM/openai/gpt-oss-20b": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/nvidia/nemotron-3.5-bolt-e4b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 404"
     }
   }
 }
