@@ -425,10 +425,6 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 404",
       "blacklisted_at": "2026-10-31T13:04:46.539253+00:00"
-    },
-    "Cloudflare Workers AI/@cf/daily-co/phonellm-mini-alpha-2": {
-      "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
     }
   }
 }
