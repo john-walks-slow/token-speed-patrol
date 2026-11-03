@@ -427,7 +427,7 @@
       "blacklisted_at": "2026-10-31T13:04:46.539253+00:00"
     },
     "NVIDIA NIM/openai/gpt-oss-20b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "ReadTimeout"
     }
   }
