@@ -427,7 +427,12 @@
       "blacklisted_at": "2026-10-31T13:04:46.539253+00:00"
     },
     "NVIDIA NIM/openai/gpt-oss-20b": {
-      "consecutive_failures": 4,
+      "consecutive_failures": 5,
+      "last_error": "ReadTimeout",
+      "blacklisted_at": "2026-11-04T00:56:52.813862+00:00"
+    },
+    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
+      "consecutive_failures": 1,
       "last_error": "ReadTimeout"
     }
   }
