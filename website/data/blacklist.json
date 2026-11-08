@@ -437,12 +437,17 @@
       "blacklisted_at": "2026-11-06T16:16:18.516317+00:00"
     },
     "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
-      "consecutive_failures": 4,
-      "last_error": "ReadTimeout"
+      "consecutive_failures": 5,
+      "last_error": "ReadTimeout",
+      "blacklisted_at": "2026-11-08T22:33:30.079949+00:00"
     },
     "NVIDIA NIM/mistralai/mistral-large-4-1t-a52b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "ReadTimeout"
+    },
+    "NVIDIA NIM/nvidia/nemotron-3.5-lightning-30b-a3b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 502"
     }
   }
 }
