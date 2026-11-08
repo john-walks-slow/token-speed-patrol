@@ -437,12 +437,12 @@
       "blacklisted_at": "2026-11-06T16:16:18.516317+00:00"
     },
     "NVIDIA NIM/nvidia/ising-calibration-1.5-31b": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "ReadTimeout"
     },
-    "Groq/qwen/qwen3.8-27b": {
+    "NVIDIA NIM/mistralai/mistral-large-4-1t-a52b": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+      "last_error": "ReadTimeout"
     }
   }
 }
