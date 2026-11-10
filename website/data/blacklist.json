@@ -440,10 +440,6 @@
       "consecutive_failures": 5,
       "last_error": "ReadTimeout",
       "blacklisted_at": "2026-11-08T22:33:30.079949+00:00"
-    },
-    "OpenRouter/liquid/lfm-3-1.7b:free": {
-      "consecutive_failures": 2,
-      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
