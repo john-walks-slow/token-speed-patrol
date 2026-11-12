@@ -444,6 +444,10 @@
     "NVIDIA NIM/google/diffusiongemma-26b-a4b-it": {
       "consecutive_failures": 1,
       "last_error": "HTTP 404"
+    },
+    "Cloudflare Workers AI/@cf/thinkingmachines/inkling-2-small": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 403"
     }
   }
 }
