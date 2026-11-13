@@ -446,10 +446,14 @@
       "last_error": "HTTP 404"
     },
     "Cloudflare Workers AI/@cf/thinkingmachines/inkling-2-small": {
-      "consecutive_failures": 2,
+      "consecutive_failures": 3,
       "last_error": "HTTP 403"
     },
     "OpenRouter/apodex/apodex-1.1-mini:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/particle-ai/particle-1:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     }
