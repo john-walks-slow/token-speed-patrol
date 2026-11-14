@@ -453,6 +453,14 @@
     "OpenRouter/apodex/apodex-1.1-mini:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
+    },
+    "Groq/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+    },
+    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 503: content safety screening is temporarily unavailable"
     }
   }
 }
