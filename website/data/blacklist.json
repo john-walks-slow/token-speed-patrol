@@ -446,8 +446,9 @@
       "last_error": "HTTP 404"
     },
     "Cloudflare Workers AI/@cf/thinkingmachines/inkling-2-small": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 403"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 403",
+      "blacklisted_at": "2026-11-14T07:01:28.316243+00:00"
     },
     "OpenRouter/apodex/apodex-1.1-mini:free": {
       "consecutive_failures": 1,
