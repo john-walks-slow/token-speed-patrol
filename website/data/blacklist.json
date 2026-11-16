@@ -454,9 +454,9 @@
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "NVIDIA NIM/mistralai/mistral-large-4-1t-a52b": {
+    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
       "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
+      "last_error": "HTTP 503: content safety screening is temporarily unavailable"
     }
   }
 }
