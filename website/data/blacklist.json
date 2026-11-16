@@ -454,9 +454,9 @@
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "OpenRouter/liquid/lfm-3-1.7b:free": {
+    "NVIDIA NIM/mistralai/mistral-large-4-1t-a52b": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "ReadTimeout"
     }
   }
 }
