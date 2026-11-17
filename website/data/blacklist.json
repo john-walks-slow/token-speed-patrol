@@ -453,14 +453,6 @@
     "OpenRouter/apodex/apodex-1.1-mini:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
-    },
-    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 503: content safety screening is temporarily unavailable"
-    },
-    "OpenRouter/liquid/lfm-3-1.7b:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
