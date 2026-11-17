@@ -454,9 +454,9 @@
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
+    "OpenRouter/inclusionai/ling-3.2-flash:free": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 503: content safety screening is temporarily unavailable"
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
