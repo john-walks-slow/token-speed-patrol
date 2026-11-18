@@ -454,13 +454,9 @@
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "Groq/qwen/qwen3.8-27b": {
+    "NVIDIA NIM/moonshotai/kimi-k3.1-pro": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
-    },
-    "OpenRouter/particle-ai/particle-1:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
+      "last_error": "ReadTimeout"
     }
   }
 }
