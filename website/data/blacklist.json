@@ -455,12 +455,8 @@
       "last_error": "HTTP 429: Provider returned error"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clairic-flash": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 400"
-    },
-    "OpenRouter/particle-ai/particle-1:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
