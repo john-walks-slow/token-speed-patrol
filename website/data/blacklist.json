@@ -454,9 +454,13 @@
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "NVIDIA NIM/moonshotai/kimi-k3.1-pro": {
+    "Cloudflare Workers AI/@cf/cloudflare/clairic-flash": {
       "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
+      "last_error": "HTTP 400"
+    },
+    "OpenRouter/particle-ai/particle-1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
