@@ -455,46 +455,51 @@
       "last_error": "HTTP 429: Provider returned error"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clairic-flash": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 400"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 400",
+      "blacklisted_at": "2026-11-20T13:35:48.373418+00:00"
     },
     "NVIDIA NIM/fastino/gliner2-pii": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 422: invalid extraction request; check model, messages, labels and parameters"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 410"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.1-8b-instruct-fp8": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 410"
     },
     "Cloudflare Workers AI/@cf/meta/llama-3.2-1b-instruct": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 410"
     },
     "Cloudflare Workers AI/@cf/nvidia/nemotron-3-120b-a12b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 410"
     },
     "Cloudflare Workers AI/@cf/qwen/qwen3-30b-a3b-fp8": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 410"
     },
     "Cloudflare Workers AI/@cf/qwen/qwq-32b": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 410"
     },
     "OpenRouter/cohere/north-mini-code:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 404: cohere/north-mini-code:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models"
     },
     "OpenRouter/inclusionai/ling-3.2-flash:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
     },
-    "OpenRouter/liquid/lfm-3-1.7b:free": {
+    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 529"
+    },
+    "OpenRouter/particle-ai/particle-1:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     }
