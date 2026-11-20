@@ -455,16 +455,48 @@
       "last_error": "HTTP 429: Provider returned error"
     },
     "Cloudflare Workers AI/@cf/cloudflare/clairic-flash": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 400"
     },
-    "Groq/qwen/qwen3.8-27b": {
+    "NVIDIA NIM/fastino/gliner2-pii": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+      "last_error": "HTTP 422: invalid extraction request; check model, messages, labels and parameters"
     },
-    "NVIDIA NIM/minimaxai/minimax-m3.1-flash": {
+    "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 529"
+      "last_error": "HTTP 410"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-3.1-8b-instruct-fp8": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 410"
+    },
+    "Cloudflare Workers AI/@cf/meta/llama-3.2-1b-instruct": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 410"
+    },
+    "Cloudflare Workers AI/@cf/nvidia/nemotron-3-120b-a12b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 410"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwen3-30b-a3b-fp8": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 410"
+    },
+    "Cloudflare Workers AI/@cf/qwen/qwq-32b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 410"
+    },
+    "OpenRouter/cohere/north-mini-code:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 404: cohere/north-mini-code:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models"
+    },
+    "OpenRouter/inclusionai/ling-3.2-flash:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/liquid/lfm-3-1.7b:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
