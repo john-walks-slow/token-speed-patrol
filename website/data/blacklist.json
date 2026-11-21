@@ -460,7 +460,7 @@
       "blacklisted_at": "2026-11-20T13:35:48.373418+00:00"
     },
     "NVIDIA NIM/fastino/gliner2-pii": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 422: invalid extraction request; check model, messages, labels and parameters"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
@@ -488,12 +488,16 @@
       "last_error": "HTTP 410"
     },
     "OpenRouter/cohere/north-mini-code:free": {
-      "consecutive_failures": 3,
+      "consecutive_failures": 4,
       "last_error": "HTTP 404: cohere/north-mini-code:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models"
     },
-    "Groq/qwen/qwen3.8-27b": {
+    "OpenRouter/inclusionai/ling-3.2-flash:free": {
       "consecutive_failures": 1,
-      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/liquid/lfm-3-1.7b:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
