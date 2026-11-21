@@ -460,8 +460,9 @@
       "blacklisted_at": "2026-11-20T13:35:48.373418+00:00"
     },
     "NVIDIA NIM/fastino/gliner2-pii": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 422: invalid extraction request; check model, messages, labels and parameters"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 422: invalid extraction request; check model, messages, labels and parameters",
+      "blacklisted_at": "2026-11-21T13:05:00.872213+00:00"
     },
     "Cloudflare Workers AI/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
       "consecutive_failures": 3,
@@ -488,14 +489,27 @@
       "last_error": "HTTP 410"
     },
     "OpenRouter/cohere/north-mini-code:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404: cohere/north-mini-code:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 404: cohere/north-mini-code:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models",
+      "blacklisted_at": "2026-11-21T13:05:00.872213+00:00"
     },
     "OpenRouter/inclusionai/ling-3.2-flash:free": {
-      "consecutive_failures": 1,
+      "consecutive_failures": 2,
       "last_error": "HTTP 429: Provider returned error"
     },
     "OpenRouter/liquid/lfm-3-1.7b:free": {
+      "consecutive_failures": 2,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/dots-studio/dots-3-note-preview:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 404: dots-studio/dots-3-note-preview:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models"
+    },
+    "OpenRouter/baidu/ernie-5.5-flash-preview:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
+    },
+    "OpenRouter/particle-ai/particle-1:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     }
