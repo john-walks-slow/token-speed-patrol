@@ -494,12 +494,13 @@
       "blacklisted_at": "2026-11-21T13:05:00.872213+00:00"
     },
     "OpenRouter/dots-studio/dots-3-note-preview:free": {
-      "consecutive_failures": 4,
-      "last_error": "HTTP 404: dots-studio/dots-3-note-preview:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models"
+      "consecutive_failures": 5,
+      "last_error": "HTTP 404: dots-studio/dots-3-note-preview:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models",
+      "blacklisted_at": "2026-11-22T20:51:37.271799+00:00"
     },
-    "NVIDIA NIM/moonshotai/kimi-k3.1-pro": {
+    "OpenRouter/inclusionai/ling-3.2-flash:free": {
       "consecutive_failures": 1,
-      "last_error": "ReadTimeout"
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
