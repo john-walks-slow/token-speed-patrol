@@ -497,10 +497,6 @@
       "consecutive_failures": 5,
       "last_error": "HTTP 404: dots-studio/dots-3-note-preview:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models",
       "blacklisted_at": "2026-11-22T20:51:37.271799+00:00"
-    },
-    "OpenRouter/inclusionai/ling-3.2-flash:free": {
-      "consecutive_failures": 1,
-      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
