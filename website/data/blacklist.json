@@ -498,8 +498,12 @@
       "last_error": "HTTP 404: dots-studio/dots-3-note-preview:free is no longer available on OpenRouter: no provider serves this model anymore. See available models at https://openrouter.ai/models",
       "blacklisted_at": "2026-11-22T20:51:37.271799+00:00"
     },
-    "OpenRouter/particle-ai/particle-1:free": {
-      "consecutive_failures": 2,
+    "Groq/qwen/qwen3.8-27b": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01khncp078fgarx3mz48ze2dh2` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1024. The r"
+    },
+    "OpenRouter/inclusionai/ling-3.2-flash:free": {
+      "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
     }
   }
