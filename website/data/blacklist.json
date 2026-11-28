@@ -501,6 +501,14 @@
     "OpenRouter/inclusionai/ling-3.2-flash:free": {
       "consecutive_failures": 1,
       "last_error": "HTTP 429: Provider returned error"
+    },
+    "Cloudflare Workers AI/@cf/zai-org/glm-4.7-flash": {
+      "consecutive_failures": 1,
+      "last_error": "ReadTimeout"
+    },
+    "OpenRouter/particle-ai/particle-1:free": {
+      "consecutive_failures": 1,
+      "last_error": "HTTP 429: Provider returned error"
     }
   }
 }
